@@ -1,11 +1,10 @@
 services:
   - type: web
     name: gexup-java-backend
-    runtime: java
+    runtime: docker
     plan: free
-    rootDir: backend/java
-    buildCommand: mvn package
-    startCommand: java -jar target/gexup-java-backend-0.1.0.jar
+    dockerContext: ./backend/java
+    dockerfilePath: ./backend/java/Dockerfile
     envVars:
       - key: PORT
         value: 8080
