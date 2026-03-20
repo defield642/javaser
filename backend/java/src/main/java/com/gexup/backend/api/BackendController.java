@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.Instant;
 import java.util.Comparator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -143,32 +144,36 @@ public class BackendController {
       ? httpRequest.isSecure() || requestPort == 443
       : "https".equalsIgnoreCase(forwardedProto);
     int relayPort = requestPort > 0 ? requestPort : (tls ? 443 : 80);
+    Map<String, Object> relay = new LinkedHashMap<>();
+    relay.put("host", requestHost);
+    relay.put("port", relayPort);
+    relay.put("path", "/relay/socket");
+    relay.put("transport", "websocket");
+    relay.put("tls", tls);
+    relay.put("token", relayToken);
 
-    return ResponseEntity.ok(Map.of(
-      "status", "ok",
-      "service", "gexup-java",
-      "provider", "render-relay",
-      "supported", true,
-      "sessionId", UUID.randomUUID().toString(),
-      "tunnelMode", "relay-edge",
-      "relay", Map.of(
-        "host", requestHost,
-        "port", relayPort,
-        "path", "/relay/socket",
-        "transport", "websocket",
-        "tls", tls,
-        "token", relayToken
-      ),
-      "routes", List.of("0.0.0.0/0"),
-      "dns", List.of("1.1.1.1", "8.8.8.8"),
-      "requestedGame", safe.packageName() != null ? safe.packageName() : safe.gameId(),
-      "preferredRegion", safe.preferredRegion(),
-      "networkType", safe.networkType(),
-      "notes", List.of(
+    Map<String, Object> response = new LinkedHashMap<>();
+    response.put("status", "ok");
+    response.put("service", "gexup-java");
+    response.put("provider", "render-relay");
+    response.put("supported", true);
+    response.put("sessionId", UUID.randomUUID().toString());
+    response.put("tunnelMode", "relay-edge");
+    response.put("relay", relay);
+    response.put("routes", List.of("0.0.0.0/0"));
+    response.put("dns", List.of("1.1.1.1", "8.8.8.8"));
+    response.put("requestedGame", safe.packageName() != null ? safe.packageName() : safe.gameId());
+    response.put("preferredRegion", safe.preferredRegion());
+    response.put("networkType", safe.networkType());
+    response.put(
+      "notes",
+      List.of(
         "This endpoint returns relay configuration for the Android tunnel client.",
         "Traffic improvement requires a real relay process behind this endpoint."
       )
-    ));
+    );
+
+    return ResponseEntity.ok(response);
   }
 
   @GetMapping("relay/health")
