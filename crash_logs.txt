@@ -1,0 +1,698 @@
+03-14 15:21:10.570  4030  4030 E AndroidRuntime: Process: com.gexup, PID: 4030
+03-14 15:21:27.456  4204  4204 E AndroidRuntime: Process: com.gexup, PID: 4204
+03-14 15:43:40.925  4350  4350 E AndroidRuntime: Process: com.gexup, PID: 4350
+03-14 15:45:25.192  9478  9478 E AndroidRuntime: Process: com.gexup, PID: 9478
+03-14 16:56:01.709  9851  9851 E AndroidRuntime: Process: com.gexup, PID: 9851
+03-14 16:56:15.164 10634 10634 E AndroidRuntime: Process: com.gexup, PID: 10634
+03-14 18:56:20.160  8376  8511 E AndroidRuntime: Process: com.gexup, PID: 8376
+03-14 18:56:22.991  8706  8747 E AndroidRuntime: Process: com.gexup, PID: 8706
+03-14 18:56:29.038  8826  8870 E AndroidRuntime: Process: com.gexup, PID: 8826
+03-14 18:56:45.325  8922  8961 E AndroidRuntime: Process: com.gexup, PID: 8922
+03-14 18:56:47.414  8992  9030 E AndroidRuntime: Process: com.gexup, PID: 8992
+03-14 18:56:49.549  9060  9103 E AndroidRuntime: Process: com.gexup, PID: 9060
+03-14 18:56:51.751  9130  9165 E AndroidRuntime: Process: com.gexup, PID: 9130
+03-14 18:58:53.755  9520  9561 E AndroidRuntime: Process: com.gexup, PID: 9520
+03-14 18:59:09.608  9625  9664 E AndroidRuntime: Process: com.gexup, PID: 9625
+03-14 18:59:34.122  9787  9829 E AndroidRuntime: Process: com.gexup, PID: 9787
+03-14 19:01:06.038  9986 10026 E AndroidRuntime: Process: com.gexup, PID: 9986
+03-14 19:01:18.592 10077 10115 E AndroidRuntime: Process: com.gexup, PID: 10077
+03-14 19:01:22.720 10160 10194 E AndroidRuntime: Process: com.gexup, PID: 10160
+03-14 19:01:54.252 10380 10419 E AndroidRuntime: Process: com.gexup, PID: 10380
+03-14 19:01:56.930 10447 10487 E AndroidRuntime: Process: com.gexup, PID: 10447
+03-14 19:02:01.977 10511 10547 E AndroidRuntime: Process: com.gexup, PID: 10511
+03-14 19:06:37.441 23853 23853 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:06:37.443 23853 23853 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:14:43.035  2185  3299 D ActivityTaskManager: pre-Filtered:com.zhiliaoapp.musically # com.whatsapp.w4b # com.gexup # com.facebook.katana # com.truecaller # com.android.stk # com.oppo.quicksearchbox # eu.livesport.FlashScore_com # com.ea.gp.fifamobile # com.activision.callofduty.shooter # 
+03-14 19:14:43.514  2185  3299 D ActivityTaskManager: pre-Filtered:com.zhiliaoapp.musically # com.whatsapp.w4b # com.gexup # com.facebook.katana # com.truecaller # com.android.stk # com.oppo.quicksearchbox # eu.livesport.FlashScore_com # com.ea.gp.fifamobile # com.activision.callofduty.shooter # 
+03-14 19:14:44.700  2185  3360 D ActivityTaskManager: pre-Filtered:com.zhiliaoapp.musically # com.whatsapp.w4b # com.gexup # com.facebook.katana # com.truecaller # com.android.stk # com.oppo.quicksearchbox # eu.livesport.FlashScore_com # com.ea.gp.fifamobile # com.activision.callofduty.shooter # 
+03-14 19:14:44.762  2185  3360 D ActivityTaskManager: pre-Filtered:com.zhiliaoapp.musically # com.whatsapp.w4b # com.gexup # com.facebook.katana # com.truecaller # com.android.stk # com.oppo.quicksearchbox # eu.livesport.FlashScore_com # com.ea.gp.fifamobile # com.activision.callofduty.shooter # 
+03-14 19:14:44.895  2185  2705 D ActivityTaskManager: pre-Filtered:com.whatsapp.w4b # com.gexup # com.facebook.katana # com.truecaller # com.android.stk # com.oppo.quicksearchbox # eu.livesport.FlashScore_com # com.ea.gp.fifamobile # com.activision.callofduty.shooter # 
+03-14 19:14:46.249  2185  2803 D ActivityTaskManager: pre-Filtered:com.facebook.katana # com.whatsapp.w4b # com.gexup # com.truecaller # com.android.stk # com.oppo.quicksearchbox # eu.livesport.FlashScore_com # com.ea.gp.fifamobile # com.activision.callofduty.shooter # 
+03-14 19:14:46.836  2185  4811 D ActivityTaskManager: pre-Filtered:com.facebook.katana # com.whatsapp.w4b # com.gexup # com.truecaller # com.android.stk # com.oppo.quicksearchbox # eu.livesport.FlashScore_com # com.ea.gp.fifamobile # com.activision.callofduty.shooter # 
+03-14 19:15:21.679  2185  2396 D ParsingPackageUtilsExtImpl: adjustXmlValidator skip verify tag packageName: com.gexup , bootCompleted: true
+03-14 19:15:21.843 23915 16927 D ParsingPackageUtilsExtImpl: adjustXmlValidator skip verify tag packageName: com.gexup , bootCompleted: true
+03-14 19:15:22.920  2185  2320 D OplusPackageInstallInterceptManager: installStage send adb install pkg:com.gexup   path: /data/app/vmdl2113557865.tmp/base.apk installFlags:4194418
+03-14 19:15:22.923  2185  2320 D PackageManager: installStage com.gexup, dir=/data/app/vmdl2113557865.tmp, installerPackageName=null, installerUid=2000, full=false
+03-14 19:15:22.927  2185  2320 D PackageManager: installStage com.gexup0
+03-14 19:15:22.947  2185  2278 D ParsingPackageUtilsExtImpl: adjustXmlValidator skip verify tag packageName: com.gexup , bootCompleted: true
+03-14 19:15:22.965  2185  2237 I ActivityManager: Force stopping com.gexup appid=10375 user=-1: installPackageLI
+03-14 19:15:22.971  2185  2278 I PackageManager: Update package com.gexup code path from /data/app/~~eRSW2UAegL57wMGb_ZJzhA==/com.gexup-QnuYA92GqCnuFAUvucERCg== to /data/app/~~U-6ZcO5PNGf6Xn43B7VWig==/com.gexup-wR-uSDUGYz_lZqt-HIW0QA==; Retain data and using new
+03-14 19:15:22.973  2185  2278 I AppsFilter: interaction: PackageSetting{db0cef1 com.android.microdroid.empty_payload/10345} -> PackageSetting{c143d83 com.gexup/10375} BLOCKED
+03-14 19:15:22.973  2185  2278 I AppsFilter: interaction: PackageSetting{5aed1ac com.eduai/10063} -> PackageSetting{c143d83 com.gexup/10375} BLOCKED
+03-14 19:15:22.973  2185  2278 I AppsFilter: interaction: PackageSetting{e6df90f com.oplus.locationproxy/10179} -> PackageSetting{c143d83 com.gexup/10375} BLOCKED
+03-14 19:15:22.974  2185  2278 I AppsFilter: interaction: PackageSetting{4fe59be com.android.certinstaller/10209} -> PackageSetting{c143d83 com.gexup/10375} BLOCKED
+03-14 19:15:22.974  2185  2278 I AppsFilter: interaction: PackageSetting{a8497b com.timmy.alarm.timmyalarmpro/10422} -> PackageSetting{c143d83 com.gexup/10375} BLOCKED
+03-14 19:15:22.974  2185  2278 I AppsFilter: interaction: PackageSetting{1b27efe com.oplus.location/10216} -> PackageSetting{c143d83 com.gexup/10375} BLOCKED
+03-14 19:15:22.975  2185  2278 I AppsFilter: interaction: PackageSetting{db0cef1 com.android.microdroid.empty_payload/10345} -> PackageSetting{391d0dd com.gexup/10375} BLOCKED
+03-14 19:15:22.975  2185  2278 I AppsFilter: interaction: PackageSetting{5aed1ac com.eduai/10063} -> PackageSetting{391d0dd com.gexup/10375} BLOCKED
+03-14 19:15:22.976  2185  2278 I AppsFilter: interaction: PackageSetting{e6df90f com.oplus.locationproxy/10179} -> PackageSetting{391d0dd com.gexup/10375} BLOCKED
+03-14 19:15:22.976  2185  2278 I AppsFilter: interaction: PackageSetting{4fe59be com.android.certinstaller/10209} -> PackageSetting{391d0dd com.gexup/10375} BLOCKED
+03-14 19:15:22.976  2185  2278 I AppsFilter: interaction: PackageSetting{a8497b com.timmy.alarm.timmyalarmpro/10422} -> PackageSetting{391d0dd com.gexup/10375} BLOCKED
+03-14 19:15:22.976  2185  2278 I AppsFilter: interaction: PackageSetting{1b27efe com.oplus.location/10216} -> PackageSetting{391d0dd com.gexup/10375} BLOCKED
+03-14 19:15:23.497  2185  2278 D OplusPackageAbiHelper: notifyPackageAddOrChange :com.gexup primaryabi = arm64-v8a secondabi = null
+03-14 19:15:23.569  2185  2278 D OplusDexSceneManager:  High temp 408 with highTemperatureThreshold 380 pkg:com.gexup reason: install
+03-14 19:15:23.569  2185  2278 D OplusDexSceneManager: High temp for : com.gexup install
+03-14 19:15:23.576  2185  2278 W OplusSingleDexoptContainerImpl: oplus checkAndSetBeforeStart success: packageName= com.gexup priority= 60 compilerFilter= speed-profile
+03-14 19:15:25.567  2185  3568 D ActivityTaskManager: pre-Filtered:com.facebook.katana # com.whatsapp.w4b # com.gexup # com.truecaller # com.android.stk # com.oppo.quicksearchbox # eu.livesport.FlashScore_com # com.ea.gp.fifamobile # com.activision.callofduty.shooter # 
+03-14 19:15:25.928  2185  2278 I ArtService: Dexopt result: [packageName = com.gexup] DexContainerFileDexoptResult{dexContainerFile=/data/app/~~U-6ZcO5PNGf6Xn43B7VWig==/com.gexup-wR-uSDUGYz_lZqt-HIW0QA==/base.apk, primaryAbi=true, abi=arm64-v8a, actualCompilerFilter=verify, status=PERFORMED, dex2oatWallTimeMillis=1799, dex2oatCpuTimeMillis=2540, sizeBytes=15294772, sizeBeforeBytes=0, extendedStatusFlags=[]}
+03-14 19:15:25.935  2185  2278 D OplusDexoptStatisticHelper: dexopt notify to athena: com.gexup
+03-14 19:15:25.973  2185  2278 W OplusDexoptStatisticHelper: recordDex2oatInfo: time:1773504925973,pid:0,alt:1799,cpt:2540,rea:install,flt:verify,rlt:20,path:/data/app/~~U-6ZcO5PNGf6Xn43B7VWig==/com.gexup-wR-uSDUGYz_lZqt-HIW0QA==/base.apk
+03-14 19:15:25.998  2185  2278 D OidtPackageManagerHelper: PackageName = com.gexup, installerPackageName = pc
+03-14 19:15:26.016  2185  2278 I AppsFilter: interaction: PackageSetting{6993272 com.android.microdroid.empty_payload/10345} -> PackageSetting{95abd85 com.gexup/10375} BLOCKED
+03-14 19:15:26.016  2185  2278 I AppsFilter: interaction: PackageSetting{12e5b40 com.eduai/10063} -> PackageSetting{95abd85 com.gexup/10375} BLOCKED
+03-14 19:15:26.017  2185  2278 I AppsFilter: interaction: PackageSetting{40a8a79 com.oplus.locationproxy/10179} -> PackageSetting{95abd85 com.gexup/10375} BLOCKED
+03-14 19:15:26.017  2185  2278 I AppsFilter: interaction: PackageSetting{14403be com.android.certinstaller/10209} -> PackageSetting{95abd85 com.gexup/10375} BLOCKED
+03-14 19:15:26.017  2185  2278 I AppsFilter: interaction: PackageSetting{60dac1f com.timmy.alarm.timmyalarmpro/10422} -> PackageSetting{95abd85 com.gexup/10375} BLOCKED
+03-14 19:15:26.017  2185  2278 I AppsFilter: interaction: PackageSetting{d3deb6c com.oplus.location/10216} -> PackageSetting{95abd85 com.gexup/10375} BLOCKED
+03-14 19:15:26.045  2185  2278 D UserUninstallRecorder: not care com.gexup installed.
+03-14 19:15:26.062  2185  2278 I ActivityManager: Force stopping com.gexup appid=10375 user=0: pkg removed
+03-14 19:15:26.170  2185  2230 V AutofillManagerService: onPackageUpdateStarted(): com.gexup
+03-14 19:15:26.241  4020  4020 D OplusAtlasService_ListHelper: ACTION_PACKAGE_REMOVED packageName:com.gexup, uid:10375
+03-14 19:15:26.241  4020  4284 D OplusAtlas.OplusMessageHandler: handleMessage: Msg { when=-1ms what=3 obj=com.gexup target=com.oplus.atlas.OplusMessageHandler$MyHandler }
+03-14 19:15:26.246  5414  6160 W Battery : AppInfoManager: affairType:1102 replace:truepkg:com.gexup
+03-14 19:15:26.265  4020  4284 D OplusAtlasService_ListHelper: removeUidMap uid:10375 packageName:com.gexup
+03-14 19:15:26.275  2185  2557 D OplusLBSMainClass: update: com.gexup
+03-14 19:15:26.280  2185  2230 V AutofillManagerService: onPackageUpdateFinished(): com.gexup
+03-14 19:15:26.281  2185  2230 V AutofillManagerService: onPackageModified(): com.gexup
+03-14 19:15:26.286  1659  7408 D MMListService: removeUidPackageMap uid:10375 packageName com.gexup mapSize 392
+03-14 19:15:26.288  2185  2501 D ShortcutService: replacing package: com.gexup userId0
+03-14 19:15:26.288  2185  2501 D ShortcutService: handlePackageUpdateFinished: com.gexup user=0
+03-14 19:15:26.288  2185  2501 D ShortcutService: rescanPackageIfNeeded 0@com.gexup, forceRescan=true , isNewApp=true
+03-14 19:15:26.296  5414  6160 W System.err: android.content.pm.PackageManager$NameNotFoundException: package:com.gexup
+03-14 19:15:26.315  2185  2501 D ShortcutService: Package com.gexup has 0 manifest shortcut(s), and 0 share target(s)
+03-14 19:15:26.323  2185  2410 W PackageConfigPersister: App-specific configuration not found for packageName: com.gexup and userId: 0
+03-14 19:15:26.333  2185  2516 I SdkSandboxManager: No SDKs used. Skipping SDK data reconcilation for CallingInfo{mUid=10375, mPackageName='com.gexup, mAppProcessToken='null'}
+03-14 19:15:26.342  4020  4284 D OplusAtlas.OplusMessageHandler: handleMessage: Msg { when=-2ms what=2 obj=com.gexup target=com.oplus.atlas.OplusMessageHandler$MyHandler }
+03-14 19:15:26.347  1339  2735 D AudioFlingerExtImpl: AudioFlingerExtImpl oplusSetParameters: keyvalue add_uidmap=10375:com.gexup
+03-14 19:15:26.347  1659  7408 D MMListService: addUidPackageMap uid:10375 packageName com.gexup mapSize 392
+03-14 19:15:26.348  1339  2735 D DeviceHalAidl: setParameters: parameters: "add_uidmap=10375:com.gexup"
+03-14 19:15:26.349  1253  1253 D AudioALSAHardware: +setParameters(): add_uidmap=10375:com.gexup
+03-14 19:15:26.350  1253  1253 D AudioALSAHardware: -setParameters(): add_uidmap=10375:com.gexup
+03-14 19:15:26.351  1339  2735 D DeviceHalAidl: setParameters: parameters: "add_uidmap=10375:com.gexup"
+03-14 19:15:26.352  1339  2735 D DeviceHalAidl: setParameters: parameters: "add_uidmap=10375:com.gexup"
+03-14 19:15:26.355  3102  3102 D CarrierSvcBindHelper: onPackageUpdateFinished: com.gexup
+03-14 19:15:26.356  3102  3102 D CarrierSvcBindHelper: onPackageModified: com.gexup
+03-14 19:15:26.358  1339  2735 D DeviceHalAidl: setParameters: parameters: "add_uidmap=10375:com.gexup"
+03-14 19:15:26.358  2185  2185 D DeviceIdleHelper: pacakge removed: name=com.gexup not in PowerSaveWhitelist
+03-14 19:15:26.358  2185  2185 D MultiApp-DataService: handlePackageChange: android.intent.action.PACKAGE_REMOVED for: com.gexup
+03-14 19:15:26.381  3102  3856 D ImsResolver: maybeAddedImsService, packageName: com.gexup
+03-14 19:15:26.394  2185  2278 E OplusAppQuickStart_OplusAppQuickStart: success to delete file: com.gexup_0_33.webp
+03-14 19:15:26.395  5414  6580 W Battery : AppInfoManager: affairType:1101 replace:truepkg:com.gexup
+03-14 19:15:26.399  3074  3074 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.402 28744 28744 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.403 30455 30455 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.408 28500 28500 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.409  6116  6116 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.411 21807 21807 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.417 23915 23915 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.433 13915 13915 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.433 22851 22851 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.434 32316 32316 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.436 11852 11852 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.436 26135 26135 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.440 26270 26270 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.441 32453 32453 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.442 11074 11074 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.444 11162 11162 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.445  3074  3084 W ndroid.launcher: ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~eRSW2UAegL57wMGb_ZJzhA==/com.gexup-QnuYA92GqCnuFAUvucERCg==/base.apk' with 1 weak references
+03-14 19:15:26.449 13495 13495 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.449  5414  5414 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.450  9760  9760 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.454 23322 23322 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.456 10305 10305 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.457  7790  7790 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.458 14128 14128 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.458  4918  4918 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.459 10216 10216 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.460 11123 11123 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.462 13657 13657 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.463 22112 22112 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.466 26328 26328 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.469 31750 31750 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.469 27908 27908 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.471 31709 31709 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.471  6431  6431 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.471  4422  4422 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.472  8548  8548 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.475 14336 14336 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.479 29784 29784 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.479 15389 15389 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.481 20285 20285 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.481  5017  5017 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.482 20978 20978 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.483  3429  3429 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.483 30751 30751 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.484 24165 24165 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.487 13586 13586 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.485 17892 17892 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.486  3128  3128 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.488 27637 27637 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.488   822   822 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.488  2725  2725 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.490  9602  9602 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.492  3184  3184 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.495 25107 25107 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.483  4590  4590 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.497 22833 22833 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.498  3018  3018 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.499  2670  2670 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.499 22774 22774 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.503 16707 16707 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.505  3119  3119 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.505  3074  3074 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.506 30879 30879 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.508  5253  5253 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.509 21981 21981 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.510 29153 29153 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.510  6116  6116 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.511 30455 30455 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.512 28500 28500 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.514 28744 28744 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.514 21836 21836 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.515 21807 21807 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.517 11852 11852 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.516  4020  4020 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.525 23915 23915 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.525  4194  4194 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.526  3148  3148 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.532   822   822 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.533 23629 23629 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.537  3166  3166 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.542  3141  3141 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.543  3363  3363 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.552 26135 26135 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.553  3139  3139 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.553 13915 13915 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.553 32316 32316 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.559 32453 32453 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.560 11074 11074 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.560  5253  5253 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.560 23322 23322 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.561 20285 20285 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.561  4422  4422 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.562 14128 14128 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.563 11123 11123 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.563 22851 22851 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.564 13657 13657 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.566 22112 22112 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.567 13495 13495 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.567  4918  4918 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.568 14336 14336 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.568 29784 29784 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.568 17892 17892 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.569 21836 21836 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.569 25107 25107 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.569  5414  5414 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.569 20978 20978 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.570 16707 16707 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.570 21981 21981 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.571 10216 10216 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.570 22833 22833 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.573 26328 26328 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.574 10305 10305 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.575 15389 15389 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.575  3429  3429 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.576 31750 31750 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.577  9602  9602 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.578 27908 27908 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.579 27637 27637 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.579 22774 22774 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.579 26270 26270 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.579  5017  5017 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.580  3139  3139 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.580  6431  6431 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.580  3102  3102 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.580  3128  3128 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.581  8548  8548 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.582  9760  9760 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.582  8548  8562 W .oplus.crashbox: ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~eRSW2UAegL57wMGb_ZJzhA==/com.gexup-QnuYA92GqCnuFAUvucERCg==/base.apk' with 1 weak references
+03-14 19:15:26.582 30751 30751 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.583 13586 13586 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.583  4194  4194 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.583 11162 11162 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.584 24165 24165 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.584 31709 31709 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.585 30879 30879 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.585  7790  7790 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.588  4020  4020 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.589  3166  3166 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.589 29153 29153 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.589  3184  3184 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.590  3363  3363 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.590 23629 23629 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.591  2725  2725 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.591  3141  3141 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.592  3119  3119 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.592  4590  4590 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.592  3148  3148 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.593  2670  2670 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.597  3102  3102 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.599  2185  2516 I SdkSandboxManager: No SDKs used. Skipping SDK data reconcilation for CallingInfo{mUid=10375, mPackageName='com.gexup, mAppProcessToken='null'}
+03-14 19:15:26.613  3018  3018 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.846  2185  2185 D OplusCustomizeService: pkgName = com.gexup
+03-14 19:15:26.846  2185  2185 D OplusCustomizeService: Add packages name is :com.gexup;dir:/data/app/~~U-6ZcO5PNGf6Xn43B7VWig==/com.gexup-wR-uSDUGYz_lZqt-HIW0QA==/base.apk
+03-14 19:15:26.891  2185  2185 D MultiApp-DataService: handlePackageChange: android.intent.action.PACKAGE_ADDED for: com.gexup
+03-14 19:15:26.893 16707 16713 W hbox:interactor: ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~eRSW2UAegL57wMGb_ZJzhA==/com.gexup-QnuYA92GqCnuFAUvucERCg==/base.apk' with 1 weak references
+03-14 19:15:26.946  2185 16979 D OplusOsPackageManager: uploadInstallAppInfos:{installerPkg=null, code=1, abi1=arm64-v8a, abi2=null, update=1, cert=E28DF6AEC1;, targetSdkVersion=34, source=com.android.shell, app_pkg=com.gexup, version=1.0, initiatingPkg=com.android.shell, md5=6cda87c0225cac9095773cb3cb241d27}
+03-14 19:15:26.974  2185  2185 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:26.975  2185  2185 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:27.008  2185  2185 W AlarmManager: Package com.gexup, uid 10375 lost permission to set exact alarms!
+03-14 19:15:28.061 17022 17022 I SafetyLabelChangedBroadcastReceiver: received broadcast packageName: com.gexup, current user: UserHandle{0}, packageChangeEvent: UPDATE, intent user: UserHandle{0}
+03-14 19:15:28.639  3128  3543 D SystemState: com.gexupis removed.
+03-14 19:15:28.649  3128  3551 I TcpCongestControl: onPackageChange:pkgname:com.gexup, uid:10375,action:android.intent.action.PACKAGE_REMOVED
+03-14 19:15:28.655  3128  3551 I TcpCongestControl: onPackageChange:pkgname:com.gexup, uid:10375,action:android.intent.action.PACKAGE_ADDED
+03-14 19:15:28.655  3128  3551 I TcpCongestControl: onPackageChange:pkgname:com.gexup, uid:10375,action:android.intent.action.PACKAGE_REPLACED
+03-14 19:15:28.655  3128  3543 D SystemState: com.gexupis added.
+03-14 19:15:28.682 11074 11074 D Weather_WeatherServiceDataChangedReceiver: onReceive action: android.intent.action.PACKAGE_REPLACED , pkgName: com.gexup
+03-14 19:15:28.682 11074 11074 D Weather_WeatherServiceDataChangedReceiver: onReceive pkgName com.gexup app not is weather service skip
+03-14 19:15:28.699  3074  3074 I PluginManagerImpl: actionManager.reloadPackage, pkg: com.gexup
+03-14 19:15:28.700  3074  3074 I PluginManagerImpl: actionManager.reloadPackage, pkg: com.gexup
+03-14 19:15:28.700  3074  3074 I PluginManagerImpl: actionManager.reloadPackage, pkg: com.gexup
+03-14 19:15:28.700  3074  3074 I PluginManagerImpl: actionManager.reloadPackage, pkg: com.gexup
+03-14 19:15:28.700  3074  3074 I PluginManagerImpl: actionManager.reloadPackage, pkg: com.gexup
+03-14 19:15:28.700  3074  3074 I PluginManagerImpl: actionManager.reloadPackage, pkg: com.gexup
+03-14 19:15:28.700  3074  3074 I PluginManagerImpl: actionManager.reloadPackage, pkg: com.gexup
+03-14 19:15:28.700  3074  3074 I PluginManagerImpl: actionManager.reloadPackage, pkg: com.gexup
+03-14 19:15:28.706  4918  4918 W MediaProvider: WorkProfileOwnerApps cache miss for package com.gexup
+03-14 19:15:28.755  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.755  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.755  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.755  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.755  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.755  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.755  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.755  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.755  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.755  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.755  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.755  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.755  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.755  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.755  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.755  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.755  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.755  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.755  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.755  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.755  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.755  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.755  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.755  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.755  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.756  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.756  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.756  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.756  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.756  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.756  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.756  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.756  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.756  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.756  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.756  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.756  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.756  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.756  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.756  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.756  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.756  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.756  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.756  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.756  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.756  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.756  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.756  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.756  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.756  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.756  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.776  2725  2725 I SystemUi--QuickSettings: QSTileHostHelper-->PACKAGE changed pkgName=com.gexup,isMultiAppfalse ,replaceDataBundle[{android.intent.extra.REMOVED_FOR_ALL_USERS=true, android.intent.extra.DONT_KILL_APP=false, android.intent.extra.UID=10375, android.intent.extra.SYSTEM_UPDATE_UNINSTALL=false, android.intent.extra.USER_INITIATED=true, android.intent.extra.DATA_REMOVED=false, android.intent.extra.REPLACING=true, android.intent.extra.user_handle=0}]
+03-14 19:15:28.820  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.820  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.820  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.821  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.821  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.821  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.821  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.821  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.821  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.822  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.822  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.822  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.822  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.822  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.822  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.822  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.822  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.822  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.822  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.822  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.822  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.822  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.823  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.823  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.823  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.823  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.823  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.823  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.823  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.823  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.823  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.823  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.823  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.823  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.823  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.823  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.823  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.823  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.823  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.823  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.823  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.823  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.823  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.823  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.823  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.823  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.823  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.823  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.823  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.823  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.824  2725  2999 W PluginActionManager: handleQueryPlugins, not in mPrivilegedPlugins, pkgName=com.gexup
+03-14 19:15:28.924 23915 23915 I Finsky  : [2] AIM: AppInfoCacheUpdater -> invalidating apps: [com.gexup]
+03-14 19:15:28.991 23915 23967 I Finsky  : [763] AIM: AppInfoManager-Perf > OnDeviceAppInfo > cacheHitCount=0, cacheMissCount=1. Missed  in cache (limit 10) : [com.gexup]
+03-14 19:15:29.040 16935 16937 I artd    : GetBestInfo: odex next to the dex file (/data/app/~~U-6ZcO5PNGf6Xn43B7VWig==/com.gexup-wR-uSDUGYz_lZqt-HIW0QA==/oat/arm64/base.odex) is kOatUpToDate with filter 'verify' executable 'false'
+03-14 19:15:29.089 23915 23915 I Finsky  : [2] AIM: AppInfoCacheUpdater -> invalidating apps: [com.gexup]
+03-14 19:15:29.104 23915 23966 I Finsky  : [762] AIM: AppInfoManager-Perf > OnDeviceAppInfo > cacheHitCount=0, cacheMissCount=1. Missed  in cache (limit 10) : [com.gexup]
+03-14 19:15:29.134 14128 14161 I Finsky:background: [795] IQ:PSL: skipping onPackageRemoved(replacing=true) for untracked package=com.gexup
+03-14 19:15:29.179  4194  4194 E PTC.APPCORE.AppServicesBean: getAppConfigFileName: packageName=com.gexup, configFilePath is null!
+03-14 19:15:29.179  4194  4194 E PTC.APPCORE.AppServicesBean: getAppConfigFileName: packageName=com.gexup, configFilePath is null!
+03-14 19:15:29.467 16935 17230 I artd    : GetBestInfo: odex next to the dex file (/data/app/~~U-6ZcO5PNGf6Xn43B7VWig==/com.gexup-wR-uSDUGYz_lZqt-HIW0QA==/oat/arm64/base.odex) is kOatUpToDate with filter 'verify' executable 'false'
+03-14 19:15:29.791 10613 10613 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:29.847 10613 10613 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:30.234 20978 17294 I ProximityAuth: [RecentAppsMediator] Package added: (user=UserHandle{0}) com.gexup
+03-14 19:15:31.407  2185  3644 E OplusAppQuickStart_AppQuickStartController: notifyStartActivity intent:Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] flg=0x10200000 cmp=com.gexup/.MainActivity bnds=[528,1274][774,1565] (has extras) }
+03-14 19:15:31.426  2185  3644 D WindowManager: NFW_setClientVisible:ActivityRecord{bf5c5d5 u0 com.gexup/.MainActivity clientVisible:true
+03-14 19:15:31.430  2185  3644 D FlexibleTaskController: isSupportFlexibleWindow target = com.gexup/.MainActivity callPkg = FlexibleTaskController support = true ,caller = 2185
+03-14 19:15:31.435  2185  3644 D FlexibleTaskController: isSupportFlexibleWindow target = com.gexup/.MainActivity callPkg = FlexibleTaskController support = true ,caller = 2185
+03-14 19:15:31.435  2185  3644 D FlexibleWindowManagerService: no reused task found for ActivityRecord{bf5c5d5 u0 com.gexup/.MainActivity t-1}
+03-14 19:15:31.455  2185  3644 D ActivityTaskManager: validateStartingWindowTheme:  Pkg=com.gexup, Translucent=false, Floating=false, ShowWallpaper=false, Disable=false, LaunchSource=2
+03-14 19:15:31.456  2185  3644 D ActivityTaskManager: addStartingWindow for ActivityRecord{bf5c5d5 u0 com.gexup/.MainActivity t6298}, mainWin=null, state=INITIALIZING, isKeyguardLocked=false, isKeyguardGoingAway=false
+03-14 19:15:31.457  2185  3644 D OplusAppQuickStart_OplusAppQuickStart: isInRemoteInterrupt isInInterruptScene:false, recents=null, ar=ActivityRecord{bf5c5d5 u0 com.gexup/.MainActivity t6298}
+03-14 19:15:31.462  2185  3644 D OplusAppQuickStart_AppQuickStartingSurface: createSplashScreenSurface reuse: Surface(name=OplusStartingSurface)/@0xaac3990, @parent:null, @request:Task{c73ebb7 #6298 type=standard A=10375:com.gexup}Rect(0, 0 - 1080, 2400), @type:2, shared:false
+03-14 19:15:31.462  2185  3644 D OplusAppQuickStart_AppQuickStartingSurface: splash window of com.gexup is dark, making the startingsurface dark too
+03-14 19:15:31.462  2185  3644 D OplusAppQuickStart_AppQuickStartingSurface: create STARTING_WINDOW_TYPE_SPLASH_SCREEN with color: Color(0.0, 0.0, 0.0, 1.0, sRGB IEC61966-2.1), mIsInRemoteInterrupt:false, ar=ActivityRecord{bf5c5d5 u0 com.gexup/.MainActivity t6298}, surfaceControl= Surface(name=OplusStartingSurface)/@0xaac3990, @parent:null, @request:Task{c73ebb7 #6298 type=standard A=10375:com.gexup}Rect(0, 0 - 1080, 2400), @type:2, shared:false
+03-14 19:15:31.463  2185  3644 D OplusAppQuickStart_AppQuickStartingSurface: init startingSurface syncTransition=false, applyImmediately: true, surface: Surface(name=OplusStartingSurface)/@0xaac3990, @parent:Surface(name=Task=6298)/@0xa3e9289, @request:Task{c73ebb7 #6298 type=standard A=10375:com.gexup}Rect(0, 0 - 1080, 2400), @type:2, shared:false
+03-14 19:15:31.464  2185  3644 D ActivityTaskManager: setAppVisibility(Token{5b74f24 ActivityRecord{bf5c5d5 u0 com.gexup/.MainActivity t6298}}, visible=true): mNextAppTransitionRequests=[], mNextAppTransitionFlags=,mAppTransitionState=APP_STATE_IDLE visible=false mVisibleRequested=false
+03-14 19:15:31.465  2185  3644 D ActivityTaskManager: setVisibility(Token{5b74f24 ActivityRecord{bf5c5d5 u0 com.gexup/.MainActivity t6298}}, visible=true) defer commitVisibility for transition collecting
+03-14 19:15:31.470  2185  3644 D OplusAppQuickStart_AppQuickStartController: showStartingSurface== activityRecord:ActivityRecord{bf5c5d5 u0 com.gexup/.MainActivity t6298}, tx= 9384503997409, mCurrentAppQuickStartingSurfaceOplusAppQuickStartingSurface{mSurfaceControl=Surface(name=OplusStartingSurface)/@0xaac3990, @parent:Surface(name=Task=6298)/@0xa3e9289, @request:Task{c73ebb7 #6298 type=standard A=10375:com.gexup}Rect(0, 0 - 1080, 2400), @type:2, shared:false, mActivityRecord=ActivityRecord{bf5c5d5 u0 com.gexup/.MainActivity t6298}, mTask=Task{c73ebb7 #6298 type=standard A=10375:com.gexup}, mStartFromRecents=false, mStartFromSlide=false, mIsMovingToBack=false}
+03-14 19:15:31.470  2185  3644 D OplusAppQuickStart_AppQuickStartingSurface: real show: Surface(name=OplusStartingSurface)/@0xaac3990, @parent:Surface(name=Task=6298)/@0xa3e9289, @request:Task{c73ebb7 #6298 type=standard A=10375:com.gexup}Rect(0, 0 - 1080, 2400), @type:2, shared:false reason: onPreTransactionReady
+03-14 19:15:31.473  2185  3644 D adaptiveSmoothAnim_Main: updateStartingWindowInfo ar=ActivityRecord{bf5c5d5 u0 com.gexup/.MainActivity t6298}
+03-14 19:15:31.474  2185  3644 D OplusAppQuickStart_AppQuickStartController: shouldPauseImmediately prev:ActivityRecord{42ce2f4 u0 com.android.launcher/.Launcher t5} resume:ActivityRecord{bf5c5d5 u0 com.gexup/.MainActivity t6298}
+03-14 19:15:31.482  2185  3644 I OplusHansManager : front pkg: com.gexup, uid: 10375, prev pkg: com.android.launcher, prev uid: 10202
+03-14 19:15:31.487  2185  2543 I [UAH_CLIENT]: UahEventAcquire, cmdid:1, pkg:com.gexup, identity:com.android.server.wm
+03-14 19:15:31.488  2185  3238 D NativeFreezeManager: freezeForAppSwitchScene mAppLaunchFzDxEnable enter, mFgAppPkgname com.gexup
+03-14 19:15:31.491  3074  3074 I [UAH_CLIENT]: UahEventAcquire, cmdid:85, pkg:com.gexup, identity:GpuBoost
+03-14 19:15:31.493  2185  2784 I Osense-BaseDecisionMaker: notifySceneToAthenaPolicy: SCENE_APP_SWITCH, bundle: Bundle[{prevPkgName=com.android.launcher, curUid=10375, curPkgName=com.gexup, prevUid=10202}]
+03-14 19:15:31.496  2185  3644 D ActivityTaskManager: notifyTaskRemoved, task: Task{33ef415 #6294 type=standard A=10375:com.gexup} trace:com.android.server.wm.RecentTasks.removeForAddTask:1837 com.android.server.wm.RecentTasks.add:1350 com.android.server.wm.ActivityStarter.startActivityInner:2628 com.android.server.wm.ActivityStarter.startActivityUnchecked:1898 com.android.server.wm.ActivityStarter.executeRequest:1640 
+03-14 19:15:31.496  2185  3644 D ActivityTaskManager: notifyTaskAdded, task: Task{c73ebb7 #6298 type=standard A=10375:com.gexup} trace:com.android.server.wm.RecentTasks.add:1365 com.android.server.wm.ActivityStarter.startActivityInner:2628 com.android.server.wm.ActivityStarter.startActivityUnchecked:1898 com.android.server.wm.ActivityStarter.executeRequest:1640 com.android.server.wm.ActivityStarter.execute:905 
+03-14 19:15:31.501  2185  3644 D OplusAppQuickStart_AppQuickStartController: showStartingSurface== activityRecord:ActivityRecord{bf5c5d5 u0 com.gexup/.MainActivity t6298}, tx= 9384503997414, mCurrentAppQuickStartingSurfaceOplusAppQuickStartingSurface{mSurfaceControl=Surface(name=OplusStartingSurface)/@0xaac3990, @parent:Surface(name=Task=6298)/@0xa3e9289, @request:Task{c73ebb7 #6298 type=standard A=10375:com.gexup}Rect(0, 0 - 1080, 2400), @type:2, shared:false, mActivityRecord=ActivityRecord{bf5c5d5 u0 com.gexup/.MainActivity t6298}, mTask=Task{c73ebb7 #6298 type=standard A=10375:com.gexup}, mStartFromRecents=false, mStartFromSlide=false, mIsMovingToBack=false}
+03-14 19:15:31.501  2185  3644 D OplusAppQuickStart_AppQuickStartingSurface: real show: Surface(name=OplusStartingSurface)/@0xaac3990, @parent:Surface(name=Task=6298)/@0xa3e9289, @request:Task{c73ebb7 #6298 type=standard A=10375:com.gexup}Rect(0, 0 - 1080, 2400), @type:2, shared:false reason: onTransactionReady
+03-14 19:15:31.501  2185  3644 D ActivityTaskManager: commitVisibility: ActivityRecord{bf5c5d5 u0 com.gexup/.MainActivity t6298}: visible=true visibleRequested=true, isInTransition=true, runningAnimation=true 
+03-14 19:15:31.502  2725  2821 V WindowManagerShell: Transition requested (#5196): android.os.BinderProxy@3caf2d9 TransitionRequestInfo { type = OPEN, triggerTask = TaskInfo{userId=0 taskId=6298 displayId=0 isRunning=true baseIntent=Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] flg=0x10200000 cmp=com.gexup/.MainActivity mCallingUid=10202 } baseActivity=ComponentInfo{com.gexup/com.gexup.MainActivity} topActivity=ComponentInfo{com.gexup/com.gexup.MainActivity} origActivity=null realActivity=ComponentInfo{com.gexup/com.gexup.MainActivity} numActivities=1 lastActiveTime=486003783 supportsSplitScreenMultiWindow=true supportsMultiWindow=true supportsPocketStudioMultiWindow=true isInFlexibleEmbedded = false uid = 10375 pid = 0 resizeMode=1 isResizeable=true minWidth=-1 minHeight=-1 defaultMinSize=220 token=WCT{android.window.IWindowContainerToken$Stub$Proxy@3db49e} topActivityType=1 pictureInPictureParams=null shouldDockBigOverlays=false launchIntoPipHostTaskId=-1 lastParentTaskIdBeforePip=-1 displayCutoutSafeInsets=Rect(0, 110 - 0, 0) topActivityInfo=ActivityInfo{7823b7f com.gexup.MainActivity} launchCookies=[android.os.BinderProxy@3ce374c] positionInParent=Point(0, 0) parentTaskId=-1 isFocused=false isVisible=false isVisibleRequested=true isSleeping=false locusId=null displayAreaFeatureId=1 isTopActivityTransparent=false appCompatTaskInfo=AppCompatTaskInfo { topActivityInSizeCompat=false topActivityInOplusCompatMode=false topActivityEligibleForLetterboxEducation= falseisLetterboxEducationEnabled= false isLetterboxDoubleTapEnabled= false topActivityEligibleForUserAspectRatioButton= false topActivityBoundsLetterboxed= false isFromLetterboxDoubleTap= false topActivityLetterboxVerticalPosition= -1 topActivityLetterboxHorizontalPosition= -1 topActivityLetterboxWidth=1080 topActivityLetterboxHeight=2400 isUserFullscreenOverrideEnabled=false isSystemFullscreenOverrideEnabled=false cameraCompatTaskInfo=CameraCompatTaskInfo { cameraCompatControlState=hidden freeformCameraCompatMode=inactive}} topActivityLetterboxInsets=Rect(0, 0 - 0, 0) mOplusExtraBundle = Bundle[mParcelledData.dataSize=348]}, pipTask = null, remoteTransition = RemoteTransition { remoteTransition = android.window.IRemoteTransition$Stub$Proxy@46ee395, recentAnimRunner = null, appThread = android.app.IApplicationThread$Stub$Proxy@6cc7caa, debugName = QuickstepLaunch }, displayChange = null, flags = 0, debugId = 5196 }
+03-14 19:15:31.502  2185  3644 D Transition: collectOrderChanges onTopTasksEnd: [Task{c73ebb7 #6298 type=standard A=10375:com.gexup}], reportedOnTop:null, mOnTopTasksStart: [Task{c73ebb7 #6298 type=standard A=10375:com.gexup}], TDA child: [Task{82fde8c #6032 type=standard A=10444:com.blaze.sportzfy}, Task{6a18ca3 #2 type=undefined}, Task{c5c630b #6240 type=standard A=10434:com.activision.callofduty.shooter}, Task{8bb86ff #6239 type=standard A=10263:com.ea.gp.fifamobile}, Task{6d89e9d #6271 type=standard A=10280:eu.livesport.FlashScore_com}, Task{5d1bab5 #6272 type=standard A=10118:com.oppo.quicksearchbox}, Task{981d9ec #6274 type=standard A=1001:android.task.stk}, Task{cf07f54 #6270 type=standard A=10309:com.truecaller}, Task{94557eb #6296 type=standard A=10312:com.whatsapp.w4b}, Task{293910d #6278 type=standard A=10406:com.facebook.katana}, Task{ec2feb3 #1 type=home}, Task{c73ebb7 #6298 type=standard A=10375:com.gexup}]
+03-14 19:15:31.502  2185  3644 D OplusFlexibleActivityTransitionManager: fixTransitType type result:1, targets: [Task{c73ebb7 #6298 type=standard A=10375:com.gexup}, Task{ec2feb3 #1 type=home}]
+03-14 19:15:31.509  2725  2937 D WindowManager: Add to mViews: android.widget.FrameLayout{272411 V.E...... ......I. 0,0-0,0 alpha=1.0 viewInfo = },pkg= com.gexup
+03-14 19:15:31.511  2185  3644 D OplusTransitionController:  info: {id=5196 t=OPEN f=0x0 trk=0 r=[0@Point(0, 0)] c=[{WCT{RemoteToken{c74ce45 Task{c73ebb7 #6298 type=standard A=10375:com.gexup}}} m=OPEN f=NONE leash=Surface(name=Task=6298)/@0xa3e9289 sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 1080, 2400) d=0 taskParent=-1},{WCT{RemoteToken{cab921f Task{ec2feb3 #1 type=home}}} m=TO_BACK f=SHOW_WALLPAPER leash=Surface(name=Task=1)/@0x64439b5 sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 1080, 2400) d=0 taskParent=-1}] extendInfo=[OplusTransitionExtendedInfo{mTmpFinishT=null, mInOplusCompatMode=false, mIsProcessRunning=false, mHasMismatchBoundsTarget=false, mRecentsController=null, mIsTranslucentActivityToHome=false, mAvoidInterceptKeyEventToHome=false, mIsFromHome=true, mParentLeash=null, mIsOplusAnimRes=false, mIsFromOverlay=false, mIsBalAllow=false, mTaskNotInRecent=false, mIsLaunchFromSpruce=false, mIsLaunchFromDrive=false, mAssistScreenShowing=false, mUserIdTransition=0, mInRemoteScene=false, mInPreReady=true, mPreStart=false, mToken=Token{2f3099a TransitionRecord{85e9aaf id=5196 track=0 type=OPEN flags=0x0 state=2}}, mShellApplyToken=null, mRequestTransitionTaskId=6298, mAbortTransitionOnShell=0, mTransitionId=5196, mAnimStartingPosition=[0, 0, 0, 0], mIsOpeningStkDialogActivity=false}]}, 
+03-14 19:15:31.511  2185  3644 D OplusTransitionController:  targets : [Task{c73ebb7 #6298 type=standard A=10375:com.gexup}, Task{ec2feb3 #1 type=home}], 
+03-14 19:15:31.511  2185  3644 D OplusTransitionController:  participants: {ActivityRecord{42ce2f4 u0 com.android.launcher/.Launcher t5}, WallpaperWindowToken{ad53931 token=android.os.Binder@2a76daa showWhenLocked=true}, ActivityRecord{bf5c5d5 u0 com.gexup/.MainActivity t6298}, Task{c73ebb7 #6298 type=standard A=10375:com.gexup}, WallpaperWindowToken{cb8362f token=android.os.Binder@ac216b9 showWhenLocked=false}}, 
+03-14 19:15:31.515  2185  3644 I ActivityTaskManager: START u0 {act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] flg=0x10200000 cmp=com.gexup/.MainActivity bnds=[528,1274][774,1565] (has extras) mCallingUid=10202} with LAUNCH_SINGLE_TASK from uid 10202 (BAL_ALLOW_VISIBLE_WINDOW) result code=0
+03-14 19:15:31.521  2185  2210 V WindowManager: Sent Transition (#5196) createdAt=03-14 19:15:31.432 via request=TransitionRequestInfo { type = OPEN, triggerTask = TaskInfo{userId=0 taskId=6298 displayId=0 isRunning=true baseIntent=Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] flg=0x10200000 cmp=com.gexup/.MainActivity mCallingUid=10202 } baseActivity=ComponentInfo{com.gexup/com.gexup.MainActivity} topActivity=ComponentInfo{com.gexup/com.gexup.MainActivity} origActivity=null realActivity=ComponentInfo{com.gexup/com.gexup.MainActivity} numActivities=1 lastActiveTime=486003783 supportsSplitScreenMultiWindow=true supportsMultiWindow=true supportsPocketStudioMultiWindow=true isInFlexibleEmbedded = false uid = 10375 pid = 0 resizeMode=1 isResizeable=true minWidth=-1 minHeight=-1 defaultMinSize=220 token=WCT{RemoteToken{c74ce45 Task{c73ebb7 #6298 type=standard A=10375:com.gexup}}} topActivityType=1 pictureInPictureParams=null shouldDockBigOverlays=false launchIntoPipHostTaskId=-1 lastParentTaskIdBeforePip=-1 displayCutoutSafeInsets=Rect(0, 110 - 0, 0) topActivityInfo=ActivityInfo{64b704f com.gexup.MainActivity} launchCookies=[android.os.BinderProxy@67113dc] positionInParent=Point(0, 0) parentTaskId=-1 isFocused=false isVisible=false isVisibleRequested=true isSleeping=false locusId=null displayAreaFeatureId=1 isTopActivityTransparent=false appCompatTaskInfo=AppCompatTaskInfo { topActivityInSizeCompat=false topActivityInOplusCompatMode=false topActivityEligibleForLetterboxEducation= falseisLetterboxEducationEnabled= false isLetterboxDoubleTapEnabled= false topActivityEligibleForUserAspectRatioButton= false topActivityBoundsLetterboxed= false isFromLetterboxDoubleTap= false topActivityLetterboxVerticalPosition= -1 topActivityLetterboxHorizontalPosition= -1 topActivityLetterboxWidth=1080 topActivityLetterboxHeight=2400 isUserFullscreenOverrideEnabled=false isSystemFullscreenOverrideEnabled=false cameraCompatTaskInfo=CameraCompatTaskInfo { cameraCompatControlState=hidden freeformCameraCompatMode=inactive}} topActivityLetterboxInsets=Rect(0, 0 - 0, 0) mOplusExtraBundle = Bundle[{androidx.flexible.taskFrame=Rect(0, 0 - 0, 0), key_flexible_task_state=0, androidx.activity.LaunchScenario=0, androidx.activity.LaunchScale=1.0}]}, pipTask = null, remoteTransition = RemoteTransition { remoteTransition = android.window.IRemoteTransition$Stub$Proxy@a5aace5, recentAnimRunner = null, appThread = android.app.IApplicationThread$Stub$Proxy@76793ba, debugName = QuickstepLaunch }, displayChange = null, flags = 0, debugId = 5196 }
+03-14 19:15:31.521  2185  2210 V WindowManager:         {WCT{RemoteToken{c74ce45 Task{c73ebb7 #6298 type=standard A=10375:com.gexup}}} m=OPEN f=NONE leash=Surface(name=Task=6298)/@0xa3e9289 sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 1080, 2400) d=0 taskParent=-1},
+03-14 19:15:31.525  2185  2214 D OplusFlexibleWindowMinimizedManagerHelper: onTaskInfoChanged taskInfo:TaskInfo{userId=0 taskId=6298 displayId=0 isRunning=true baseIntent=Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] flg=0x10200000 cmp=com.gexup/.MainActivity mCallingUid=10202 } baseActivity=ComponentInfo{com.gexup/com.gexup.MainActivity} topActivity=ComponentInfo{com.gexup/com.gexup.MainActivity} origActivity=null realActivity=ComponentInfo{com.gexup/com.gexup.MainActivity} numActivities=1 lastActiveTime=486003783 supportsSplitScreenMultiWindow=true supportsMultiWindow=true supportsPocketStudioMultiWindow=true isInFlexibleEmbedded = false uid = 10375 pid = 0 resizeMode=1 isResizeable=true minWidth=-1 minHeight=-1 defaultMinSize=220 token=WCT{RemoteToken{c74ce45 Task{c73ebb7 #6298 type=standard A=10375:com.gexup}}} topActivityType=1 pictureInPictureParams=null shouldDockBigOverlays=false launchIntoPipHostTaskId=-1 lastParentTaskIdBeforePip=-1 displayCutoutSafeInsets=Rect(0, 110 - 0, 0) topActivityInfo=ActivityInfo{64b704f com.gexup.MainActivity} launchCookies=[android.os.BinderProxy@67113dc] positionInParent=Point(0, 0) parentTaskId=-1 isFocused=false isVisible=true isVisibleRequested=true isSleeping=false locusId=null displayAreaFeatureId=1 isTopActivityTransparent=false appCompatTaskInfo=AppCompatTaskInfo { topActivityInSizeCompat=false topActivityInOplusCompatMode=false topActivityEligibleForLetterboxEducation= falseisLetterboxEducationEnabled= false isLetterboxDoubleTapEnabled= false topActivityEligibleForUserAspectRatioButton= false topActivityBoundsLetterboxed= false isFromLetterboxDoubleTap= false topActivityLetterboxVerticalPosition= -1 topActivityLetterboxHorizontalPosition= -1 topActivityLetterboxWidth=1080 topActivityLetterboxHeight=2400 isUserFullscreenOverrideEnabled=false isSystemFullscreenOverrideEnabled=false cameraCompatTaskInfo=CameraCompatTaskInfo { cameraCompatControlState=hidden freeformCameraCompatMode=inactive}} topActivityLetterboxInsets=Rect(0, 0 - 0, 0) mOplusExtraBundle = Bundle[{androidx.flexible.taskFrame=Rect(0, 0 - 0, 0), key_flexible_task_state=0, androidx.activity.LaunchScenario=0, androidx.activity.LaunchScale=1.0}]} task:Task{c73ebb7 #6298 type=standard A=10375:com.gexup}
+03-14 19:15:31.534  2185  2803 D ActivityTaskManager: attachStartingWindow: mStartingData=SplashScreenStartingData{20f0b3f waitForSyncTransactionCommit=true removeAfterTransaction= 0},mStartingWindow=Window{f11cc99 u0 Splash Screen com.gexup}
+03-14 19:15:31.535  2185  2803 I WindowManager: addWindow: New client android.os.BinderProxy@dded1e0 : window=Window{f11cc99 u0 Splash Screen com.gexup}
+03-14 19:15:31.545  2185 16086 I PowerHalWrapper: amsBoostProcessCreate package:com.gexup 
+03-14 19:15:31.551  2725  2937 D ViewRootImplExtImpl: wrapConfigInfoIntoFlags rotation=0, smallestScreenWidthDp=708, relayoutAsync=false, flags=0, newFlags=46399488, residentWS=false, title=Splash Screen com.gexup
+03-14 19:15:31.553  2185  2803 D WindowManagerServiceExtImpl: extractConfigInfoAndRealFlags rotation=0, screenDp=708, residentWS:0, win=Window{f11cc99 u0 Splash Screen com.gexup}
+03-14 19:15:31.553  2185  2803 V WindowManager: Relayout Window{f11cc99 u0 Splash Screen com.gexup}: viewVisibility=0, oldvis=0, req=1080x2400, vsysui=, x=0, y=0
+03-14 19:15:31.553  2185  2803 I WindowManager: Window{f11cc99 u0 Splash Screen com.gexup} state from NO_SURFACE to DRAW_PENDING; reason: resetDrawState
+03-14 19:15:31.554  1352  1607 D OplusLayer: setProcInfo (102780,Splash Screen com.gexup#102780,com.android.systemui,0x4578D52F)
+03-14 19:15:31.581  2185  2574 D CoreBackPreview: Window{f11cc99 u0 Splash Screen com.gexup}: Setting back callback OnBackInvokedCallbackInfo{mCallback=android.window.IOnBackInvokedCallback$Stub$Proxy@c00261e, mPriority=0, mIsAnimationCallback=false}
+03-14 19:15:31.585  2725  2937 I SurfaceControl:  setExtendedRangeBrightness sc=Surface(name=Splash Screen com.gexup)/@0xe1ea157,currentBufferRatio=1.0,desiredRatio=1.0
+03-14 19:15:31.590  2185  2234 I UserAwareMgr: filter app: com.gexup
+03-14 19:15:31.593  2185  2238 I ActivityManager: Start proc 17387:com.gexup/u0a375 for top-activity {com.gexup/com.gexup.MainActivity}
+03-14 19:15:31.595  2185  4700 D ActivityTaskManager: pre-Filtered:com.gexup # com.facebook.katana # com.whatsapp.w4b # com.truecaller # com.android.stk # com.oppo.quicksearchbox # eu.livesport.FlashScore_com # com.ea.gp.fifamobile # com.activision.callofduty.shooter # 
+03-14 19:15:31.603  2185  3683 I OplusHansManager : onUidActive() update stay time, uid=10375, pkgName=com.gexup, U stay=809
+03-14 19:15:31.608  2185  2574 I WindowManager: Window{f11cc99 u0 Splash Screen com.gexup} state from DRAW_PENDING to COMMIT_DRAW_PENDING; reason: finishDrawingLocked
+03-14 19:15:31.608  2185  2574 D OplusTransitionAnimationManager: skipFinishDrawingIfNeed clientRotation=0, currentRotation=0, hasFixedRotationApp=false, requestedOrientation=-1, win=Window{f11cc99 u0 Splash Screen com.gexup}, activity=ActivityRecord{bf5c5d5 u0 com.gexup/.MainActivity t6298}, currentConfig={0.9 ??mcc??mnc [en_US] ldltr sw708dp w708dp h1458dp 244dpi lrg long port night finger -keyb/v/h -nav/h winConfig={ mBounds=Rect(0, 0 - 1080, 2400) mAppBounds=Rect(0, 110 - 1080, 2333) mMaxBounds=Rect(0, 0 - 1080, 2400) mDisplayRotation=ROTATION_0 mWindowingMode=fullscreen mActivityType=standard mAlwaysOnTop=undefined mRotation=ROTATION_0} s.2 fontWeightAdjustment=0mThemeChanged= 1, mThemeChangedFlags= fd400000011, mFlipFont= 0, mScenario= 0, mAccessibleChanged= -1, mUxIconConfig= 3468921665087356993, mMaterialColor= 0, mUserId= 0, mFontUserId= 0, mFontVariationSettings= 226, mFoldingAngle = -1.0, mIconPackName= , mDarkModeBackgroundMaxL= 0.0, mDarkModeDialogBgMaxL= 27.0, mDarkModeForegroundMinL= 100.0, mOplusConfigType= 1, mOplusChangedConfigs= 0, OpSans= -1, mBurmeseFontFlag= 2, mFlag= 0, mFlexibleActivitySuitable= -1, mPuttDisplayFlag= -1}
+03-14 19:15:31.611  2185  2214 I WindowManager: Window{f11cc99 u0 Splash Screen com.gexup} state from COMMIT_DRAW_PENDING to READY_TO_SHOW; reason: commitFinishDrawingLocked
+03-14 19:15:31.611  2185  2214 I WindowManager: Window{f11cc99 u0 Splash Screen com.gexup} state from READY_TO_SHOW to HAS_DRAWN; reason: performShowLocked
+03-14 19:15:31.622  1352  1352 D OplusLayer: latchBuffer notifyFrameDrawState... sequence=102780 pid=2725 name=Splash Screen com.gexup#102780
+03-14 19:15:31.624  2185  2214 I WindowStateExtImpl: onSurfaceShowChange show = true mPackageName = com.gexup parentPkgName = com.gexup
+03-14 19:15:31.626  2185  3298 D OplusStartingWindowManager: isLayerMatchToStartingWindow , activityHasSurfaceView:false, isLayerMatchToRecord:false, isSurfaceViewLayer:false, layerName:Splash Screen com.gexup#102780, mStartingRecords:[com.android.server.wm.OplusStartingWindowManager$UniqueWeakReference@406bcf1, com.android.server.wm.OplusStartingWindowManager$UniqueWeakReference@a86f945, com.android.server.wm.OplusStartingWindowManager$UniqueWeakReference@bf1cb35, com.android.server.wm.OplusStartingWindowManager$UniqueWeakReference@54b8053, com.android.server.wm.OplusStartingWindowManager$UniqueWeakReference@f7063d0, com.android.server.wm.OplusStartingWindowManager$UniqueWeakReference@38f26d9]
+03-14 19:15:31.626  2185  2214 D OplusAppQuickStart_OplusAppQuickStart: isInRemoteInterrupt isInInterruptScene:false, recents=null, ar=ActivityRecord{bf5c5d5 u0 com.gexup/.MainActivity t6298}
+03-14 19:15:31.628  2185  2214 D OplusAppQuickStart_OplusAppQuickStart: shouldDoCapture result=true, isValidFile=false, isForceDoCapturePackage=false, isStartFromSecondaryPage=false, reason=startingWindowSurfaceShow, capBitmapFile=/data/system/splash/com.gexup_0_33_MAIN.webp, lastModify: 0, fileSize=0
+03-14 19:15:31.628  2185  2214 D OplusAppQuickStart_AppQuickStartController: hideStartingSurface OplusAppQuickStartingSurface{mSurfaceControl=Surface(name=OplusStartingSurface)/@0xaac3990, @parent:Surface(name=Task=6298)/@0xa3e9289, @request:Task{c73ebb7 #6298 type=standard A=10375:com.gexup}Rect(0, 0 - 1080, 2400), @type:2, shared:false, mActivityRecord=ActivityRecord{bf5c5d5 u0 com.gexup/.MainActivity t6298}, mTask=Task{c73ebb7 #6298 type=standard A=10375:com.gexup}, mStartFromRecents=false, mStartFromSlide=false, mIsMovingToBack=false}
+03-14 19:15:31.628  2185  2214 D OplusAppQuickStart_AppQuickStartingSurface: removeQuickStartingSurface Surface(name=OplusStartingSurface)/@0xaac3990, @parent:Surface(name=Task=6298)/@0xa3e9289, @request:Task{c73ebb7 #6298 type=standard A=10375:com.gexup}Rect(0, 0 - 1080, 2400), @type:2, shared:false, callers=com.android.server.wm.OplusAppQuickStartingSurface.hideStartingSurfaceImmediately:884 com.android.server.wm.OplusAppQuickStartingSurface.moveSurfaceToBack:845 com.android.server.wm.OplusAppQuickStartController.hideStartingSurfaceInner:971 com.android.server.wm.OplusAppQuickStartController.notifyStartingWindowDrawnInner:1292 com.android.server.wm.OplusAppQuickStartController.notifyWinSurfaceShow:1027 com.android.server.wm.WindowStateAnimatorExtImpl.notifyWinSurfaceShow:106 com.android.server.wm.WindowStateAnimator.prepareSurfaceLocked:618 com.android.server.wm.WindowState.prepareSurfaces:6086 
+03-14 19:15:31.628  2185  2214 D OplusAppQuickStart_AppQuickStartController: associateStartingWindowWithTask activity:ActivityRecord{bf5c5d5 u0 com.gexup/.MainActivity t6298}
+03-14 19:15:31.631  2185  2214 E OplusAppQuickStart_AppQuickStartController: notifyStartingWindowDrawn addAfterPrepareSurface for:ActivityRecord{bf5c5d5 u0 com.gexup/.MainActivity
+03-14 19:15:31.631 17387 17387 E com.gexup: Unknown bits set in runtime_flags: 0x40000000
+03-14 19:15:31.631 17387 17387 I com.gexup: Using CollectorTypeCMC GC.
+03-14 19:15:31.631  2185  4700 D OplusTransitionAnimationManager: skipFinishDrawingIfNeed clientRotation=0, currentRotation=0, hasFixedRotationApp=false, requestedOrientation=-1, win=Window{f11cc99 u0 Splash Screen com.gexup}, activity=ActivityRecord{bf5c5d5 u0 com.gexup/.MainActivity t6298}, currentConfig={0.9 ??mcc??mnc [en_US] ldltr sw708dp w708dp h1458dp 244dpi lrg long port night finger -keyb/v/h -nav/h winConfig={ mBounds=Rect(0, 0 - 1080, 2400) mAppBounds=Rect(0, 110 - 1080, 2333) mMaxBounds=Rect(0, 0 - 1080, 2400) mDisplayRotation=ROTATION_0 mWindowingMode=fullscreen mActivityType=standard mAlwaysOnTop=undefined mRotation=ROTATION_0} s.2 fontWeightAdjustment=0mThemeChanged= 1, mThemeChangedFlags= fd400000011, mFlipFont= 0, mScenario= 0, mAccessibleChanged= -1, mUxIconConfig= 3468921665087356993, mMaterialColor= 0, mUserId= 0, mFontUserId= 0, mFontVariationSettings= 226, mFoldingAngle = -1.0, mIconPackName= , mDarkModeBackgroundMaxL= 0.0, mDarkModeDialogBgMaxL= 27.0, mDarkModeForegroundMinL= 100.0, mOplusConfigType= 1, mOplusChangedConfigs= 0, OpSans= -1, mBurmeseFontFlag= 2, mFlag= 0, mFlexibleActivitySuitable= -1, mPuttDisplayFlag= -1}
+03-14 19:15:31.659  2185  2210 D OplusAppQuickStart_AppQuickStartController: doSurfaceCapture come in. Task{c73ebb7 #6298 type=standard A=10375:com.gexup} ar:ActivityRecord{bf5c5d5 u0 com.gexup/.MainActivity t6298}
+03-14 19:15:31.683  2185  2210 D OplusAppQuickStart_AppQuickStartController: startingSurface doCapture, snapshotSurface=Surface(name=f11cc99 Splash Screen com.gexup)/@0xc96bbe9, rotation=0, action=, displayRotation=0, includeStarting:true, isSecondaryPagePreviewBitmap=false, excludeLayers:[Surface(name=a082a7d StatusBar)/@0x9d1ca48, Surface(name=662e45d NavigationBar_displayId_0)/@0x18954b6], captureBounds=Rect(0, 0 - 1080, 2400), bufferValid=true, callers=com.android.server.wm.OplusAppQuickStartController.doSurfaceCapture:1405 com.android.server.wm.OplusAppQuickStartController.lambda$scheduleCaptureForSurface$4:1391 com.android.server.wm.OplusAppQuickStartController.$r8$lambda$iFYfPgdCWMPrtQQ1hl_o7lgBxWo:0 com.android.server.wm.OplusAppQuickStartController$$ExternalSyntheticLambda1.onTransactionCommitted:0 android.view.SurfaceControl$Transaction$$ExternalSyntheticLambda4.run:0 android.os.Handler.handleCallback:973 android.os.Handler.dispatchMessage:100 android.os.Looper.loopOnce:282 android.os.Looper.loop:387 android.os.HandlerThread.run:85 
+03-14 19:15:31.684 17387 17398 E com.gexup: Could not write anonymous vdex /system_ext/framework/oat/arm64/mediatek-framework.vdex: Could not open /system_ext/framework/oat/arm64/mediatek-framework.vdex for writing
+03-14 19:15:31.688  2185  3644 D ResourcesManagerCache: For package com.gexup we got cacheList [null] appInfoExt is null ? false hasFeature ? false
+03-14 19:15:31.711  2185  3644 D OplusFlexibleWindowMinimizedManagerHelper: onTaskInfoChanged taskInfo:TaskInfo{userId=0 taskId=6298 displayId=0 isRunning=true baseIntent=Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] flg=0x10200000 cmp=com.gexup/.MainActivity mCallingUid=10202 } baseActivity=ComponentInfo{com.gexup/com.gexup.MainActivity} topActivity=ComponentInfo{com.gexup/com.gexup.MainActivity} origActivity=null realActivity=ComponentInfo{com.gexup/com.gexup.MainActivity} numActivities=1 lastActiveTime=486003783 supportsSplitScreenMultiWindow=true supportsMultiWindow=true supportsPocketStudioMultiWindow=true isInFlexibleEmbedded = false uid = 10375 pid = 17387 resizeMode=1 isResizeable=true minWidth=-1 minHeight=-1 defaultMinSize=220 token=WCT{RemoteToken{c74ce45 Task{c73ebb7 #6298 type=standard A=10375:com.gexup}}} topActivityType=1 pictureInPictureParams=null shouldDockBigOverlays=false launchIntoPipHostTaskId=-1 lastParentTaskIdBeforePip=-1 displayCutoutSafeInsets=Rect(0, 110 - 0, 0) topActivityInfo=ActivityInfo{64b704f com.gexup.MainActivity} launchCookies=[android.os.BinderProxy@67113dc] positionInParent=Point(0, 0) parentTaskId=-1 isFocused=false isVisible=true isVisibleRequested=true isSleeping=false locusId=null displayAreaFeatureId=1 isTopActivityTransparent=false appCompatTaskInfo=AppCompatTaskInfo { topActivityInSizeCompat=false topActivityInOplusCompatMode=false topActivityEligibleForLetterboxEducation= falseisLetterboxEducationEnabled= false isLetterboxDoubleTapEnabled= false topActivityEligibleForUserAspectRatioButton= false topActivityBoundsLetterboxed= false isFromLetterboxDoubleTap= false topActivityLetterboxVerticalPosition= -1 topActivityLetterboxHorizontalPosition= -1 topActivityLetterboxWidth=1080 topActivityLetterboxHeight=2400 isUserFullscreenOverrideEnabled=false isSystemFullscreenOverrideEnabled=false cameraCompatTaskInfo=CameraCompatTaskInfo { cameraCompatControlState=hidden freeformCameraCompatMode=inactive}} topActivityLetterboxInsets=Rect(0, 0 - 0, 0) mOplusExtraBundle = Bundle[{androidx.flexible.taskFrame=Rect(0, 0 - 0, 0), key_flexible_task_state=0, androidx.activity.LaunchScenario=0, androidx.activity.LaunchScale=1.0}]} task:Task{c73ebb7 #6298 type=standard A=10375:com.gexup}
+03-14 19:15:31.715  2185  3644 D OplusCameraStartupOptimization: cameraPreopenIfNeed, r = ActivityRecord{bf5c5d5 u0 com.gexup/.MainActivity t6298}
+03-14 19:15:31.715  2185  3644 D OplusCameraStartupOptimization: needOptimizeForCamera bNeedOptimize:false clsName: com.gexup/.MainActivity
+03-14 19:15:31.719  1339  2735 D AudioFlingerExtImpl: AudioFlingerExtImpl oplusSetParameters: keyvalue onForegroundActivitiesChanged=com.gexup:foreground:1
+03-14 19:15:31.719  1339  2735 D AudioFlingerExtImpl: updateForegroundInfo mForegroundMap(2)|[com.gexup]=1|[com.whatsapp.w4b]=1
+03-14 19:15:31.720  2185  2234 I UserAwareMgr: handleTopAppChanged: com.gexup, pid: 17387, uid: 10375
+03-14 19:15:31.720  2185  2234 I UserAwareMgr: filter app: com.gexup
+03-14 19:15:31.725  2185  3644 D ActivityTaskManager: onWindowFocusChanged Task{c73ebb7 #6298 type=standard A=10375:com.gexup} would transfer to compact
+03-14 19:15:31.731  2185  3644 I InputDispatcher: setFocusedApplication displayId=0 ActivityRecord{bf5c5d5 u0 com.gexup/.MainActivity t6298}
+03-14 19:15:31.731  2185  3644 D ActivityTaskManager: NFW_setLastResumedActivityUncheckLocked:true r:ActivityRecord{bf5c5d5 u0 com.gexup/.MainActivity t6298} currentFocus:null
+03-14 19:15:31.731  2185  3644 D FlexibleTaskController: onTaskFocusChanged prevTask:Task{5367fd5 #5 type=home I=com.android.launcher/.Launcher} ,currentTask:Task{c73ebb7 #6298 type=standard A=10375:com.gexup}, reason: realStartActivityLocked - onActivityStateChanged
+03-14 19:15:31.731  2185  3644 D OplusFlexibleDCSManager: onNextPkgChanged pkg = com.gexup
+03-14 19:15:31.732  2185  2543 I [UAH_CLIENT]: UahEventAcquire, cmdid:0, pkg:com.gexup, identity:com.android.server.wm
+03-14 19:15:31.732  2185  3644 I OplusAppSwitchManagerService: appswitch hasProcess ActivityRecord{bf5c5d5 u0 com.gexup/.MainActivity t6298}
+03-14 19:15:31.732  2185  3644 D OplusAppStartupConfigExt: ActivityChangedListener prePkg = com.android.launcher  nextPkg = com.gexup
+03-14 19:15:31.733  2185  3644 I OplusAppSwitchManagerService: appswitch hasProcess ActivityRecord{bf5c5d5 u0 com.gexup/.MainActivity t6298}
+03-14 19:15:31.739  2185  3644 I PowerHalWrapper: amsBoostNotify pid:17387,activity:com.gexup.MainActivity, package:com.gexup, mProcessCreatePackcom.gexup 
+03-14 19:15:31.739  2185  3644 I mtkpower_client: [PowerHal_Wrap_notifyAppState] com.gexup/com.gexup.MainActivity pid=17387 activityId:200656341 state:1
+03-14 19:15:31.749  1280  1280 I vendor.mediatek.hardware.mtkpower_applist-service.mediatek: packName: com.gexup actName: com.gexup.MainActivity pid: 17387 activityId: 200656341 uid: 10375 state: 1
+03-14 19:15:31.749  1280  1280 I MTK_APPList: [notifyAPPstate] com.gexup/com.gexup.MainActivity, pid=17387, activityId=200656341, uid=10375, state:RESUMED, fps:-1, win:0
+03-14 19:15:31.749  1280  1280 I MTK_APPList: [notifyAPPstate] multi_resumed_app_info[0] com.gexup/com.gexup.MainActivity, pid:17387, activityId:200656341, fps:-1, isMultiWindow:0
+03-14 19:15:31.749  1280  1280 I MTK_APPList: [notifyAPPstate] foreground:com.gexup, pid:17387, activityId:200656341, uid:10375
+03-14 19:15:31.751  2670  5366 V DCSEX-AppSwitchManager: OnAppSwitchObserver: onAppExit, resuming = com.gexup, target = com.android.launcher, is ResumingFirstStart =  true, is ResumingMultiApp =  false, extensionInfo =  Bundle[mParcelledData.dataSize=128]
+03-14 19:15:31.753  2670  2867 D DCSEX-AppLaunchEventRecorder: onAppSwitch from = com.android.launcher to = com.gexup
+03-14 19:15:31.755  2725  2725 I PluginSeedling--Base: SeedlingPluginService-->onStateChange: Bundle[{app_switch_resume_pkg=com.gexup, state=onFrontAppSwitched, isTransientHide=false, app_switch_resume_activity=com.gexup.MainActivity}]
+03-14 19:15:31.755  2725  2725 D PluginSeedling--Base: AppFrontManager-->front App changed com.gexup
+03-14 19:15:31.756  5414  5928 W Battery : AppSwitchDetectorV2: OnAppSwitchObserver: onAppExit , info = OplusAppExitInfo = {  targetName = com.android.launcher hasResumingActivity = true resumingPackageName = com.gexup resumingActivityName = com.gexup.MainActivity resumingWindowMode = 1 isResumingMultiApp = false isResumingFirstStart = true extension = Bundle[mParcelledData.dataSize=128]}
+03-14 19:15:31.758  5414  5928 W Battery : ThermalControlUtils: mForegroundPkg=com.gexup mLastWindowMode=1
+03-14 19:15:31.759  1280  1280 I MTK_APPList: [notifyAPPstate] pc:0, com.android.launcher => com.gexup
+03-14 19:15:31.764  2185  2232 D OplusKeepAliveManager: TOP_APP is ProcessRecord{4a99955 17387:com.gexup/u0a375} uid is 10375
+03-14 19:15:31.765  2670  5366 V DCSEX-AppSwitchManager: OnAppSwitchObserver: onAppEnter, launchedFrom =  com.android.launcher, target =  com.gexup, is firstStart =  true, is multiApp =  false, extensionInfo =  Bundle[mParcelledData.dataSize=188]
+03-14 19:15:31.766  2185  3317 D OplusAppSwitchListener: Detect com.gexup switch to foreground
+03-14 19:15:31.767  2185  3317 D OplusFeatureRiderMode: onAppEnter , info = com.gexup
+03-14 19:15:31.768  2185  3317 D OplusEapManager: mTargetEnterName :com.gexup
+03-14 19:15:31.768  2185  3317 D OplusLatencyOptimizerManager: enter pkg: com.gexup isPrevBlackAppTop: false mIsBlackAppTop: false
+03-14 19:15:31.770  2185  3317 D VRR [OPlusFrontAppManager]: OnAppSwitchObserver: onAppEnter , info.targetName = com.gexup
+03-14 19:15:31.772  2185  2267 D VRR [OPlusRefreshRateService]: handleFrontAppChange pkgName: com.gexup
+03-14 19:15:31.776  5414  5928 W Battery : ThermalControllHandler: tempLevel=[7],userMode=3,gameUserMode=7,appType=-1,envTempType=0,appStates=[],appSwitchSafetyMode=false,split=[],float=[],full=[com.gexup], tempGear=[7],configItemName=common_config
+03-14 19:15:31.780  2185  3298 D OplusBatteryServiceFeature: setSmartCoolDown: coolDown = 3, normalCoolDown = 3, pkgName = com.gexup
+03-14 19:15:31.782  3166  6163 I Athena  : AthenaDynamicReceiver: pre_app:com.android.launcher, next_app:com.gexup(10375|17387)
+03-14 19:15:31.787  2185  4700 D Transition: finishTransition ar ActivityRecord{42ce2f4 u0 com.android.launcher/.Launcher t5}, isVisibleRequested=false, state=PAUSED, visibleAtTransitionEndTokens={ActivityRecord{bf5c5d5 u0 com.gexup/.MainActivity t6298}, WallpaperWindowToken{cb8362f token=android.os.Binder@ac216b9 showWhenLocked=false}}, this=TransitionRecord{85e9aaf id=5196 track=0 type=OPEN flags=0x0 state=2}
+03-14 19:15:31.790  2185  4700 D Transition: finishTransition ar ActivityRecord{bf5c5d5 u0 com.gexup/.MainActivity t6298}, isVisibleRequested=true, state=RESUMED, visibleAtTransitionEndTokens={ActivityRecord{bf5c5d5 u0 com.gexup/.MainActivity t6298}, WallpaperWindowToken{cb8362f token=android.os.Binder@ac216b9 showWhenLocked=false}}, this=TransitionRecord{85e9aaf id=5196 track=0 type=OPEN flags=0x0 state=2}
+03-14 19:15:31.793  2185  4700 I OplusAppSwitchManagerService:  handleAppVisible , r = ActivityRecord{bf5c5d5 u0 com.gexup/.MainActivity t6298}
+03-14 19:15:31.798  3128  3551 D OplusLinkBoostSceneManager: onAppEnter:com.gexup
+03-14 19:15:31.800  3128  3551 D OplusLinkBoostSceneManager: sceneStateUpdate: 5002,com.gexup,switch:[false, true, true]
+03-14 19:15:31.800  3128  3551 D OplusLinkBoostCommon: onSceneUpdated: 5002,com.gexup
+03-14 19:15:31.801  3128  3543 D AppSwitchObserver: EventId=21	INPUT_PROCESS_FRONT	TimeStamp =1773504931801	Intent =null	Content =null	Pid =17387	PkgName =com.gexup
+03-14 19:15:31.801  3128  3543 I DispatcherPolicy: onBaseEvent EventId=21	INPUT_PROCESS_FRONT	TimeStamp =1773504931801	Intent =null	Content =null	Pid =17387	PkgName =com.gexup
+03-14 19:15:31.801  3128  3543 I GamingScene: isGamePkg : false  pkg: com.gexup
+03-14 19:15:31.801  3128  3543 I GamingScene: topPackage is equal to mInScenePackage : false  topPackage : com.gexup mInScenePackage : 
+03-14 19:15:31.807  3128  3547 D ActivityAdapter: onCommonAppEnter: OplusAppEnterInfo = {  windowMode = 1 targetName = com.gexup multiApp = false firstStart = true launchedFromPackage = com.android.launcher intent = Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] flg=0x10200000 cmp=com.gexup/.MainActivity bnds=[528,1274][774,1565] (has extras) mCallingUid=10202 } extension = Bundle[mParcelledData.dataSize=188]}
+03-14 19:15:31.810  2185  2214 D OplusFlexibleWindowMinimizedManagerHelper: onTaskInfoChanged taskInfo:TaskInfo{userId=0 taskId=6298 displayId=0 isRunning=true baseIntent=Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] flg=0x10200000 cmp=com.gexup/.MainActivity mCallingUid=10202 } baseActivity=ComponentInfo{com.gexup/com.gexup.MainActivity} topActivity=ComponentInfo{com.gexup/com.gexup.MainActivity} origActivity=null realActivity=ComponentInfo{com.gexup/com.gexup.MainActivity} numActivities=1 lastActiveTime=486004006 supportsSplitScreenMultiWindow=true supportsMultiWindow=true supportsPocketStudioMultiWindow=true isInFlexibleEmbedded = false uid = 10375 pid = 17387 resizeMode=1 isResizeable=true minWidth=-1 minHeight=-1 defaultMinSize=220 token=WCT{RemoteToken{c74ce45 Task{c73ebb7 #6298 type=standard A=10375:com.gexup}}} topActivityType=1 pictureInPictureParams=null shouldDockBigOverlays=false launchIntoPipHostTaskId=-1 lastParentTaskIdBeforePip=-1 displayCutoutSafeInsets=Rect(0, 110 - 0, 0) topActivityInfo=ActivityInfo{64b704f com.gexup.MainActivity} launchCookies=[android.os.BinderProxy@67113dc] positionInParent=Point(0, 0) parentTaskId=-1 isFocused=true isVisible=true isVisibleRequested=true isSleeping=false locusId=null displayAreaFeatureId=1 isTopActivityTransparent=false appCompatTaskInfo=AppCompatTaskInfo { topActivityInSizeCompat=false topActivityInOplusCompatMode=false topActivityEligibleForLetterboxEducation= falseisLetterboxEducationEnabled= false isLetterboxDoubleTapEnabled= false topActivityEligibleForUserAspectRatioButton= false topActivityBoundsLetterboxed= false isFromLetterboxDoubleTap= false topActivityLetterboxVerticalPosition= -1 topActivityLetterboxHorizontalPosition= -1 topActivityLetterboxWidth=1080 topActivityLetterboxHeight=2400 isUserFullscreenOverrideEnabled=false isSystemFullscreenOverrideEnabled=false cameraCompatTaskInfo=CameraCompatTaskInfo { cameraCompatControlState=hidden freeformCameraCompatMode=inactive}} topActivityLetterboxInsets=Rect(0, 0 - 0, 0) mOplusExtraBundle = Bundle[{androidx.flexible.taskFrame=Rect(0, 0 - 0, 0), key_flexible_task_state=0, androidx.activity.LaunchScenario=0, androidx.activity.LaunchScale=1.0}]} task:Task{c73ebb7 #6298 type=standard A=10375:com.gexup}
+03-14 19:15:31.816 17387 17387 D nativeloader: Configuring clns-7 for other apk /data/app/~~U-6ZcO5PNGf6Xn43B7VWig==/com.gexup-wR-uSDUGYz_lZqt-HIW0QA==/base.apk. target_sdk_version=34, uses_libraries=, library_path=/data/app/~~U-6ZcO5PNGf6Xn43B7VWig==/com.gexup-wR-uSDUGYz_lZqt-HIW0QA==/lib/arm64:/data/app/~~U-6ZcO5PNGf6Xn43B7VWig==/com.gexup-wR-uSDUGYz_lZqt-HIW0QA==/base.apk!/lib/arm64-v8a, permitted_path=/data:/mnt/expand:/data/user/0/com.gexup
+03-14 19:15:31.820  2185  3298 D OplusBatteryServiceFeature: setSmartCoolDown: coolDown = 3, normalCoolDown = 3, pkgName = com.gexup
+03-14 19:15:31.870 20285 17289 W SQLiteLog: (28) double-quoted string literal: "com.gexup"
+03-14 19:15:31.911 17387 17405 D vulkan  : searching for layers in '/data/app/~~U-6ZcO5PNGf6Xn43B7VWig==/com.gexup-wR-uSDUGYz_lZqt-HIW0QA==/lib/arm64'
+03-14 19:15:31.911 17387 17405 D vulkan  : searching for layers in '/data/app/~~U-6ZcO5PNGf6Xn43B7VWig==/com.gexup-wR-uSDUGYz_lZqt-HIW0QA==/base.apk!/lib/arm64-v8a'
+03-14 19:15:31.914 17387 17405 D vulkan  : searching for layers in '/data/app/~~U-6ZcO5PNGf6Xn43B7VWig==/com.gexup-wR-uSDUGYz_lZqt-HIW0QA==/lib/arm64'
+03-14 19:15:31.915 17387 17405 D vulkan  : searching for layers in '/data/app/~~U-6ZcO5PNGf6Xn43B7VWig==/com.gexup-wR-uSDUGYz_lZqt-HIW0QA==/base.apk!/lib/arm64-v8a'
+03-14 19:15:31.928  2185  2246 E OplusThermalStats: Error getting package info: com.gexup
+03-14 19:15:31.938 17387 17405 D MMUD    : mtk_memory_debug_init com.gexup 0xb400007b59970e00
+03-14 19:15:31.993  2185  2214 D OplusFlexibleWindowMinimizedManagerHelper: onTaskInfoChanged taskInfo:TaskInfo{userId=0 taskId=6298 displayId=0 isRunning=true baseIntent=Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] flg=0x10200000 cmp=com.gexup/.MainActivity mCallingUid=10202 } baseActivity=ComponentInfo{com.gexup/com.gexup.MainActivity} topActivity=ComponentInfo{com.gexup/com.gexup.MainActivity} origActivity=null realActivity=ComponentInfo{com.gexup/com.gexup.MainActivity} numActivities=1 lastActiveTime=486004006 supportsSplitScreenMultiWindow=true supportsMultiWindow=true supportsPocketStudioMultiWindow=true isInFlexibleEmbedded = false uid = 10375 pid = 17387 resizeMode=1 isResizeable=true minWidth=-1 minHeight=-1 defaultMinSize=220 token=WCT{RemoteToken{c74ce45 Task{c73ebb7 #6298 type=standard A=10375:com.gexup}}} topActivityType=1 pictureInPictureParams=null shouldDockBigOverlays=false launchIntoPipHostTaskId=-1 lastParentTaskIdBeforePip=-1 displayCutoutSafeInsets=Rect(0, 110 - 0, 0) topActivityInfo=ActivityInfo{64b704f com.gexup.MainActivity} launchCookies=[android.os.BinderProxy@67113dc] positionInParent=Point(0, 0) parentTaskId=-1 isFocused=true isVisible=true isVisibleRequested=true isSleeping=false locusId=null displayAreaFeatureId=1 isTopActivityTransparent=false appCompatTaskInfo=AppCompatTaskInfo { topActivityInSizeCompat=false topActivityInOplusCompatMode=false topActivityEligibleForLetterboxEducation= falseisLetterboxEducationEnabled= false isLetterboxDoubleTapEnabled= false topActivityEligibleForUserAspectRatioButton= false topActivityBoundsLetterboxed= false isFromLetterboxDoubleTap= false topActivityLetterboxVerticalPosition= -1 topActivityLetterboxHorizontalPosition= -1 topActivityLetterboxWidth=1080 topActivityLetterboxHeight=2400 isUserFullscreenOverrideEnabled=false isSystemFullscreenOverrideEnabled=false cameraCompatTaskInfo=CameraCompatTaskInfo { cameraCompatControlState=hidden freeformCameraCompatMode=inactive}} topActivityLetterboxInsets=Rect(0, 0 - 0, 0) mOplusExtraBundle = Bundle[{androidx.flexible.taskFrame=Rect(0, 0 - 0, 0), key_flexible_task_state=0, androidx.activity.LaunchScenario=0, androidx.activity.LaunchScale=1.0}]} task:Task{c73ebb7 #6298 type=standard A=10375:com.gexup}
+03-14 19:15:31.997 17387 17387 D nativeloader: Load /data/app/~~U-6ZcO5PNGf6Xn43B7VWig==/com.gexup-wR-uSDUGYz_lZqt-HIW0QA==/base.apk!/lib/arm64-v8a/libhermes.so using class loader ns clns-7 (caller=/data/app/~~U-6ZcO5PNGf6Xn43B7VWig==/com.gexup-wR-uSDUGYz_lZqt-HIW0QA==/base.apk): ok
+03-14 19:15:32.006 17387 17387 D nativeloader: Load /data/app/~~U-6ZcO5PNGf6Xn43B7VWig==/com.gexup-wR-uSDUGYz_lZqt-HIW0QA==/base.apk!/lib/arm64-v8a/libhermes_executor.so using class loader ns clns-7 (caller=/data/app/~~U-6ZcO5PNGf6Xn43B7VWig==/com.gexup-wR-uSDUGYz_lZqt-HIW0QA==/base.apk): ok
+03-14 19:15:32.015 17387 17419 D nativeloader: Load /data/app/~~U-6ZcO5PNGf6Xn43B7VWig==/com.gexup-wR-uSDUGYz_lZqt-HIW0QA==/base.apk!/lib/arm64-v8a/libfbjni.so using class loader ns clns-7 (caller=/data/app/~~U-6ZcO5PNGf6Xn43B7VWig==/com.gexup-wR-uSDUGYz_lZqt-HIW0QA==/base.apk): ok
+03-14 19:15:32.080 17387 17419 D nativeloader: Load /data/app/~~U-6ZcO5PNGf6Xn43B7VWig==/com.gexup-wR-uSDUGYz_lZqt-HIW0QA==/base.apk!/lib/arm64-v8a/libreactnativejni.so using class loader ns clns-7 (caller=/data/app/~~U-6ZcO5PNGf6Xn43B7VWig==/com.gexup-wR-uSDUGYz_lZqt-HIW0QA==/base.apk): ok
+03-14 19:15:32.089  2185  3641 E ScrollOptim [OplusPerfService]: isScrollOptimEnable: pkgName = com.gexup, output = Bundle[{pre_anim_enable=true, frame_insert_list=null, frame_insert_default_num=1, scroll_changed_enable_list=null}]
+03-14 19:15:32.090 17387 17387 D ScrollOptim [ConfigManager]: initOptConfig: pkg= com.gexup, mOptEnable= true, mAnimAheadEnable= true, mInsertDefaultNum= 1, mFrameInsertEnableList= {}, mSCEnableList= []
+03-14 19:15:32.090 17387 17387 D ScrollOptim [SceneManager]: updateCurrentActivity: mCurrentActivityName=com.gexup.MainActivity, isOptEnable=true, isAnimAheadEnable=true, isFrameInsertEnable=true, InsertNum=1, isEnabledForScrollChanged=false
+03-14 19:15:32.090 17387 17387 D ActivityThread: ComponentInfo{com.gexup/com.gexup.MainActivity} checkFinished=false 2
+03-14 19:15:32.132  1352  1577 I SurfaceFlinger: [SF client] NEW(0xb400007d6c1fed80) for (17387:com.gexup)
+03-14 19:15:32.155 17387 17387 D WindowManager: Add to mViews: com.android.internal.policy.DecorView{73fc58e I.E...... R.....ID 0,0-0,0 alpha=1.0 viewInfo = }[MainActivity],pkg= com.gexup
+03-14 19:15:32.217  2185  2234 I UserAwareMgr: filter app: com.gexup
+03-14 19:15:32.251  2185  2803 I WindowManager: addWindow: New client android.os.BinderProxy@7e6144e : window=Window{97a996f u0 com.gexup/com.gexup.MainActivity}
+03-14 19:15:32.271  2185  2803 D CoreBackPreview: Window{97a996f u0 com.gexup/com.gexup.MainActivity}: Setting back callback OnBackInvokedCallbackInfo{mCallback=android.window.IOnBackInvokedCallback$Stub$Proxy@ed75e68, mPriority=0, mIsAnimationCallback=false}
+03-14 19:15:32.273 17387 17387 D nativeloader: Load /data/app/~~U-6ZcO5PNGf6Xn43B7VWig==/com.gexup-wR-uSDUGYz_lZqt-HIW0QA==/base.apk!/lib/arm64-v8a/libyoga.so using class loader ns clns-7 (caller=/data/app/~~U-6ZcO5PNGf6Xn43B7VWig==/com.gexup-wR-uSDUGYz_lZqt-HIW0QA==/base.apk): ok
+03-14 19:15:32.282 17387 17387 D ViewRootImplExtImpl: wrapConfigInfoIntoFlags rotation=0, smallestScreenWidthDp=708, relayoutAsync=false, flags=0, newFlags=46399488, residentWS=false, title=com.gexup/com.gexup.MainActivity
+03-14 19:15:32.283  2185  2574 D WindowManagerServiceExtImpl: extractConfigInfoAndRealFlags rotation=0, screenDp=708, residentWS:0, win=Window{97a996f u0 com.gexup/com.gexup.MainActivity}
+03-14 19:15:32.283  2185  2574 V WindowManager: Relayout Window{97a996f u0 com.gexup/com.gexup.MainActivity}: viewVisibility=0, oldvis=4, req=1080x2400, vsysui=, x=0, y=0
+03-14 19:15:32.284  2185  2574 I WindowManager: Window{97a996f u0 com.gexup/com.gexup.MainActivity} state from NO_SURFACE to DRAW_PENDING; reason: resetDrawState
+03-14 19:15:32.290  1352  1577 D OplusLayer: setProcInfo (102787,com.gexup/com.gexup.MainActivity#102787,com.gexup,0x6EB888E8)
+03-14 19:15:32.307  3128  3547 D ActivityAdapter: notifyActivityQuery: [com.gexup; com.gexup; 1; COMMON; 10375]
+03-14 19:15:32.308  3128  3547 D OPlusFrontAppManager: decide -->> [com.gexup; com.gexup; 1; COMMON; 10375]
+03-14 19:15:32.311  2185  2574 D WindowManager: NFW_findFocusedWindowIfNeeded:Window{97a996f u0 com.gexup/com.gexup.MainActivity} mCurrentFocus:null
+03-14 19:15:32.312  2185  2574 V WindowManager: Changing focus from null to Window{97a996f u0 com.gexup/com.gexup.MainActivity},diplayid=0
+03-14 19:15:32.330  2185  3641 D ConnectivityService: requestNetwork for uid/pid:10375/17387 activeRequest: null callbackRequest: 46408 [NetworkRequest [ REQUEST id=46409, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VCN_MANAGED&NOT_BANDWIDTH_CONSTRAINED Uid: 10375 RequestorUid: 10375 RequestorPkg: com.gexup UnderlyingNetworks: Null] ]] callback flags: 0 order: 2147483647 isUidTracked: false declaredMethods: AVAIL|LOSING|LOST|UNAVAIL|NC|LP
+03-14 19:15:32.338  2185  2214 D SurfaceComposerClient: Transaction::apply InputWindowCommands.focusRequests timestamp=352377751274541, windowName=97a996f com.gexup/com.gexup.MainActivity
+03-14 19:15:32.342  2185  2448 D OemPaidWifiNetworkFactory: got request NetworkRequest [ REQUEST id=46409, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VCN_MANAGED&NOT_BANDWIDTH_CONSTRAINED Uid: 10375 RequestorUid: 10375 RequestorPkg: com.gexup UnderlyingNetworks: Null] ]
+03-14 19:15:32.342  2185  2448 D MultiInternetWifiNetworkFactory: got request NetworkRequest [ REQUEST id=46409, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VCN_MANAGED&NOT_BANDWIDTH_CONSTRAINED Uid: 10375 RequestorUid: 10375 RequestorPkg: com.gexup UnderlyingNetworks: Null] ]
+03-14 19:15:32.343  2185  2448 D WifiNetworkFactory: got request NetworkRequest [ REQUEST id=46409, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VCN_MANAGED&NOT_BANDWIDTH_CONSTRAINED Uid: 10375 RequestorUid: 10375 RequestorPkg: com.gexup UnderlyingNetworks: Null] ]
+03-14 19:15:32.344  2185  2448 D UntrustedWifiNetworkFactory: got request NetworkRequest [ REQUEST id=46409, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VCN_MANAGED&NOT_BANDWIDTH_CONSTRAINED Uid: 10375 RequestorUid: 10375 RequestorPkg: com.gexup UnderlyingNetworks: Null] ]
+03-14 19:15:32.354  1352  1352 D SurfaceFlinger: Focus addInputWindowCommands timestamp=352377751274541, windowName=97a996f com.gexup/com.gexup.MainActivity
+03-14 19:15:32.359  1352  1988 D SurfaceFlinger: updateWinowInfo=1, setFocusedWindow timestamp=352377751274541, windowName=97a996f com.gexup/com.gexup.MainActivity
+03-14 19:15:32.360  2185  2574 I InputDispatcher: NFW_setFocusedWindow, 97a996f com.gexup/com.gexup.MainActivity on display 0, same as the previous:0
+03-14 19:15:32.375 17387 17387 I SurfaceControl:  setExtendedRangeBrightness sc=Surface(name=com.gexup/com.gexup.MainActivity)/@0xd16c457,currentBufferRatio=1.0,desiredRatio=1.0
+03-14 19:15:32.379  2185  2234 I UserAwareMgr: filter app: com.gexup
+03-14 19:15:32.381  2185  2234 I UserAwareMgr: filter app: com.gexup
+03-14 19:15:32.408 17387 17423 E AndroidRuntime: Process: com.gexup, PID: 17387
+03-14 19:15:32.410 17387 17405 D com.gexup: Can't load libmbrainSDK
+03-14 19:15:32.413  2185  3641 I mtkpower_client: [PowerHal_Wrap_notifyAppState] com.gexup/com.gexup pid=17387 activityId:17387 state:3
+03-14 19:15:32.413  1280  1280 I vendor.mediatek.hardware.mtkpower_applist-service.mediatek: packName: com.gexup actName: com.gexup pid: 17387 activityId: 17387 uid: 10375 state: 3
+03-14 19:15:32.413  1280  1280 I MTK_APPList: [notifyAPPstate] com.gexup/com.gexup, pid=17387, activityId=17387, uid=10375, state:DEAD, fps:-1, win:0
+03-14 19:15:32.413  1280  1280 I MTK_APPList: [notifyAPPstate] pack:com.gexup, pid:17387, STATE_DEAD
+03-14 19:15:32.416  2185  3641 W OplusEapManager handleErrorInfo sendEvent: : com.gexup happenedcrash
+03-14 19:15:32.416  2185  3188 D OplusAppStartupMonitor: , exceptionClass=com.facebook.react.common.JavascriptException, app_channel_type=unstable, packageName=com.gexup, unstable_restrict_switch=true}]
+03-14 19:15:32.427  2185  3641 W ActivityTaskManager:   Force finishing activity com.gexup/.MainActivity
+03-14 19:15:32.430  2185  2543 I [UAH_CLIENT]: UahEventAcquire, cmdid:0, pkg:com.gexup, identity:com.android.server.wm
+03-14 19:15:32.432  2185  3641 D ActivityTaskManager: setAppVisibility(Token{5b74f24 ActivityRecord{bf5c5d5 u0 com.gexup/.MainActivity t6298 f}}}, visible=false): mNextAppTransitionRequests=[], mNextAppTransitionFlags=,mAppTransitionState=APP_STATE_IDLE visible=true mVisibleRequested=true
+03-14 19:15:32.433  2185  3641 D ActivityTaskManager: setVisibility(Token{5b74f24 ActivityRecord{bf5c5d5 u0 com.gexup/.MainActivity t6298 f}}}, visible=false) defer commitVisibility for transition collecting
+03-14 19:15:32.434  2185  3641 I PowerHalWrapper: amsBoostNotify pid:17387,activity:com.gexup.MainActivity, package:com.gexup, mProcessCreatePackcom.gexup 
+03-14 19:15:32.434  2185  3641 I mtkpower_client: [PowerHal_Wrap_notifyAppState] com.gexup/com.gexup.MainActivity pid=17387 activityId:200656341 state:0
+03-14 19:15:32.434  1280  1280 I vendor.mediatek.hardware.mtkpower_applist-service.mediatek: packName: com.gexup actName: com.gexup.MainActivity pid: 17387 activityId: 200656341 uid: 10375 state: 0
+03-14 19:15:32.434  1280  1280 I MTK_APPList: [notifyAPPstate] com.gexup/com.gexup.MainActivity, pid=17387, activityId=200656341, uid=10375, state:PAUSED, fps:-1, win:0
+03-14 19:15:32.438  2185  2210 D OplusAppQuickStart_OplusAppQuickStart: writeBuffer success: capBitmapFile=com.gexup_0_33.webp cost: 755 ms
+03-14 19:15:32.440  2185  3641 I OplusHansManager : front pkg: com.android.launcher, uid: 10202, prev pkg: com.gexup, prev uid: 10375
+03-14 19:15:32.442  2185  3234 I OplusHansManager : uid=10375, pkg=com.gexup enter SM
+03-14 19:15:32.442  2185  3234 I OplusHansManager : uid=10375, pkg=com.gexup R enter(), D stay=0
+03-14 19:15:32.443  2185  2784 I Osense-BaseDecisionMaker: notifySceneToAthenaPolicy: SCENE_LAUNCHER, bundle: Bundle[{prevPkgName=com.gexup, curUid=10202, curPkgName=com.android.launcher, prevUid=10375}]
+03-14 19:15:32.443  2185  3641 D ActivityTaskManager: NFW_setLastResumedActivityUncheckLocked:true r:ActivityRecord{42ce2f4 u0 com.android.launcher/.Launcher t5} currentFocus:Window{97a996f u0 com.gexup/com.gexup.MainActivity}
+03-14 19:15:32.443  2185  3641 D WindowManager: NFW_findFocusedWindowIfNeeded:Window{921a635 u0 com.android.launcher/com.android.launcher.Launcher} mCurrentFocus:Window{97a996f u0 com.gexup/com.gexup.MainActivity}
+03-14 19:15:32.444  2185  3641 V WindowManager: Changing focus from Window{97a996f u0 com.gexup/com.gexup.MainActivity} to Window{921a635 u0 com.android.launcher/com.android.launcher.Launcher},diplayid=0
+03-14 19:15:32.451  2185  3641 D FlexibleTaskController: onTaskFocusChanged prevTask:Task{c73ebb7 #6298 type=standard A=10375:com.gexup} ,currentTask:Task{5367fd5 #5 type=home I=com.android.launcher/.Launcher}, reason: resumeTopActivity - onActivityStateChanged
+03-14 19:15:32.466  2185  3641 D OplusFlexibleWindowMinimizedManagerHelper: onTaskInfoChanged taskInfo:TaskInfo{userId=0 taskId=6298 displayId=0 isRunning=false baseIntent=Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] flg=0x10200000 cmp=com.gexup/.MainActivity mCallingUid=10202 } baseActivity=null topActivity=null origActivity=null realActivity=ComponentInfo{com.gexup/com.gexup.MainActivity} numActivities=0 lastActiveTime=486004720 supportsSplitScreenMultiWindow=true supportsMultiWindow=true supportsPocketStudioMultiWindow=true isInFlexibleEmbedded = false uid = -1 pid = -1 resizeMode=1 isResizeable=true minWidth=-1 minHeight=-1 defaultMinSize=220 token=WCT{RemoteToken{c74ce45 Task{c73ebb7 #6298 type=standard A=10375:com.gexup}}} topActivityType=1 pictureInPictureParams=null shouldDockBigOverlays=false launchIntoPipHostTaskId=-1 lastParentTaskIdBeforePip=-1 displayCutoutSafeInsets=Rect(0, 110 - 0, 0) topActivityInfo=null launchCookies=[android.os.BinderProxy@67113dc] positionInParent=Point(0, 0) parentTaskId=-1 isFocused=false isVisible=true isVisibleRequested=false isSleeping=false locusId=null displayAreaFeatureId=1 isTopActivityTransparent=false appCompatTaskInfo=AppCompatTaskInfo { topActivityInSizeCompat=false topActivityInOplusCompatMode=false topActivityEligibleForLetterboxEducation= falseisLetterboxEducationEnabled= false isLetterboxDoubleTapEnabled= false topActivityEligibleForUserAspectRatioButton= false topActivityBoundsLetterboxed= false isFromLetterboxDoubleTap= false topActivityLetterboxVerticalPosition= -1 topActivityLetterboxHorizontalPosition= -1 topActivityLetterboxWidth=-1 topActivityLetterboxHeight=-1 isUserFullscreenOverrideEnabled=false isSystemFullscreenOverrideEnabled=false cameraCompatTaskInfo=CameraCompatTaskInfo { cameraCompatControlState=hidden freeformCameraCompatMode=inactive}} topActivityLetterboxInsets=Rect(0, 0 - 0, 0) mOplusExtraBundle = Bundle[{androidx.flexible.taskFrame=Rect(0, 0 - 0, 0), key_flexible_task_state=0, androidx.activity.LaunchScenario=0, androidx.activity.LaunchScale=1.0}]} task:Task{c73ebb7 #6298 type=standard A=10375:com.gexup}
+03-14 19:15:32.472 17387 17405 D com.gexup: Can't load libmbrainSDK
+03-14 19:15:32.478  2185  2574 D VRR [OPlusExternalRefreshRateManager]: isPkgTfcEnable: pkgName = com.gexup, enable = false
+03-14 19:15:32.478  2185  2574 D VRR [OPlusExternalRefreshRateManager]: getTfcMinFramerate: pkgName = com.gexup, min framerate = 0
+03-14 19:15:32.478 17387 17387 I DynamicFramerate [FRTCConfigManager]: FRTCConfigManager: FRTC_CAPABILITY = 120, package name = com.gexup, WINDOW_ANIMATION_SPEED_RATE = 10, SCROLL_ANIMATION_SPEED_RATE = 20, PACKAGE_ENABLE = false
+03-14 19:15:32.478 17387 17387 I DynamicFramerate [DynamicFrameRateController]: init info: mPackageName = com.gexup, mIsEnabled = false
+03-14 19:15:32.480  2185  2214 D Transition: collectOrderChanges onTopTasksEnd: [Task{ec2feb3 #1 type=home}, Task{5367fd5 #5 type=home I=com.android.launcher/.Launcher}], reportedOnTop:null, mOnTopTasksStart: [Task{c73ebb7 #6298 type=standard A=10375:com.gexup}], TDA child: [Task{82fde8c #6032 type=standard A=10444:com.blaze.sportzfy}, Task{6a18ca3 #2 type=undefined}, Task{c5c630b #6240 type=standard A=10434:com.activision.callofduty.shooter}, Task{8bb86ff #6239 type=standard A=10263:com.ea.gp.fifamobile}, Task{6d89e9d #6271 type=standard A=10280:eu.livesport.FlashScore_com}, Task{5d1bab5 #6272 type=standard A=10118:com.oppo.quicksearchbox}, Task{981d9ec #6274 type=standard A=1001:android.task.stk}, Task{cf07f54 #6270 type=standard A=10309:com.truecaller}, Task{94557eb #6296 type=standard A=10312:com.whatsapp.w4b}, Task{293910d #6278 type=standard A=10406:com.facebook.katana}, Task{c73ebb7 #6298 type=standard A=10375:com.gexup}, Task{ec2feb3 #1 type=home}]
+03-14 19:15:32.480  2185  2214 D OplusFlexibleActivityTransitionManager: fixTransitType type result:2, targets: [Task{ec2feb3 #1 type=home}, Task{c73ebb7 #6298 type=standard A=10375:com.gexup}, WallpaperWindowToken{cb8362f token=android.os.Binder@ac216b9 showWhenLocked=false}]
+03-14 19:15:32.481  2185  2800 E OsenseKillAction: KillAction: find invalid process: com.gexup:17387:2
+03-14 19:15:32.491  2185  2214 D OplusTransitionController:  info: {id=5197 t=CLOSE f=0x10 trk=0 r=[0@Point(0, 0)] c=[{WCT{RemoteToken{cab921f Task{ec2feb3 #1 type=home}}} m=TO_FRONT f=SHOW_WALLPAPER|MOVE_TO_TOP leash=Surface(name=Task=1)/@0x64439b5 sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 1080, 2400) d=0 taskParent=-1},{WCT{RemoteToken{c74ce45 Task{c73ebb7 #6298 type=standard A=10375:com.gexup}}} m=CLOSE f=NONE leash=Surface(name=Task=6298)/@0xa3e9289 sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 1080, 2400) d=0 taskParent=-1},{null m=TO_FRONT f=IS_WALLPAPER leash=Surface(name=WallpaperWindowToken{cb8362f token=android.os.Binder@ac216b9 showWhenLocked=false})/@0x1343eef sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 1080, 2400) d=0}] extendInfo=[OplusTransitionExtendedInfo{mTmpFinishT=null, mInOplusCompatMode=false, mIsProcessRunning=false, mHasMismatchBoundsTarget=false, mRecentsController=null, mIsTranslucentActivityToHome=false, mAvoidInterceptKeyEventToHome=false, mIsFromHome=false, mParentLeash=null, mIsOplusAnimRes=false, mIsFromOverlay=false, mIsBalAllow=false, mTaskNotInRecent=false, mIsLaunchFromSpruce=false, mIsLaunchFromDrive=false, mAssistScreenShowing=false, mUserIdTransition=0, mInRemoteScene=false, mInPreReady=false, mPreStart=false, mToken=null, mShellApplyToken=null, mRequestTransitionTaskId=-1, mAbortTransitionOnShell=0, mTransitionId=5197, mAnimStartingPosition=[0, 0, 0, 0], mIsOpeningStkDialogActivity=false}]}, 
+03-14 19:15:32.491  2185  2214 D OplusTransitionController:  targets : [Task{ec2feb3 #1 type=home}, Task{c73ebb7 #6298 type=standard A=10375:com.gexup}, WallpaperWindowToken{cb8362f token=android.os.Binder@ac216b9 showWhenLocked=false}], 
+03-14 19:15:32.491  2185  2214 D OplusTransitionController:  participants: {ActivityRecord{42ce2f4 u0 com.android.launcher/.Launcher t5}, Task{5367fd5 #5 type=home I=com.android.launcher/.Launcher}, ActivityRecord{bf5c5d5 u0 com.gexup/.MainActivity t6298 f}}, Task{c73ebb7 #6298 type=standard A=10375:com.gexup}, WallpaperWindowToken{cb8362f token=android.os.Binder@ac216b9 showWhenLocked=false}, Task{ec2feb3 #1 type=home}}, 
+03-14 19:15:32.493  2185  2214 W WindowManager: captureTaskSnapshot mSnapshotMode= 0 source=Task{c73ebb7 #6298 type=standard A=10375:com.gexup}
+03-14 19:15:32.509  2185  2214 D TaskSnapshotCache: putSnapshot mRunningCache top= ActivityRecord{bf5c5d5 u0 com.gexup/.MainActivity t6298 f}}, mTaskId=6298, snapshot=TaskSnapshot{ mId=1773504932493 mCaptureTime=486004796437549 mTopActivityComponent=com.gexup/.MainActivity mSnapshot=android.hardware.HardwareBuffer@96a0071 (756x1680) mColorSpace=sRGB IEC61966-2.1 (id=0, model=RGB) mOrientation=1 mRotation=0 mTaskSize=Point(1080, 2400) mOplusCompatMode=false mTopActivityBounds=[0,110][1080,2333] mContentInsets=[0,110][0,67] mLetterboxInsets=[0,0][0,0] mIsLowResolution=false mIsRealSnapshot=true mWindowingMode=1 mAppearance=0 mIsTranslucent=true mHasImeSurface=false mInternalReferences=2 mUiMode=21, mAppIdMap size= 9
+03-14 19:15:32.530  2185  4700 D OplusAppStartupConfigExt: ActivityChangedListener prePkg = com.gexup  nextPkg = com.android.launcher
+03-14 19:15:32.532  2185  4700 I PowerHalWrapper: amsBoostNotify pid:3074,activity:com.android.launcher.Launcher, package:com.android.launcher, mProcessCreatePackcom.gexup 
+03-14 19:15:32.532  2185  3317 D OplusAppSwitchListener: Detect com.gexup switch to background
+03-14 19:15:32.532  2185  3317 D OplusFeatureReduceBrightness: onAppExit , info = com.gexup
+03-14 19:15:32.538  2185  2705 I WindowManager: Window{97a996f u0 com.gexup/com.gexup.MainActivity} state from DRAW_PENDING to COMMIT_DRAW_PENDING; reason: finishDrawingLocked
+03-14 19:15:32.533  2670  5366 V DCSEX-AppSwitchManager: OnAppSwitchObserver: onAppExit, resuming = com.android.launcher, target = com.gexup, is ResumingFirstStart =  false, is ResumingMultiApp =  false, extensionInfo =  Bundle[mParcelledData.dataSize=128]
+03-14 19:15:32.539  2185  3317 D OplusEapManager: mTargetExitName :com.gexup
+03-14 19:15:32.540  1280  1280 I MTK_APPList: [notifyAPPstate] pc:0, com.gexup => com.android.launcher
+03-14 19:15:32.541  2185  2705 D OplusTransitionAnimationManager: skipFinishDrawingIfNeed clientRotation=0, currentRotation=0, hasFixedRotationApp=false, requestedOrientation=-1, win=Window{97a996f u0 com.gexup/com.gexup.MainActivity}, activity=ActivityRecord{bf5c5d5 u0 com.gexup/.MainActivity t6298 f}}, currentConfig={0.9 ??mcc??mnc [en_US] ldltr sw708dp w708dp h1458dp 244dpi lrg long port night finger -keyb/v/h -nav/h winConfig={ mBounds=Rect(0, 0 - 1080, 2400) mAppBounds=Rect(0, 110 - 1080, 2333) mMaxBounds=Rect(0, 0 - 1080, 2400) mDisplayRotation=ROTATION_0 mWindowingMode=fullscreen mActivityType=standard mAlwaysOnTop=undefined mRotation=ROTATION_0} s.2 fontWeightAdjustment=0mThemeChanged= 1, mThemeChangedFlags= fd400000011, mFlipFont= 0, mScenario= 0, mAccessibleChanged= -1, mUxIconConfig= 3468921665087356993, mMaterialColor= 0, mUserId= 0, mFontUserId= 0, mFontVariationSettings= 226, mFoldingAngle = -1.0, mIconPackName= , mDarkModeBackgroundMaxL= 0.0, mDarkModeDialogBgMaxL= 27.0, mDarkModeForegroundMinL= 100.0, mOplusConfigType= 1, mOplusChangedConfigs= 0, OpSans= -1, mBurmeseFontFlag= 2, mFlag= 0, mFlexibleActivitySuitable= -1, mPuttDisplayFlag= -1}
+03-14 19:15:32.543  2670  2867 D DCSEX-AppLaunchEventRecorder: onAppSwitch from = com.gexup to = com.android.launcher
+03-14 19:15:32.543  2185  2214 I WindowManager: Window{97a996f u0 com.gexup/com.gexup.MainActivity} state from COMMIT_DRAW_PENDING to READY_TO_SHOW; reason: commitFinishDrawingLocked
+03-14 19:15:32.543  2185  2214 D ActivityTaskManager: Finish StartingWindow: ActivityRecord{bf5c5d5 u0 com.gexup/.MainActivity t6298 f}}first real window is shown
+03-14 19:15:32.543  2185  2214 D ActivityTaskManager: removeStartingWindowAnimation starting ActivityRecord{bf5c5d5 u0 com.gexup/.MainActivity t6298 f}} startingWindow=null ,startingView=com.android.server.wm.StartingSurfaceController$StartingSurface@13fdb8b,Callers=com.android.server.wm.ActivityRecord.removeStartingWindow:3563 com.android.server.wm.ActivityRecord.onFirstWindowDrawn:8581 com.android.server.wm.WindowState.performShowLocked:5071 com.android.server.wm.WindowStateAnimator.commitFinishDrawingLocked:342 com.android.server.wm.DisplayContent.lambda$new$8:1141 
+03-14 19:15:32.543  2185  2214 D OplusStartingWindowManager: interceptRemoveStartingWindow: packageName=com.gexup,  componentName=com.gexup/.MainActivity, isSnapshot=false, startingSurfaceRunnable=null, isDrawCompleted=true, hasSurfaceView=false, inTransition=true
+03-14 19:15:32.543  2185  2214 D OplusStartingWindowManager: interceptRemoveStartingWindow: hasSplashWindowFlag() return false for activity=ActivityRecord{bf5c5d5 u0 com.gexup/.MainActivity t6298 f}}
+03-14 19:15:32.545  2185  2214 D adaptiveSmoothAnim_Main: updateStartingWindowRemovalInfo, quickSurface=OplusAppQuickStartingSurface{mSurfaceControl=null, mActivityRecord=ActivityRecord{bf5c5d5 u0 com.gexup/.MainActivity t6298 f}}, mTask=Task{c73ebb7 #6298 type=standard A=10375:com.gexup}, mStartFromRecents=false, mStartFromSlide=false, mIsMovingToBack=true}, task=Task{c73ebb7 #6298 type=standard A=10375:com.gexup}
+03-14 19:15:32.546  2185  2214 I Quality : LaunchTime2.0: com.gexup/.MainActivity 1 1030 com.android.launcher 196 277
+03-14 19:15:32.546  5414 15146 W Battery : AppSwitchDetectorV2: OnAppSwitchObserver: onAppExit , info = OplusAppExitInfo = {  targetName = com.gexup hasResumingActivity = true resumingPackageName = com.android.launcher resumingActivityName = com.android.launcher.Launcher resumingWindowMode = 1 isResumingMultiApp = false isResumingFirstStart = false extension = Bundle[mParcelledData.dataSize=128]}
+03-14 19:15:32.546  2185  2214 D QuickBackInputPolicy: setAppLaunchEndTime update timePair=Pair{ActivityRecord{bf5c5d5 u0 com.gexup/.MainActivity t6298 f}} 352377975}
+03-14 19:15:32.546  2185  2214 I WindowManager: Window{97a996f u0 com.gexup/com.gexup.MainActivity} state from READY_TO_SHOW to HAS_DRAWN; reason: performShowLocked
+03-14 19:15:32.549  2185  2800 I OsenseKillAction: KillAction: 0mb more anonRss to reclaim, 0mb more swapMb to reclaim, <skip> mem guard, cur avail=2005mb, bundle: Bundle[{appcareThreshold=0, prevPkgName=com.gexup, triggerMemory=2200, curUid=10202, curPkgName=com.android.launcher, qbmode=false, prevUid=10375, type=cached, level=1, scene=SCENE_LAUNCHER, requestId=2528, purposeMemory=2400}]
+03-14 19:15:32.550  3128  3551 D OplusLinkBoostSceneManager: onAppExit:com.gexup
+03-14 19:15:32.558  3128  3547 D ActivityAdapter: onCommonAppExit: OplusAppExitInfo = {  targetName = com.gexup hasResumingActivity = true resumingPackageName = com.android.launcher resumingActivityName = com.android.launcher.Launcher resumingWindowMode = 1 isResumingMultiApp = false isResumingFirstStart = false extension = Bundle[mParcelledData.dataSize=128]}
+03-14 19:15:32.563  2185  2210 V WindowManager:         {WCT{RemoteToken{c74ce45 Task{c73ebb7 #6298 type=standard A=10375:com.gexup}}} m=CLOSE f=NONE leash=Surface(name=Task=6298)/@0xa3e9289 sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 1080, 2400) d=0 taskParent=-1},
+03-14 19:15:32.576  3166  6163 I Athena  : AthenaDynamicReceiver: pre_app:com.gexup, next_app:com.android.launcher(10202|3074)
+03-14 19:15:32.581  2185  2705 D VRR [OPlusRefreshRateService]:  setFrameRateTargetControl [ 0.0 , com.gexup , false , com.oplus.battery ]
+03-14 19:15:32.581  2185  2705 D VRR [OPlusExternalRefreshRateManager]:  [FRTC] FrameRate : 0 com.gexup false com.oplus.battery 0 1000
+03-14 19:15:32.582  1352  1596 I VRR [FRTC]: setFrameRateTarget with [0, com.gexup, 0, com.oplus.battery, 1, 0, 1000, 0]
+03-14 19:15:32.599  2725  2937 D OplusScrollToTopManager: Splash Screen com.gexup,window dying
+03-14 19:15:32.599  2725  2937 D OplusScrollToTopManager: Splash Screen com.gexup,unregisterSystemUIBroadcastReceiver 
+03-14 19:15:32.600  2725  2937 D OplusScrollToTopManager: Splash Screen com.gexup, unregisterSystemUIBroadcastReceiver failed java.lang.IllegalArgumentException: Receiver not registered: android.view.OplusScrollToTopManager$2@6046fd3
+03-14 19:15:32.607  2185  2210 I ActivityTaskManager: Displayed com.gexup/.MainActivity for user 0: +1s134ms
+03-14 19:15:32.608  2185  4700 D CoreBackPreview: Window{f11cc99 u0 Splash Screen com.gexup}: Setting back callback null
+03-14 19:15:32.609  2185  3298 I InputDispatcher: channel 'f11cc99 Splash Screen com.gexup (server)'~ abortBrokenDispatchCycleLocked - notify=false
+03-14 19:15:32.609  2185  3298 W InputManager-JNI: Input channel object 'f11cc99 Splash Screen com.gexup (client)' was disposed without first being removed with the input manager!
+03-14 19:15:32.610  2185  3298 D adaptiveSmoothAnim_Main: skip StartingWindow exit animation, win=Window{f11cc99 u0 Splash Screen com.gexup}
+03-14 19:15:32.625  2185  2216 D SurfaceAnimationRunner: onAnimationStart:Surface(name=Surface(name=f11cc99 Splash Screen com.gexup)/@0xc96bbe9 - animation-leash of window_animation)/@0xd201cac
+03-14 19:15:32.625  2185  2216 D SurfaceAnimationRunner: onAnimationEnd:Surface(name=Surface(name=f11cc99 Splash Screen com.gexup)/@0xc96bbe9 - animation-leash of window_animation)/@0xd201cac
+03-14 19:15:32.645  2185  2214 I WindowStateExtImpl: onSurfaceShowChange show = false mPackageName = com.gexup parentPkgName = com.gexup
+03-14 19:15:32.645  2185  2214 I WindowManager: Window{f11cc99 u0 Splash Screen com.gexup EXITING} state from HAS_DRAWN to NO_SURFACE; reason: destroySurface
+03-14 19:15:32.659  1352  1352 I SurfaceFlinger: onHandleDestroyed: name=Splash Screen com.gexup#102780, layerId=102780, parentId=0
+03-14 19:15:32.659  1352  1352 I SurfaceFlinger: onHandleDestroyed: name=Surface(name=f11cc99 Splash Screen com.gexup)/@0xc96bbe9 - animation-leash of window_animation#102800, layerId=102800, parentId=0
+03-14 19:15:32.677  1352  1352 I BufferQueueDebug: [Splash Screen com.gexup#102780](this:0xb400007d423e19e0,id:-1,api:0,p:-1,c:1352) onDestructor()
+03-14 19:15:32.677  1352  1352 I BufferQueueDebug: [Surface(name=f11cc99 Splash Screen com.gexup)/@0xc96bbe9 - animation-leash of window_animation#102800](this:0xb400007d5d6159e0,id:-1,api:0,p:-1,c:1352) onDestructor()
+03-14 19:15:32.740  1352  1610 I SurfaceFlinger: [SF client] REMOVE (0xb400007d6c1fed80) for (17387:com.gexup)
+03-14 19:15:32.741  2185  3297 I WindowManager: WIN DEATH: Window{97a996f u0 com.gexup/com.gexup.MainActivity}
+03-14 19:15:32.742  2185  3297 I InputDispatcher: channel '97a996f com.gexup/com.gexup.MainActivity (server)'~ abortBrokenDispatchCycleLocked - notify=false
+03-14 19:15:32.742  2185  3297 W InputManager-JNI: Input channel object '97a996f com.gexup/com.gexup.MainActivity (client)' was disposed without first being removed with the input manager!
+03-14 19:15:32.743  2185  2455 D ConnectivityService: releasing NetworkRequest [ REQUEST id=46409, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VCN_MANAGED&NOT_BANDWIDTH_CONSTRAINED Uid: 10375 RequestorUid: 10375 RequestorPkg: com.gexup UnderlyingNetworks: Null] ] (release request)
+03-14 19:15:32.746  2185  3299 I ActivityManager: Death received, pid = 17387, processName = com.gexup for thread android.os.BinderProxy@5b1f9c
+03-14 19:15:32.763  2185  2928 I ActivityManager: Process com.gexup (pid 17387) has died: prcp TOP 
+03-14 19:15:32.765  2185  2928 D OplusAppStartupConfigExt: RestartService prevent pkg com.gexup result = false
+03-14 19:15:32.771  2725  2747 I PluginSeedling--Base: SeedlingPluginService-->onStateChange: Bundle[{pkgName=com.gexup, pid=17387, uid=10375, state=onProcessDied}]
+03-14 19:15:32.771  2725  2747 D StateMonitor: isCapsuleProcessStateChanged. state:Bundle[{pkgName=com.gexup, pid=17387, uid=10375, state=onProcessDied}]
+03-14 19:15:32.771  2725  2747 D PluginSeedling--Engine: NoUMSStatusBarDataManager-->removeCardForProcessDied: com.gexup
+03-14 19:15:32.771  2185  2234 I UserAwareMgr: process killed: {pkgName='com.gexup', processName='com.gexup', pid=17387, uid=10375, flags='fg1', renderTid=17405, hwuiTids=[17439, 17440], glTids=null, threadInfos=null}
+03-14 19:15:32.772  2185  2234 I UserAwareMgr: handleProcessKilled, pkgName: com.gexup, pid: 17387
+03-14 19:15:32.772  2185  2928 I mtkpower_client: [PowerHal_Wrap_notifyAppState] com.gexup/com.gexup pid=17387 activityId:17387 state:3
+03-14 19:15:32.772  3128  3543 I DispatcherPolicy: onBaseEvent EventId=22	INPUT_PROCESS_DIED	TimeStamp =1773504932772	Intent =null	Content =null	Pid =17387	PkgName =com.gexup
+03-14 19:15:32.774  1339  2735 D AudioFlingerExtImpl: AudioFlingerExtImpl oplusSetParameters: keyvalue onForegroundActivitiesChanged=com.gexup:foreground:0
+03-14 19:15:32.777  1280  1280 I vendor.mediatek.hardware.mtkpower_applist-service.mediatek: packName: com.gexup actName: com.gexup pid: 17387 activityId: 17387 uid: 10375 state: 3
+03-14 19:15:32.777  1280  1280 I MTK_APPList: [notifyAPPstate] com.gexup/com.gexup, pid=17387, activityId=17387, uid=10375, state:DEAD, fps:-1, win:0
+03-14 19:15:32.777  1280  1280 I MTK_APPList: [notifyAPPstate] pack:com.gexup, pid:17387, STATE_DEAD
+03-14 19:15:32.782  2185  3234 I OplusHansManager : uid=10375, pkg=com.gexup R exit SM
+03-14 19:15:32.782  2185  3234 I OplusHansManager : uid=10375, pkg=com.gexup R exit(), R stay=0
+03-14 19:15:32.784  2185  2928 D ActivityTaskManager: removeAppToken: ActivityRecord{bf5c5d5 u0 com.gexup/.MainActivity t6298 f}} delayed=true parent=Task{c73ebb7 #6298 type=standard A=10375:com.gexup} animating=true Callers=com.android.server.wm.DisplayContent.removeAppToken:1734 com.android.server.wm.ActivityRecord.removeFromHistory:5062 com.android.server.wm.ActivityRecord.handleAppDied:5405 com.android.server.wm.WindowProcessController.handleAppDied:1622 
+03-14 19:15:32.785  2185  3683 I OplusHansManager : onUidGone(), 10375 com.gexup exit SM
+03-14 19:15:32.785  2185  3683 I OplusHansManager : onUidGone(),  keep: 10375 com.gexup alarm
+03-14 19:15:32.800  2185  3008 D Transition: finishTransition ar ActivityRecord{bf5c5d5 u0 com.gexup/.MainActivity t6298 f} isExiting}, isVisibleRequested=false, state=DESTROYED, visibleAtTransitionEndTokens={ActivityRecord{42ce2f4 u0 com.android.launcher/.Launcher t5}, WallpaperWindowToken{cb8362f token=android.os.Binder@ac216b9 showWhenLocked=false}}, this=TransitionRecord{25ff26c id=5197 track=0 type=CLOSE flags=0x10 state=2}
+03-14 19:15:32.800  2185  3008 D ActivityTaskManager: commitVisibility: ActivityRecord{bf5c5d5 u0 com.gexup/.MainActivity t6298 f} isExiting}: visible=false visibleRequested=false, isInTransition=false, runningAnimation=false 
+03-14 19:15:32.800  2185  3008 D WindowManager: NFW_setClientVisible:ActivityRecord{bf5c5d5 u0 com.gexup/.MainActivity t6298 f} isExiting} clientVisible:false
+03-14 19:15:32.802  2185  3008 W WindowManager: Exception thrown during dispatchAppVisibility Window{97a996f u0 com.gexup/com.gexup.MainActivity EXITING}
+03-14 19:15:32.805  2185  3008 D OplusFlexibleWindowMinimizedManagerHelper: onTaskInfoChanged taskInfo:TaskInfo{userId=0 taskId=6298 displayId=0 isRunning=false baseIntent=Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] flg=0x10200000 cmp=com.gexup/.MainActivity mCallingUid=10202 } baseActivity=null topActivity=null origActivity=null realActivity=ComponentInfo{com.gexup/com.gexup.MainActivity} numActivities=0 lastActiveTime=486004720 supportsSplitScreenMultiWindow=true supportsMultiWindow=true supportsPocketStudioMultiWindow=true isInFlexibleEmbedded = false uid = -1 pid = -1 resizeMode=1 isResizeable=true minWidth=-1 minHeight=-1 defaultMinSize=220 token=WCT{RemoteToken{c74ce45 Task{c73ebb7 #6298 type=standard A=10375:com.gexup}}} topActivityType=1 pictureInPictureParams=null shouldDockBigOverlays=false launchIntoPipHostTaskId=-1 lastParentTaskIdBeforePip=-1 displayCutoutSafeInsets=Rect(0, 110 - 0, 0) topActivityInfo=null launchCookies=[android.os.BinderProxy@67113dc] positionInParent=Point(0, 0) parentTaskId=-1 isFocused=false isVisible=false isVisibleRequested=false isSleeping=false locusId=null displayAreaFeatureId=1 isTopActivityTransparent=false appCompatTaskInfo=AppCompatTaskInfo { topActivityInSizeCompat=false topActivityInOplusCompatMode=false topActivityEligibleForLetterboxEducation= falseisLetterboxEducationEnabled= false isLetterboxDoubleTapEnabled= false topActivityEligibleForUserAspectRatioButton= false topActivityBoundsLetterboxed= false isFromLetterboxDoubleTap= false topActivityLetterboxVerticalPosition= -1 topActivityLetterboxHorizontalPosition= -1 topActivityLetterboxWidth=-1 topActivityLetterboxHeight=-1 isUserFullscreenOverrideEnabled=false isSystemFullscreenOverrideEnabled=false cameraCompatTaskInfo=CameraCompatTaskInfo { cameraCompatControlState=hidden freeformCameraCompatMode=inactive}} topActivityLetterboxInsets=Rect(0, 0 - 0, 0) mOplusExtraBundle = Bundle[{androidx.flexible.taskFrame=Rect(0, 0 - 0, 0), key_flexible_task_state=0, androidx.activity.LaunchScenario=0, androidx.activity.LaunchScale=1.0}]} task:Task{c73ebb7 #6298 type=standard A=10375:com.gexup}
+03-14 19:15:32.806  2185  3008 D ActivityTaskManager: removeAppToken: ActivityRecord{bf5c5d5 u0 com.gexup/.MainActivity t6298 f}} delayed=false parent=Task{c73ebb7 #6298 type=standard A=10375:com.gexup} animating=false Callers=com.android.server.wm.ActivityRecord.removeImmediately:5420 com.android.server.wm.ActivityRecord.removeIfPossible:5435 com.android.server.wm.ActivityRecord.handleCompleteDeferredRemoval:5441 com.android.server.wm.WindowContainer.handleCompleteDeferredRemoval:1623 
+03-14 19:15:32.809  1352  1352 I SurfaceFlinger: onHandleDestroyed: name=f11cc99 Splash Screen com.gexup#102779, layerId=102779, parentId=0
+03-14 19:15:32.811  1352  1577 I SurfaceFlinger: onHandleDestroyed: name=1aa51ea ActivityRecordInputSink com.gexup/.MainActivity#102778, layerId=102778, parentId=0
+03-14 19:15:32.811  2185  3008 I WindowManager: Window{97a996f u0 com.gexup/com.gexup.MainActivity EXITING} state from HAS_DRAWN to NO_SURFACE; reason: destroySurface
+03-14 19:15:32.817  2185  3008 I OplusScreenSecurityMask: onStackRemoved task = Task{c73ebb7 #6298 type=standard A=10375:com.gexup} record = null displayId = 0
+03-14 19:15:32.818  2185  3008 D OplusAlwaysAliveManager: removing: 6298, ComponentInfo{com.gexup/com.gexup.MainActivity}
+03-14 19:15:32.825  1352  1352 I BufferQueueDebug: [f11cc99 Splash Screen com.gexup#102779](this:0xb400007d567de9e0,id:-1,api:0,p:-1,c:1352) onDestructor()
+03-14 19:15:32.828  2185  2214 D OplusFlexibleWindowMinimizedManagerHelper: onTaskVanished taskInfo:6298 task:Task{c73ebb7 #6298 type=standard A=10375:com.gexup}
+03-14 19:15:32.828  2185  2214 D FlexibleTaskController: no need releaseFlexibleCaptionView or destroyFlexibleDragLeash when non-caption-view-task vanished, task=Task{c73ebb7 #6298 type=standard A=10375:com.gexup}
+03-14 19:15:32.829  2185  2214 D OplusFlexibleWindowMinimizedManagerHelper: onTaskVanished taskInfo:6298 task:Task{c73ebb7 #6298 type=standard A=10375:com.gexup}
+03-14 19:15:32.829  2185  2214 D FlexibleTaskController: no need releaseFlexibleCaptionView or destroyFlexibleDragLeash when non-caption-view-task vanished, task=Task{c73ebb7 #6298 type=standard A=10375:com.gexup}
+03-14 19:15:32.844  1352  1352 I SurfaceFlinger: onHandleDestroyed: name=ActivityRecord{bf5c5d5 u0 com.gexup/.MainActivity t6298}#102771, layerId=102771, parentId=0
+03-14 19:15:32.844  1352  1352 I SurfaceFlinger: onHandleDestroyed: name=97a996f com.gexup/com.gexup.MainActivity#102786, layerId=102786, parentId=0
+03-14 19:15:32.844  1352  1352 I SurfaceFlinger: onHandleDestroyed: name=com.gexup/com.gexup.MainActivity#102787, layerId=102787, parentId=0
+03-14 19:15:32.858  1352  1352 I BufferQueueDebug: [1aa51ea ActivityRecordInputSink com.gexup/.MainActivity#102778](this:0xb400007d5d92d9e0,id:-1,api:0,p:-1,c:1352) onDestructor()
+03-14 19:15:32.858  1352  1352 I BufferQueueDebug: [97a996f com.gexup/com.gexup.MainActivity#102786](this:0xb400007d5d90d9e0,id:-1,api:0,p:-1,c:1352) onDestructor()
+03-14 19:15:32.859  1352  1352 I BufferQueueDebug: [com.gexup/com.gexup.MainActivity#102787](this:0xb400007d5d9279e0,id:-1,api:0,p:-1,c:1352) onDestructor()
+03-14 19:15:32.859  1352  1352 I BufferQueueDebug: [ActivityRecord{bf5c5d5 u0 com.gexup/.MainActivity t6298}#102771](this:0xb400007d6c0799e0,id:-1,api:0,p:-1,c:1352) onDestructor()
+03-14 19:15:32.859  2185  3008 D ActivityTaskManager: pre-Filtered:com.gexup # com.facebook.katana # com.whatsapp.w4b # com.truecaller # com.android.stk # com.oppo.quicksearchbox # eu.livesport.FlashScore_com # com.ea.gp.fifamobile # com.activision.callofduty.shooter # 
+03-14 19:15:35.240 31323 31323 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:35.252 31323 31323 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:37.550  5414  5959 D AppSwitchObserverHelper: packageName: com.gexup,com.gexup
+03-14 19:15:37.641 16980 16986 W os.phonemanager: ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~U-6ZcO5PNGf6Xn43B7VWig==/com.gexup-wR-uSDUGYz_lZqt-HIW0QA==/base.apk' with 1 weak references
+03-14 19:15:44.285 11314 11314 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.
+03-14 19:15:44.345 11314 11314 D ActivityThread: Package [com.gexup] reported as REPLACED, but missing application info. Assuming REMOVED.

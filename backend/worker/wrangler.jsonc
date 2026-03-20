@@ -1,0 +1,14 @@
+{
+  "name": "gexup-control-plane",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-03-17",
+  "observability": {
+    "enabled": true
+  },
+  "vars": {
+    "DEFAULT_REGION": "global",
+    "RELAY_HOST": "gexup.onrender.com",
+    "RELAY_PORT": "443",
+    "RELAY_TOKEN": "dev-relay-token"
+  }
+}

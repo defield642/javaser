@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: gexup-java-backend
+    runtime: java
+    plan: free
+    rootDir: backend/java
+    buildCommand: mvn package
+    startCommand: java -jar target/gexup-java-backend-0.1.0.jar
+    envVars:
+      - key: PORT
+        value: 8080
+      - key: RELAY_TOKEN
+        generateValue: true
+      - key: RELAY_CONNECT_TIMEOUT_MS
+        value: 2000
