@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {
   SafeAreaView,
   View,
@@ -8,25 +8,25 @@ import {
   Linking,
   PermissionsAndroid,
   Platform,
-  AppState
-} from "react-native";
-import type { AppStateStatus } from "react-native";
-import { theme } from "./src/theme";
-import { BottomNav, TabKey } from "./src/components/BottomNav";
-import { GamesScreen } from "./src/screens/GamesScreen";
-import { PingEntry, httpPing } from "./src/types/ping";
-import { BoostStatusScreen } from "./src/screens/BoostStatusScreen";
-import { Game, fallbackGames } from "./src/data/games";
-import { getGameTargetProfile } from "./src/data/gameTargets";
-import { Server, servers } from "./src/data/servers";
-import { tcpPing } from "./src/types/ping";
+  AppState,
+} from 'react-native';
+import type {AppStateStatus} from 'react-native';
+import {theme} from './src/theme';
+import {BottomNav, TabKey} from './src/components/BottomNav';
+import {GamesScreen} from './src/screens/GamesScreen';
+import {PingEntry, httpPing} from './src/types/ping';
+import {BoostStatusScreen} from './src/screens/BoostStatusScreen';
+import {Game, fallbackGames} from './src/data/games';
+import {getGameTargetProfile} from './src/data/gameTargets';
+import {Server, servers} from './src/data/servers';
+import {tcpPing} from './src/types/ping';
 import {
   fetchBackendServers,
   fetchOptimizationProfile,
   fetchTunnelConfig,
   OptimizationProfile,
-  TunnelConfig
-} from "./src/api/backend";
+  TunnelConfig,
+} from './src/api/backend';
 import {
   getInstalledGames,
   launchInstalledApp,
@@ -43,45 +43,66 @@ import {
   stopVpnService,
   getVpnState,
   writeErrorLog,
-  shareErrorLog
-} from "./src/native/installedApps";
-import NetInfo from "@react-native-community/netinfo";
-import Tts from "react-native-tts";
-import { SettingsModal, SettingsState } from "./src/screens/SettingsModal";
-import { getDetailedNetworkInfo, getConnectionQuality } from "./src/utils/networkInfo";
+  shareErrorLog,
+} from './src/native/installedApps';
+import NetInfo from '@react-native-community/netinfo';
+import Tts from 'react-native-tts';
+import {SettingsModal, SettingsState} from './src/screens/SettingsModal';
+import {
+  getDetailedNetworkInfo,
+  getConnectionQuality,
+} from './src/utils/networkInfo';
 
-const PING_INTERVAL_MS = 4000;
+const PING_INTERVAL_MS = 3500;
 const LOCK_SCAN_INTERVAL_MS = 20000;
-const PROGRESS_MIN_MS = 30000;
-const PROGRESS_MAX_MS = 60000;
-const TARGET_PING_MS = 80;
-const TARGET_PING_SAMPLES = 5;
+const PROGRESS_MIN_MS = 25000;
+const PROGRESS_MAX_MS = 50000;
+const TARGET_PING_MS = 100;
+const TARGET_PING_SAMPLES = 4;
+const EMA_ALPHA = 0.28;
 const DEFAULT_SETTINGS: SettingsState = {
   autoOpenDelaySec: 15,
-  voiceVolume: 1.0
+  voiceVolume: 1.0,
 };
 
 export default function App() {
-  const [tab, setTab] = useState<TabKey>("games");
+  const [tab, setTab] = useState<TabKey>('games');
   const [games, setGames] = useState<Game[]>(fallbackGames);
   const [serverCatalog, setServerCatalog] = useState<Server[]>(servers);
   const [selectedGame, setSelectedGame] = useState<Game | null>(null);
   const [selectedServer, setSelectedServer] = useState<Server | null>(null);
   const [lockedServerId, setLockedServerId] = useState<string | null>(null);
   const [isBoosting, setIsBoosting] = useState(false);
-  const [boostPhase, setBoostPhase] = useState<"idle" | "progress" | "active">("idle");
+  const [boostPhase, setBoostPhase] = useState<'idle' | 'progress' | 'active'>(
+    'idle',
+  );
   const [boostProgress, setBoostProgress] = useState(0);
   const [pingMap, setPingMap] = useState<Record<string, PingEntry>>({});
   const [pingHistory, setPingHistory] = useState<
-    Record<string, { ms: number; t: number; networkType?: string; estimatedSpeed?: number }[]>
+    Record<
+      string,
+      {ms: number; t: number; networkType?: string; estimatedSpeed?: number}[]
+    >
   >({});
   const [isConnected, setIsConnected] = useState(true);
   const [settings, setSettings] = useState<SettingsState>(DEFAULT_SETTINGS);
   const [settingsOpen, setSettingsOpen] = useState(false);
-  const [optimizationProfile, setOptimizationProfile] = useState<OptimizationProfile | null>(null);
-  const [tunnelConfig, setTunnelConfig] = useState<TunnelConfig | null>(null);
+  const [optimizationProfile, setOptimizationProfile] =
+    useState<OptimizationProfile | null>(null);
+  const [_tunnelConfig, setTunnelConfig] = useState<TunnelConfig | null>(null);
+  const [boostStartTime, setBoostStartTime] = useState<number | undefined>(
+    undefined,
+  );
+  const [jitterMs, setJitterMs] = useState<number>(0);
+  const [packetLossPct, setPacketLossPct] = useState<number>(0);
+  const pingAttemptCountRef = useRef<
+    Record<string, {total: number; failed: number}>
+  >({});
+  const emaRef = useRef<Record<string, number>>({});
   const progressTimer = useRef<ReturnType<typeof setInterval> | null>(null);
-  const progressCompleteTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const progressCompleteTimer = useRef<ReturnType<typeof setTimeout> | null>(
+    null,
+  );
   const pingTimer = useRef<ReturnType<typeof setInterval> | null>(null);
   const lockTimer = useRef<ReturnType<typeof setInterval> | null>(null);
   const autoOpenTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -89,7 +110,12 @@ export default function App() {
   const lockRunningRef = useRef(false);
   const scanRunningRef = useRef(false);
   const pingMapRef = useRef<Record<string, PingEntry>>({});
-  const pingHistoryRef = useRef<Record<string, { ms: number; t: number; networkType?: string; estimatedSpeed?: number }[]>>({});
+  const pingHistoryRef = useRef<
+    Record<
+      string,
+      {ms: number; t: number; networkType?: string; estimatedSpeed?: number}[]
+    >
+  >({});
   const selectedServerRef = useRef<Server | null>(null);
   const isBoostingRef = useRef(false);
   const notificationAskedRef = useRef(false);
@@ -103,40 +129,55 @@ export default function App() {
   const appStateRef = useRef(AppState.currentState);
   const [networkInfo, setNetworkInfo] = useState<any>(null);
   const lastNetworkRefreshRef = useRef(0);
+  const scanBestServerRef = useRef<() => Promise<void>>();
+  const handleStopRef = useRef<() => Promise<void>>();
 
   const availableServers = useMemo(
-    () => serverCatalog.filter((server) => server.enabled !== false && server.id !== "auto"),
-    [serverCatalog]
+    () =>
+      serverCatalog.filter(
+        server => server.enabled !== false && server.id !== 'auto',
+      ),
+    [serverCatalog],
   );
 
-  const getServerTarget = (server: Server): { host: string; port: number } | null => {
+  const getServerTarget = (
+    server: Server,
+  ): {host: string; port: number} | null => {
     if (server.host && server.port) {
-      return { host: server.host, port: server.port };
+      return {host: server.host, port: server.port};
     }
     if (server.pingUrl) {
       try {
         const normalized = server.pingUrl.trim();
-        const match = normalized.match(/^(https?):\/\/([^/:?#]+)(?::(\d+))?/i);
-        if (!match) {
+        // Accept URLs with or without protocol, fallback to https if missing
+        let urlToParse = normalized;
+        if (!/^https?:\/\//i.test(urlToParse)) {
+          urlToParse = 'https://' + urlToParse;
+        }
+        const urlObj = new URL(urlToParse);
+        const host = urlObj.hostname;
+        const port = urlObj.port
+          ? Number(urlObj.port)
+          : urlObj.protocol === 'http:'
+          ? 80
+          : 443;
+        if (!host || !port) {
+          console.warn(
+            `Invalid target: could not extract host/port from pingUrl='${server.pingUrl}' for server id='${server.id}'`,
+          );
           return null;
         }
-        const protocol = match[1]?.toLowerCase();
-        const host = match[2];
-        const explicitPort = match[3] ? Number(match[3]) : null;
-        if (!host) {
-          return null;
-        }
-        const port =
-          explicitPort && explicitPort > 0
-            ? explicitPort
-            : protocol === "http"
-            ? 80
-            : 443;
-        return { host, port };
-      } catch {
+        return {host, port};
+      } catch (e) {
+        console.warn(
+          `Invalid target: failed to parse pingUrl='${server.pingUrl}' for server id='${server.id}', error: ${e}`,
+        );
         return null;
       }
     }
+    console.warn(
+      `Invalid target: no host/port or pingUrl for server id='${server.id}'`,
+    );
     return null;
   };
 
@@ -148,7 +189,7 @@ export default function App() {
     if (!server.pingUrl) return [];
     const trimmed = server.pingUrl.trim();
     const candidates = [trimmed];
-    const withoutPingPath = trimmed.replace(/\/ping\/?$/i, "/");
+    const withoutPingPath = trimmed.replace(/\/ping\/?$/i, '/');
     if (withoutPingPath !== trimmed) {
       candidates.push(withoutPingPath);
     }
@@ -156,7 +197,9 @@ export default function App() {
   };
 
   const appendMeasureLog = (message: string) => {
-    writeErrorLog(`[measure] ${new Date().toISOString()} ${message}`).catch(() => {});
+    writeErrorLog(`[measure] ${new Date().toISOString()} ${message}`).catch(
+      () => {},
+    );
   };
 
   const traceMeasure = (message: string) => {
@@ -173,7 +216,7 @@ export default function App() {
     const sorted = [...values].sort((a, b) => a - b);
     const median = sorted[Math.floor(sorted.length / 2)];
     const filtered = values.filter(
-      (value) => Math.abs(value - median) <= Math.max(25, median * 0.35)
+      value => Math.abs(value - median) <= Math.max(25, median * 0.35),
     );
     return average(filtered.length ? filtered : values);
   };
@@ -189,20 +232,21 @@ export default function App() {
 
   const scoreServer = (serverId: string, fallbackMs?: number) => {
     const history = pingHistoryRef.current[serverId] ?? [];
-    const samples = history.slice(-8).map((item) => item.ms);
+    const samples = history.slice(-8).map(item => item.ms);
     if (!samples.length) {
-      return typeof fallbackMs === "number" ? fallbackMs : Infinity;
+      return typeof fallbackMs === 'number' ? fallbackMs : Infinity;
     }
     const avg = samples.reduce((acc, value) => acc + value, 0) / samples.length;
     const variance =
-      samples.reduce((acc, value) => acc + Math.pow(value - avg, 2), 0) / samples.length;
+      samples.reduce((acc, value) => acc + Math.pow(value - avg, 2), 0) /
+      samples.length;
     const jitter = Math.sqrt(variance);
     const latest = samples[samples.length - 1];
     return avg * 0.65 + latest * 0.25 + jitter * 0.1;
   };
 
   const ensureBackgroundOptimization = async () => {
-    if (Platform.OS !== "android") return true;
+    if (Platform.OS !== 'android') return true;
     if (batteryOptimizationAskedRef.current) return true;
     const ignored = await isIgnoringBatteryOptimizations();
     if (ignored) return true;
@@ -227,7 +271,7 @@ export default function App() {
       setIsConnected(!!detailedInfo.isConnected);
     };
 
-    const unsubscribe = NetInfo.addEventListener(async (state) => {
+    const unsubscribe = NetInfo.addEventListener(async state => {
       setIsConnected(!!state.isConnected);
       await refreshNetworkInfo();
     });
@@ -242,18 +286,43 @@ export default function App() {
 
   useEffect(() => {
     const handleAppStateChange = async (nextAppState: AppStateStatus) => {
-      if (appStateRef.current.match(/inactive|background/) && nextAppState === "active") {
+      if (
+        appStateRef.current.match(/inactive|background/) &&
+        nextAppState === 'active'
+      ) {
         const detailedInfo = await getDetailedNetworkInfo();
         setNetworkInfo(detailedInfo);
 
         if (isBoosting && boostPhase === 'active' && selectedServer) {
-          measureServer(selectedServer);
+          measureServerRef.current?.(selectedServer);
+        }
+      }
+      // Cancel all ping/measurement intervals when app goes to background
+      if (nextAppState.match(/inactive|background/)) {
+        if (pingTimer.current) {
+          clearInterval(pingTimer.current);
+          pingTimer.current = null;
+        }
+        if (lockTimer.current) {
+          clearInterval(lockTimer.current);
+          lockTimer.current = null;
+        }
+        if (progressTimer.current) {
+          clearInterval(progressTimer.current);
+          progressTimer.current = null;
+        }
+        if (progressCompleteTimer.current) {
+          clearTimeout(progressCompleteTimer.current);
+          progressCompleteTimer.current = null;
         }
       }
       appStateRef.current = nextAppState;
     };
 
-    const subscription = AppState.addEventListener('change', handleAppStateChange);
+    const subscription = AppState.addEventListener(
+      'change',
+      handleAppStateChange,
+    );
     return () => subscription.remove();
   }, [isBoosting, boostPhase, selectedServer]);
 
@@ -261,26 +330,26 @@ export default function App() {
     const syncVpnState = async () => {
       const vpnState = await getVpnState();
       if (!vpnState?.active) return;
-      setTunnelConfig((prev) => {
+      setTunnelConfig(prev => {
         if (prev) return prev;
         if (!vpnState.relayHost || !vpnState.relayPort) return null;
         return {
-          sessionId: "restored-session",
-          provider: "Android VPN",
-          tunnelMode: "relay-edge",
+          sessionId: 'restored-session',
+          provider: 'Android VPN',
+          tunnelMode: 'relay-edge',
           supported: true,
           relay: {
             host: vpnState.relayHost,
             port: vpnState.relayPort,
-            transport: "websocket",
-            path: vpnState.relayPath ?? "/relay/socket",
+            transport: 'websocket',
+            path: vpnState.relayPath ?? '/relay/socket',
             tls: true,
-            token: ""
+            token: '',
           },
-          routes: ["0.0.0.0/0"],
-          dns: ["1.1.1.1", "8.8.8.8"],
+          routes: ['0.0.0.0/0'],
+          dns: ['1.1.1.1', '8.8.8.8'],
           notes: [],
-          source: "Android VPN"
+          source: 'Android VPN',
         };
       });
     };
@@ -291,8 +360,9 @@ export default function App() {
     const loadBackendServers = async () => {
       const remoteServers = await fetchBackendServers();
       if (!remoteServers.length) return;
-      setServerCatalog((prev) => {
-        const staticAuto = prev.find((server) => server.id === "auto") ?? servers[0];
+      setServerCatalog(prev => {
+        const staticAuto =
+          prev.find(server => server.id === 'auto') ?? servers[0];
         return [staticAuto, ...remoteServers];
       });
     };
@@ -305,13 +375,13 @@ export default function App() {
       try {
         const installed = await getInstalledGames();
         if (installed.length) {
-          const onlyGames = installed.filter((app) => app.isGame);
-          const mapped = onlyGames.map((app) => ({
+          const onlyGames = installed.filter(app => app.isGame);
+          const mapped = onlyGames.map(app => ({
             id: app.packageName,
             name: app.name,
             packageName: app.packageName,
             iconUri: app.icon ? `data:image/png;base64,${app.icon}` : undefined,
-            subtitle: "Installed game"
+            subtitle: 'Installed game',
           }));
           setGames(mapped);
           return mapped;
@@ -320,7 +390,7 @@ export default function App() {
           return [];
         }
       } catch (error) {
-        console.error("Failed to load games:", error);
+        console.error('Failed to load games:', error);
         return [];
       }
     };
@@ -329,17 +399,21 @@ export default function App() {
       try {
         const state = await getBoostState();
         if (!state?.active) return;
-        const restoredGame = installedGames.find((game) => game.packageName === state.packageName);
-        const restoredServer = availableServers.find((server) => server.name === state.serverName);
+        const restoredGame = installedGames.find(
+          game => game.packageName === state.packageName,
+        );
+        const restoredServer = availableServers.find(
+          server => server.name === state.serverName,
+        );
         const startedRecently =
-          typeof state.startTime === "number" &&
+          typeof state.startTime === 'number' &&
           state.startTime > 0 &&
           Date.now() - state.startTime < 6 * 60 * 60 * 1000;
 
         if (!restoredGame || !restoredServer || !startedRecently) {
           await clearBoostState();
           setIsBoosting(false);
-          setBoostPhase("idle");
+          setBoostPhase('idle');
           setBoostProgress(0);
           return;
         }
@@ -348,10 +422,10 @@ export default function App() {
         setSelectedServer(restoredServer);
         setLockedServerId(restoredServer.id);
         setIsBoosting(true);
-        setBoostPhase("active");
+        setBoostPhase('active');
         setBoostProgress(100);
       } catch (error) {
-        console.error("Failed to restore boost state:", error);
+        console.error('Failed to restore boost state:', error);
         await clearBoostState();
       }
     };
@@ -362,18 +436,20 @@ export default function App() {
     };
 
     initialize();
-  }, []);
+  }, [availableServers]);
 
   useEffect(() => {
     Tts.getInitStatus()
       .then(() => Tts.setDefaultRate(0.45))
       .then(() => Tts.setDefaultPitch(1.0))
       .then(() => Tts.voices())
-      .then((voices) => {
+      .then(voices => {
         const english = voices.filter(
-          (v) => v.language?.startsWith("en") && !v.networkConnectionRequired
+          v => v.language?.startsWith('en') && !v.networkConnectionRequired,
         );
-        const male = english.find((v) => (v.name || "").toLowerCase().includes("male"));
+        const male = english.find(v =>
+          (v.name || '').toLowerCase().includes('male'),
+        );
         const preferred = male || english[0];
         if (preferred?.id) {
           Tts.setDefaultVoice(preferred.id);
@@ -387,13 +463,13 @@ export default function App() {
   }, [settings.voiceVolume]);
 
   useEffect(() => {
-    const sub = BackHandler.addEventListener("hardwareBackPress", () => {
+    const sub = BackHandler.addEventListener('hardwareBackPress', () => {
       if (settingsOpen) {
         setSettingsOpen(false);
         return true;
       }
-      if (tab === "boost") {
-        setTab("games");
+      if (tab === 'boost') {
+        setTab('games');
         return true;
       }
       if (isBoosting) {
@@ -407,16 +483,18 @@ export default function App() {
   useEffect(() => {
     const report = (error: any, isFatal?: boolean) => {
       const payload = `[${new Date().toISOString()}] ${
-        isFatal ? "FATAL" : "ERROR"
-      }: ${error?.message ?? error}\n${error?.stack ?? ""}`;
+        isFatal ? 'FATAL' : 'ERROR'
+      }: ${error?.message ?? error}\n${error?.stack ?? ''}`;
       writeErrorLog(payload);
     };
     const handler = (global as any).ErrorUtils?.getGlobalHandler?.();
     if ((global as any).ErrorUtils?.setGlobalHandler) {
-      (global as any).ErrorUtils.setGlobalHandler((err: any, isFatal?: boolean) => {
-        report(err, isFatal);
-        if (handler) handler(err, isFatal);
-      });
+      (global as any).ErrorUtils.setGlobalHandler(
+        (err: any, isFatal?: boolean) => {
+          report(err, isFatal);
+          if (handler) handler(err, isFatal);
+        },
+      );
     }
   }, []);
 
@@ -446,8 +524,8 @@ export default function App() {
     }
 
     pingTimer.current = setInterval(() => {
-      if (!scanRunningRef.current) {
-        measureServer(selectedServer);
+      if (!scanRunningRef.current && measureServerRef.current) {
+        measureServerRef.current(selectedServer);
       }
     }, PING_INTERVAL_MS);
 
@@ -460,12 +538,23 @@ export default function App() {
     if (!selectedServer || scanRunningRef.current) return;
     const hasFreshPing = (() => {
       const entry = pingMap[selectedServer.id];
-      if (!entry || typeof entry.ms !== "number") return false;
+      if (!entry || typeof entry.ms !== 'number') return false;
       return Date.now() - entry.updatedAt < 15000;
     })();
     if (hasFreshPing) return;
-    measureServer(selectedServer, isBoosting ? 1 : 0, selectedGame).catch(() => {});
-  }, [selectedServer?.id, isBoosting, selectedGame?.id, networkInfo?.type, isConnected, pingMap]);
+    measureServerRef
+      .current?.(selectedServer, isBoosting ? 1 : 0, selectedGame)
+      .catch(() => {});
+  }, [
+    selectedServer?.id,
+    isBoosting,
+    selectedGame?.id,
+    selectedGame,
+    selectedServer,
+    networkInfo?.type,
+    isConnected,
+    pingMap,
+  ]);
 
   useEffect(() => {
     if (!isBoosting) {
@@ -476,18 +565,18 @@ export default function App() {
       return;
     }
 
-    scanBestServer();
+    scanBestServerRef.current?.();
     lockTimer.current = setInterval(() => {
-      scanBestServer();
+      scanBestServerRef.current?.();
     }, LOCK_SCAN_INTERVAL_MS);
 
     return () => {
       if (lockTimer.current) clearInterval(lockTimer.current);
     };
-  }, [isBoosting]);
+  }, [isBoosting, selectedGame?.id, selectedServer?.id]);
 
   useEffect(() => {
-    if (boostPhase !== "progress") {
+    if (boostPhase !== 'progress') {
       if (progressTimer.current) {
         clearInterval(progressTimer.current);
         progressTimer.current = null;
@@ -514,7 +603,8 @@ export default function App() {
       progressStartRef.current = Date.now();
     }
     progressDurationRef.current =
-      PROGRESS_MIN_MS + Math.floor(Math.random() * (PROGRESS_MAX_MS - PROGRESS_MIN_MS));
+      PROGRESS_MIN_MS +
+      Math.floor(Math.random() * (PROGRESS_MAX_MS - PROGRESS_MIN_MS));
 
     progressTimer.current = setInterval(() => {
       const start = progressStartRef.current ?? Date.now();
@@ -522,13 +612,13 @@ export default function App() {
       const duration = progressDurationRef.current;
       const ratio = Math.min(1, elapsed / duration);
       const next = Math.min(99, Math.floor(ratio * 99));
-      setBoostProgress((prev) => Math.max(prev, next));
+      setBoostProgress(prev => Math.max(prev, next));
 
       const serverId = selectedServerRef.current?.id;
       if (serverId && elapsed >= PROGRESS_MIN_MS) {
         const entry = pingMapRef.current[serverId];
         const history = pingHistoryRef.current[serverId] ?? [];
-        if (typeof entry?.ms === "number" && entry.ms <= TARGET_PING_MS) {
+        if (typeof entry?.ms === 'number' && entry.ms <= TARGET_PING_MS) {
           if (history.length >= TARGET_PING_SAMPLES && canFinishProgress()) {
             if (progressTimer.current) {
               clearInterval(progressTimer.current);
@@ -539,7 +629,7 @@ export default function App() {
               progressCompleteTimer.current = null;
             }
             setBoostProgress(100);
-            if (isBoostingRef.current) setBoostPhase("active");
+            if (isBoostingRef.current) setBoostPhase('active');
           }
         }
       }
@@ -551,35 +641,37 @@ export default function App() {
         progressTimer.current = null;
       }
       setBoostProgress(100);
-      if (isBoostingRef.current) setBoostPhase("active");
+      if (isBoostingRef.current) setBoostPhase('active');
     }, progressDurationRef.current);
 
     return () => {
       if (progressTimer.current) clearInterval(progressTimer.current);
-      if (progressCompleteTimer.current) clearTimeout(progressCompleteTimer.current);
+      if (progressCompleteTimer.current)
+        clearTimeout(progressCompleteTimer.current);
     };
   }, [boostPhase, selectedGame?.name]);
 
   useEffect(() => {
-    if (boostPhase !== "active" || !isBoosting || !selectedGame?.packageName) return;
+    if (boostPhase !== 'active' || !isBoosting || !selectedGame?.packageName)
+      return;
     if (launchedRef.current === selectedGame.packageName) return;
     launchedRef.current = selectedGame.packageName;
     (async () => {
       const notificationOk = await ensureNotificationPermission();
       if (!notificationOk) {
-        await handleStop();
+        await handleStopRef.current?.();
         return;
       }
       try {
-        const ping = pingMap[selectedServer?.id ?? ""]?.ms ?? -1;
+        const ping = pingMap[selectedServer?.id ?? '']?.ms ?? -1;
         await startBoostService(
           selectedGame.name,
-          selectedGame.packageName ?? "",
-          selectedServer?.name ?? "Auto",
-          typeof ping === "number" ? ping : -1
+          selectedGame.packageName ?? '',
+          selectedServer?.name ?? 'Auto',
+          typeof ping === 'number' ? ping : -1,
         );
       } catch (error) {
-        console.error("Failed to start boost service:", error);
+        console.error('Failed to start boost service:', error);
       }
       const key = `active:${selectedGame.name}`;
       if (spokenRef.current !== key) {
@@ -592,11 +684,27 @@ export default function App() {
       }
       const delayMs = Math.max(0, settings.autoOpenDelaySec * 1000);
       autoOpenTimer.current = setTimeout(async () => {
-        if (!isBoosting || boostPhase !== "active" || !selectedGame || !selectedGame.packageName) return;
+        if (
+          !isBoosting ||
+          boostPhase !== 'active' ||
+          !selectedGame ||
+          !selectedGame.packageName
+        )
+          return;
         await launchInstalledApp(selectedGame.packageName);
       }, delayMs);
     })();
-  }, [boostPhase, isBoosting, selectedGame?.packageName, settings.autoOpenDelaySec]);
+  }, [
+    boostPhase,
+    isBoosting,
+    selectedGame?.packageName,
+    selectedGame?.name,
+    selectedGame,
+    selectedServer?.name,
+    selectedServer,
+    settings.autoOpenDelaySec,
+    pingMap,
+  ]);
 
   useEffect(() => {
     if (!isBoosting || !selectedGame?.name || !selectedServer?.name) return;
@@ -606,64 +714,84 @@ export default function App() {
     if (notifiedServerRef.current === signature) return;
     notifiedServerRef.current = signature;
     notifyThrottleRef.current = now;
-    const ping = pingMap[selectedServer?.id ?? ""]?.ms ?? -1;
+    const ping = pingMap[selectedServer?.id ?? '']?.ms ?? -1;
     startBoostService(
       selectedGame.name,
-      selectedGame.packageName ?? "",
+      selectedGame.packageName ?? '',
       selectedServer.name,
-      typeof ping === "number" ? ping : -1
+      typeof ping === 'number' ? ping : -1,
     ).catch(() => {});
-  }, [isBoosting, selectedGame?.name, selectedServer?.id, selectedServer?.name]);
+  }, [
+    isBoosting,
+    selectedGame?.name,
+    selectedGame?.packageName,
+    selectedServer?.id,
+    selectedServer?.name,
+    pingMap,
+  ]);
 
   useEffect(() => {
-    if (boostPhase === "progress" || boostPhase === "active") {
-      setTab("boost");
+    if (boostPhase === 'active' && !boostStartTime) {
+      setBoostStartTime(Date.now());
+    }
+  }, [boostPhase, boostStartTime]);
+
+  useEffect(() => {
+    if (boostPhase === 'progress' || boostPhase === 'active') {
+      setTab('boost');
     }
   }, [boostPhase]);
 
   useEffect(() => {
-    if (boostPhase === "idle" && tab === "boost") {
-      setTab("games");
+    if (boostPhase === 'idle' && tab === 'boost') {
+      setTab('games');
     }
   }, [boostPhase, tab]);
 
   const handleBoostGame = async (game: Game) => {
     if (isBoosting && selectedGame?.id !== game.id) return;
     setSelectedGame(game);
-    const currentPing = typeof pingEntry?.ms === "number" ? pingEntry.ms : undefined;
+    const currentPing =
+      typeof pingEntry?.ms === 'number' ? pingEntry.ms : undefined;
     const currentHistory = pingHistoryForServer;
     const currentJitter =
-      currentHistory.length > 1 ? Math.round(computeJitter(currentHistory.slice(-8).map((item) => item.ms))) : undefined;
+      currentHistory.length > 1
+        ? Math.round(
+            computeJitter(currentHistory.slice(-8).map(item => item.ms)),
+          )
+        : undefined;
     const initialServer =
-      selectedServer && selectedServer.id !== "auto" ? selectedServer : availableServers[0];
+      selectedServer && selectedServer.id !== 'auto'
+        ? selectedServer
+        : availableServers[0];
     let server = initialServer;
     if (!server) return;
     setSelectedServer(server);
     setIsBoosting(true);
-    setBoostPhase("progress");
+    setBoostPhase('progress');
     setBoostProgress(0);
     progressStartRef.current = null;
-    setTab("boost");
+    setTab('boost');
     const optimization = await fetchOptimizationProfile({
       gameId: game.packageName ?? game.id,
       clientPingMs: currentPing,
       jitterMs: currentJitter,
       networkType: networkInfo?.type,
-      country: selectedServer?.country
+      country: selectedServer?.country,
     });
     setOptimizationProfile(optimization);
     const fetchedTunnelConfig = await fetchTunnelConfig({
       gameId: game.id,
       packageName: game.packageName ?? undefined,
       preferredRegion: server.region,
-      networkType: networkInfo?.type
+      networkType: networkInfo?.type,
     });
     setTunnelConfig(fetchedTunnelConfig);
     ensureBackgroundOptimization().catch(() => {});
     const notificationOk = await ensureNotificationPermission();
     if (!notificationOk) {
       setIsBoosting(false);
-      setBoostPhase("idle");
+      setBoostPhase('idle');
       setBoostProgress(0);
       return;
     }
@@ -678,14 +806,14 @@ export default function App() {
     const measured = await measureServer(server, 2, game);
     try {
       const ping =
-        typeof measured?.ms === "number"
+        typeof measured?.ms === 'number'
           ? measured.ms
           : pingMapRef.current[server.id]?.ms ?? -1;
       await startBoostService(
         game.name,
-        game.packageName ?? "",
+        game.packageName ?? '',
         server.name,
-        typeof ping === "number" ? ping : -1
+        typeof ping === 'number' ? ping : -1,
       );
       if (fetchedTunnelConfig?.supported) {
         const vpnPrepared = await prepareVpn();
@@ -694,8 +822,8 @@ export default function App() {
             game.name,
             fetchedTunnelConfig.relay.host,
             fetchedTunnelConfig.relay.port,
-            fetchedTunnelConfig.relay.path ?? "/relay/socket",
-            fetchedTunnelConfig.relay.token
+            fetchedTunnelConfig.relay.path ?? '/relay/socket',
+            fetchedTunnelConfig.relay.token,
           );
         }
       }
@@ -709,9 +837,12 @@ export default function App() {
 
   const handleStop = async () => {
     setIsBoosting(false);
-    setBoostPhase("idle");
+    setBoostPhase('idle');
     setBoostProgress(0);
     setOptimizationProfile(null);
+    setBoostStartTime(undefined);
+    setJitterMs(0);
+    setPacketLossPct(0);
     progressStartRef.current = null;
     if (autoOpenTimer.current) {
       clearTimeout(autoOpenTimer.current);
@@ -722,7 +853,7 @@ export default function App() {
     launchedRef.current = null;
     setLockedServerId(null);
     setTunnelConfig(null);
-    setTab("games");
+    setTab('games');
     if (selectedGame?.name) {
       const key = `stop:${selectedGame.name}`;
       if (spokenRef.current !== key) {
@@ -732,33 +863,47 @@ export default function App() {
     }
   };
 
-  const measureTarget = async (host: string, port: number, timeoutMs: number, retries: number) => {
+  const measureTarget = async (
+    host: string,
+    port: number,
+    timeoutMs: number,
+    retries: number,
+  ) => {
     const samples: number[] = [];
-    let lastError = "timeout";
+    let lastError = 'timeout';
     for (let attempt = 0; attempt <= retries; attempt += 1) {
       try {
         const pingResult = await tcpPing(host, port, timeoutMs);
-        if (typeof pingResult.ms === "number" && pingResult.ms > 0 && pingResult.ms < 5000) {
+        if (
+          typeof pingResult.ms === 'number' &&
+          pingResult.ms > 0 &&
+          pingResult.ms < 5000
+        ) {
           samples.push(pingResult.ms);
         } else if (pingResult.error) {
           lastError = pingResult.error;
         }
       } catch (err: any) {
-        lastError = err?.message ?? "connection error";
+        lastError = err?.message ?? 'connection error';
       }
     }
-    return { samples, lastError };
+    return {samples, lastError};
   };
 
   const measureBaselineNetwork = async (timeoutMs: number) => {
     const baselineTargets = [
-      { host: "1.1.1.1", port: 443 },
-      { host: "8.8.8.8", port: 443 }
+      {host: '1.1.1.1', port: 443},
+      {host: '8.8.8.8', port: 443},
     ];
     const allSamples: number[] = [];
-    let lastError = "baseline timeout";
+    let lastError = 'baseline timeout';
     for (const target of baselineTargets) {
-      const measurement = await measureTarget(target.host, target.port, timeoutMs, 0);
+      const measurement = await measureTarget(
+        target.host,
+        target.port,
+        timeoutMs,
+        0,
+      );
       if (measurement.samples.length) {
         allSamples.push(...measurement.samples);
       }
@@ -766,156 +911,178 @@ export default function App() {
         lastError = measurement.lastError;
       }
     }
-    return { samples: allSamples, lastError };
+    return {samples: allSamples, lastError};
   };
 
-  const measureServer = async (server: Server, retries = 2, gameOverride?: Game | null) => {
+  const measureServer = async (
+    server: Server,
+    retries = 2,
+    gameOverride?: Game | null,
+  ) => {
     if (!server || scanRunningRef.current) {
       return undefined;
     }
 
     scanRunningRef.current = true;
-    let netInfo: Awaited<ReturnType<typeof getDetailedNetworkInfo>> | null = null;
+    let netInfo: Awaited<ReturnType<typeof getDetailedNetworkInfo>> | null =
+      null;
 
     try {
       netInfo = await getDetailedNetworkInfo();
       traceMeasure(
-        `start server=${server.id} name=${server.name} type=${netInfo.type} connected=${String(
-          netInfo.isConnected
-        )} speed=${String(netInfo.connectionSpeed)}`
+        `start server=${server.id} name=${server.name} type=${
+          netInfo.type
+        } connected=${String(netInfo.isConnected)} speed=${String(
+          netInfo.connectionSpeed,
+        )}`,
       );
 
       let baseTimeout = 2000;
-      if (netInfo.type === "wifi") {
+      if (netInfo.type === 'wifi') {
         if (netInfo.strength && netInfo.strength > -60) {
           baseTimeout = 1500;
         } else {
           baseTimeout = 2500;
         }
-      } else if (netInfo.type === "cellular") {
-        if (netInfo.cellularGeneration === "5g") baseTimeout = 2000;
-        else if (netInfo.cellularGeneration === "4g") baseTimeout = 2500;
+      } else if (netInfo.type === 'cellular') {
+        if (netInfo.cellularGeneration === '5g') baseTimeout = 2000;
+        else if (netInfo.cellularGeneration === '4g') baseTimeout = 2500;
         else baseTimeout = 3000;
       }
 
-      if (typeof netInfo.connectionSpeed === "number" && netInfo.connectionSpeed > 0) {
-        if (netInfo.connectionSpeed >= 50) baseTimeout = Math.min(baseTimeout, 1500);
-        else if (netInfo.connectionSpeed <= 5) baseTimeout = Math.max(baseTimeout, 3000);
+      if (
+        typeof netInfo.connectionSpeed === 'number' &&
+        netInfo.connectionSpeed > 0
+      ) {
+        if (netInfo.connectionSpeed >= 50)
+          baseTimeout = Math.min(baseTimeout, 1500);
+        else if (netInfo.connectionSpeed <= 5)
+          baseTimeout = Math.max(baseTimeout, 3000);
       }
 
       const TCP_TIMEOUT = baseTimeout;
       const target = getServerTarget(server);
       if (!target) {
         traceMeasure(`invalid-target server=${server.id}`);
-        return { ms: null, error: "invalid server target" };
+        return {ms: null, error: 'invalid server target'};
       }
 
-      let routeMeasurement =
-        server.pingUrl
-          ? {
-              samples: [] as number[],
-              lastError: "native ping pending"
-            }
-          : await measureTarget(target.host, target.port, TCP_TIMEOUT, retries);
+      let routeMeasurement = server.pingUrl
+        ? {samples: [] as number[], lastError: 'pending'}
+        : await measureTarget(target.host, target.port, TCP_TIMEOUT, retries);
 
       if (server.pingUrl) {
         const httpSamples: number[] = [];
-        let httpError = routeMeasurement.lastError;
+        let httpError = 'no samples';
         const candidateUrls = getPingCandidates(server);
         traceMeasure(
-          `http-candidates server=${server.id} urls=${candidateUrls.join(",") || "none"}`
+          `http-candidates server=${server.id} urls=${
+            candidateUrls.join(',') || 'none'
+          }`,
         );
 
         for (let attempt = 0; attempt <= retries; attempt += 1) {
           let resolved = false;
-          for (const candidateUrl of candidateUrls) {
-            try {
-              const nativeMs = await nativePingUrl(
-                candidateUrl,
-                Math.max(1800, TCP_TIMEOUT + 300)
-              );
+          const backoff = Math.pow(2, attempt) * 100;
+
+          const nativePingPromises = candidateUrls.map(candidateUrl =>
+            nativePingUrl(candidateUrl, Math.max(1800, TCP_TIMEOUT + 300))
+              .then(nativeMs => ({ms: nativeMs, url: candidateUrl}))
+              .catch(error => ({
+                error: error?.message ?? 'native ping failed',
+                url: candidateUrl,
+              })),
+          );
+          const nativeResults = await Promise.all(nativePingPromises);
+          for (const result of nativeResults) {
+            if (
+              typeof result.ms === 'number' &&
+              result.ms > 0 &&
+              result.ms < 5000
+            ) {
+              httpSamples.push(result.ms);
+              resolved = true;
               traceMeasure(
-                `native-ping server=${server.id} attempt=${attempt} url=${candidateUrl} ms=${String(
-                  nativeMs
-                )}`
+                `native-ping server=${server.id} attempt=${attempt} url=${
+                  result.url
+                } ms=${String(result.ms)}`,
               );
-              if (typeof nativeMs === "number" && nativeMs > 0 && nativeMs < 5000) {
-                httpSamples.push(nativeMs);
-                resolved = true;
-                break;
-              }
-            } catch (error: any) {
-              httpError = error?.message ?? "native ping failed";
+              break;
+            } else if (result.error) {
+              httpError = result.error;
               traceMeasure(
-                `native-ping-error server=${server.id} attempt=${attempt} url=${candidateUrl} error=${httpError}`
+                `native-ping-error server=${server.id} attempt=${attempt} url=${result.url} error=${httpError}`,
               );
             }
           }
+          if (resolved) break;
 
-          if (resolved) {
-            continue;
-          }
-
-          for (const candidateUrl of candidateUrls) {
-            try {
-              const result = await httpPing(
-                candidateUrl,
-                Math.max(1800, TCP_TIMEOUT + 300)
-              );
+          const httpPingPromises = candidateUrls.map(candidateUrl =>
+            httpPing(candidateUrl, Math.max(1800, TCP_TIMEOUT + 300))
+              .then(result => ({...result, url: candidateUrl}))
+              .catch(error => ({
+                error: error?.message ?? 'http ping failed',
+                url: candidateUrl,
+              })),
+          );
+          const httpResults = await Promise.all(httpPingPromises);
+          for (const result of httpResults) {
+            if (
+              typeof result.ms === 'number' &&
+              result.ms > 0 &&
+              result.ms < 5000
+            ) {
+              httpSamples.push(result.ms);
+              resolved = true;
               traceMeasure(
-                `http-ping server=${server.id} attempt=${attempt} url=${candidateUrl} ms=${String(
-                  result.ms
-                )} error=${String(result.error)}`
+                `http-ping server=${server.id} attempt=${attempt} url=${
+                  result.url
+                } ms=${String(result.ms)}`,
               );
-              if (typeof result.ms === "number" && result.ms > 0 && result.ms < 5000) {
-                httpSamples.push(result.ms);
-                resolved = true;
-                break;
-              }
-              if (result.error) {
-                httpError = result.error;
-              }
-            } catch (error: any) {
-              httpError = error?.message ?? "http ping failed";
+              break;
+            }
+            if (result.error) {
+              httpError = result.error;
               traceMeasure(
-                `http-ping-error server=${server.id} attempt=${attempt} url=${candidateUrl} error=${httpError}`
+                `http-ping-error server=${server.id} attempt=${attempt} url=${result.url} error=${httpError}`,
               );
             }
+          }
+          if (!resolved && attempt < retries) {
+            await new Promise(res => setTimeout(res, backoff));
           }
         }
 
         routeMeasurement = {
           samples: httpSamples,
-          lastError: httpError
+          lastError: httpSamples.length ? undefined : httpError,
         };
       }
 
-      if (!routeMeasurement.samples.length) {
-        traceMeasure(`fallback-tcp server=${server.id} host=${target.host} port=${target.port}`);
-        routeMeasurement = await measureTarget(target.host, target.port, TCP_TIMEOUT, retries);
-      }
-
-      const baselineMeasurement = await measureBaselineNetwork(Math.min(1800, TCP_TIMEOUT));
-
-      const gameTargets = getGameTargets(gameOverride ?? selectedGame).slice(0, 2);
+      const gameTargets = getGameTargets(gameOverride);
       let gameSamples: number[] = [];
       for (const gameTarget of gameTargets) {
         const measurement = await measureTarget(
           gameTarget.host,
           gameTarget.port,
           Math.min(2500, TCP_TIMEOUT + 500),
-          0
+          0,
         );
         gameSamples = gameSamples.concat(measurement.samples);
       }
 
+      const baselineMeasurement = await measureBaselineNetwork(TCP_TIMEOUT);
+
       const routeMs = filteredAverage(routeMeasurement.samples);
       const gameMs = filteredAverage(gameSamples);
-      const combinedSamples = [...routeMeasurement.samples, ...gameSamples];
       traceMeasure(
-        `samples server=${server.id} route=${JSON.stringify(routeMeasurement.samples)} baseline=${JSON.stringify(
-          baselineMeasurement.samples
-        )} game=${JSON.stringify(gameSamples)} routeMs=${String(routeMs)} gameMs=${String(gameMs)}`
+        `samples server=${server.id} route=${JSON.stringify(
+          routeMeasurement.samples,
+        )} baseline=${JSON.stringify(
+          baselineMeasurement.samples,
+        )} game=${JSON.stringify(gameSamples)} routeMs=${String(
+          routeMs,
+        )} gameMs=${String(gameMs)}`,
       );
 
       if (routeMs !== null || gameMs !== null) {
@@ -925,12 +1092,13 @@ export default function App() {
         const baselineOnly = baselineMeasurement.samples.length
           ? Math.round(Math.min(...baselineMeasurement.samples))
           : null;
-        const fallbackOnly = typeof gameMs === "number" ? Math.round(gameMs) : null;
+        const fallbackOnly =
+          typeof gameMs === 'number' ? Math.round(gameMs) : null;
         const stabilizedMs = Math.max(
           1,
           baselineOnly !== null
             ? Math.min(routeOnly ?? baselineOnly, baselineOnly)
-            : routeOnly ?? fallbackOnly ?? 1
+            : routeOnly ?? fallbackOnly ?? 1,
         );
 
         let estimatedSpeed = 0;
@@ -945,62 +1113,109 @@ export default function App() {
         errorCountRef.current = 0;
 
         const quality = await getConnectionQuality();
-
         const currentNetworkType = netInfo?.type;
+
+        const prevEma = emaRef.current[server.id];
+        const emaMs =
+          prevEma !== undefined
+            ? Math.round(EMA_ALPHA * stabilizedMs + (1 - EMA_ALPHA) * prevEma)
+            : stabilizedMs;
+        emaRef.current[server.id] = emaMs;
+
+        const counts = pingAttemptCountRef.current[server.id] ?? {
+          total: 0,
+          failed: 0,
+        };
+        counts.total += 1;
+        pingAttemptCountRef.current[server.id] = counts;
+
+        const lossForServer =
+          counts.total > 0
+            ? Math.round((counts.failed / counts.total) * 100)
+            : 0;
+        const jitterForServer = computeJitter(routeMeasurement.samples);
+
+        if (server.id === selectedServerRef.current?.id) {
+          setJitterMs(Math.round(jitterForServer));
+          setPacketLossPct(lossForServer);
+        }
+
         const pingWithContext: PingEntry = {
-          ms: stabilizedMs,
+          ms: emaMs,
           updatedAt: Date.now(),
           error: undefined,
           networkType: currentNetworkType,
           connectionQuality: quality,
-          estimatedSpeed
+          estimatedSpeed,
         };
 
-        setPingMap((prev) => ({
+        setPingMap(prev => ({
           ...prev,
-          [server.id]: pingWithContext
+          [server.id]: pingWithContext,
         }));
-        traceMeasure(`set-ping-map server=${server.id} ms=${stabilizedMs}`);
+        traceMeasure(
+          `set-ping-map server=${server.id} raw=${stabilizedMs} ema=${emaMs}`,
+        );
 
-        setPingHistory((prev) => {
+        setPingHistory(prev => {
           const next = prev[server.id] ? [...prev[server.id]] : [];
           next.push({
-            ms: stabilizedMs,
+            ms: emaMs,
             t: Date.now(),
             networkType: currentNetworkType,
-            estimatedSpeed
+            estimatedSpeed,
           });
-          return { ...prev, [server.id]: next.slice(-180) };
+          return {...prev, [server.id]: next.slice(-240)};
         });
 
-        if (isBoostingRef.current && selectedGame && selectedServer && boostPhase === "active") {
+        if (
+          isBoostingRef.current &&
+          selectedGame &&
+          selectedServer &&
+          boostPhase === 'active'
+        ) {
           startBoostService(
             selectedGame.name,
-            selectedGame.packageName ?? "",
+            selectedGame.packageName ?? '',
             selectedServer.name,
-            stabilizedMs
+            emaMs,
           ).catch(() => {});
         }
 
-        const jitterMs = computeJitter(routeMeasurement.samples);
-        return { ms: stabilizedMs, routeMs, gameMs, jitterMs };
+        return {ms: emaMs, routeMs, gameMs, jitterMs: jitterForServer};
       }
 
       errorCountRef.current += 1;
+      const countsF = pingAttemptCountRef.current[server.id] ?? {
+        total: 0,
+        failed: 0,
+      };
+      countsF.total += 1;
+      countsF.failed += 1;
+      pingAttemptCountRef.current[server.id] = countsF;
+      if (server.id === selectedServerRef.current?.id) {
+        const lossF =
+          countsF.total > 0
+            ? Math.round((countsF.failed / countsF.total) * 100)
+            : 0;
+        setPacketLossPct(lossF);
+      }
       traceMeasure(
-        `measure-failed server=${server.id} error=${routeMeasurement.lastError || "all retries failed"}`
+        `measure-failed server=${server.id} error=${
+          routeMeasurement.lastError || 'all retries failed'
+        }`,
       );
-      setPingMap((prev) => {
+      setPingMap(prev => {
         const existing = prev[server.id];
-        if (typeof existing?.ms === "number") {
+        if (typeof existing?.ms === 'number') {
           return {
             ...prev,
             [server.id]: {
               ...existing,
               updatedAt: Date.now(),
               error: undefined,
-              networkType: netInfo?.type
-            }
+              networkType: netInfo?.type,
+            },
           };
         }
         return {
@@ -1008,27 +1223,31 @@ export default function App() {
           [server.id]: {
             ms: null,
             updatedAt: Date.now(),
-            error: routeMeasurement.lastError || "all retries failed",
-            networkType: netInfo?.type
-          }
+            error: routeMeasurement.lastError || 'all retries failed',
+            networkType: netInfo?.type,
+          },
         };
       });
 
-      return { ms: null, error: routeMeasurement.lastError };
+      return {ms: null, error: routeMeasurement.lastError};
     } catch (error: any) {
       errorCountRef.current += 1;
-      traceMeasure(`measure-exception server=${server.id} error=${error?.message ?? "measurement failed"}`);
-      setPingMap((prev) => {
+      traceMeasure(
+        `measure-exception server=${server.id} error=${
+          error?.message ?? 'measurement failed'
+        }`,
+      );
+      setPingMap(prev => {
         const existing = prev[server.id];
-        if (typeof existing?.ms === "number") {
+        if (typeof existing?.ms === 'number') {
           return {
             ...prev,
             [server.id]: {
               ...existing,
               updatedAt: Date.now(),
               error: undefined,
-              networkType: netInfo?.type
-            }
+              networkType: netInfo?.type,
+            },
           };
         }
         return {
@@ -1036,29 +1255,52 @@ export default function App() {
           [server.id]: {
             ms: null,
             updatedAt: Date.now(),
-            error: error?.message ?? "measurement failed",
-            networkType: netInfo?.type
-          }
+            error: error?.message ?? 'measurement failed',
+            networkType: netInfo?.type,
+          },
         };
       });
-      return { ms: null, error: error?.message ?? "measurement failed" };
+      return {ms: null, error: error?.message ?? 'measurement failed'};
     } finally {
       scanRunningRef.current = false;
     }
   };
 
   const findBestServer = async (game: Game | null) => {
-    let best: { server: Server; score: number; ping: number } | null = null;
+    let best: {server: Server; score: number; ping: number} | null = null;
     for (const server of availableServers) {
       const measurement = await measureServer(server, 1, game);
-      if (typeof measurement?.ms !== "number") continue;
+      if (typeof measurement?.ms !== 'number') continue;
       const score = scoreServer(server.id, measurement.ms);
       if (!best || score < best.score) {
-        best = { server, score, ping: measurement.ms };
+        best = {server, score, ping: measurement.ms};
       }
     }
     return best;
   };
+
+  const measureServerRef = useRef<
+    (
+      server: Server,
+      retries?: number,
+      gameOverride?: Game | null,
+    ) => Promise<
+      | {
+          ms: number | null;
+          error?: string;
+          routeMs?: number;
+          gameMs?: number;
+          jitterMs?: number;
+        }
+      | undefined
+    >
+  >();
+
+  useEffect(() => {
+    measureServerRef.current = measureServer;
+    scanBestServerRef.current = scanBestServer;
+    handleStopRef.current = handleStop;
+  });
 
   const scanBestServer = async () => {
     if (lockRunningRef.current) return;
@@ -1066,7 +1308,10 @@ export default function App() {
     const best = await findBestServer(selectedGame);
 
     if (best) {
-      if (!selectedServerRef.current || selectedServerRef.current.id !== best.server.id) {
+      if (
+        !selectedServerRef.current ||
+        selectedServerRef.current.id !== best.server.id
+      ) {
         setSelectedServer(best.server);
       }
       setLockedServerId(best.server.id);
@@ -1074,10 +1319,11 @@ export default function App() {
 
     if (
       best &&
-      boostPhase === "progress" &&
+      boostPhase === 'progress' &&
       best.ping > 0 &&
       best.ping <= TARGET_PING_MS &&
-      (pingHistoryRef.current[best.server.id]?.length ?? 0) >= TARGET_PING_SAMPLES &&
+      (pingHistoryRef.current[best.server.id]?.length ?? 0) >=
+        TARGET_PING_SAMPLES &&
       canFinishProgress()
     ) {
       if (progressTimer.current) {
@@ -1089,16 +1335,16 @@ export default function App() {
         progressCompleteTimer.current = null;
       }
       setBoostProgress(100);
-      if (isBoostingRef.current) setBoostPhase("active");
+      if (isBoostingRef.current) setBoostPhase('active');
     }
     lockRunningRef.current = false;
   };
 
   const ensureNotificationPermission = async () => {
-    if (Platform.OS !== "android") return true;
+    if (Platform.OS !== 'android') return true;
     if (Platform.Version < 33) return true;
     const alreadyGranted = await PermissionsAndroid.check(
-      PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS
+      PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
     );
     if (alreadyGranted) return true;
     if (notificationAskedRef.current) {
@@ -1107,7 +1353,7 @@ export default function App() {
     }
     notificationAskedRef.current = true;
     const result = await PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS
+      PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
     );
     if (result === PermissionsAndroid.RESULTS.GRANTED) return true;
     Linking.openSettings();
@@ -1115,33 +1361,35 @@ export default function App() {
   };
 
   const speak = (text: string) => {
-    Tts.speak(
-      text,
-      {
-        androidParams: {
-          KEY_PARAM_VOLUME: 0.2
-        }
-      } as any
-    );
+    Tts.speak(text, {
+      androidParams: {
+        KEY_PARAM_VOLUME: 0.2,
+      },
+    } as any);
   };
 
   const activeServer = useMemo(() => {
     if (lockedServerId) {
-      const lockedServer = availableServers.find((server) => server.id === lockedServerId);
+      const lockedServer = availableServers.find(
+        server => server.id === lockedServerId,
+      );
       if (lockedServer) {
         return lockedServer;
       }
     }
-    if (selectedServer && selectedServer.id !== "auto") {
+    if (selectedServer && selectedServer.id !== 'auto') {
       return selectedServer;
     }
     const freshestEntry = Object.entries(pingMap)
-      .filter(([, entry]) => typeof entry?.ms === "number")
+      .filter(([, entry]) => typeof entry?.ms === 'number')
       .sort((a, b) => (b[1]?.updatedAt ?? 0) - (a[1]?.updatedAt ?? 0))[0];
     if (!freshestEntry) {
       return selectedServer;
     }
-    return availableServers.find((server) => server.id === freshestEntry[0]) ?? selectedServer;
+    return (
+      availableServers.find(server => server.id === freshestEntry[0]) ??
+      selectedServer
+    );
   }, [availableServers, lockedServerId, pingMap, selectedServer]);
 
   const pingEntry = useMemo(() => {
@@ -1159,7 +1407,7 @@ export default function App() {
       <StatusBar barStyle="light-content" />
       <View style={styles.container}>
         <View style={styles.screen}>
-          {tab === "games" ? (
+          {tab === 'games' ? (
             <GamesScreen
               games={games}
               selectedGame={selectedGame}
@@ -1168,14 +1416,14 @@ export default function App() {
               lockedServerId={lockedServerId}
               onBoost={handleBoostGame}
               onOpenBoost={() => {
-                if (boostPhase !== "idle") setTab("boost");
+                if (boostPhase !== 'idle') setTab('boost');
               }}
               onOpenSettings={() => setSettingsOpen(true)}
               networkInfo={networkInfo}
             />
           ) : null}
 
-          {tab === "boost" ? (
+          {tab === 'boost' ? (
             <BoostStatusScreen
               selectedGame={selectedGame}
               selectedServer={activeServer}
@@ -1184,6 +1432,9 @@ export default function App() {
               boostProgress={boostProgress}
               pingEntry={pingEntry}
               pingHistory={pingHistoryForServer}
+              boostStartTime={boostStartTime}
+              jitterMs={jitterMs}
+              packetLossPct={packetLossPct}
               games={games}
               onSelectGame={handleBoostGame}
               isConnected={isConnected}
@@ -1210,7 +1461,7 @@ export default function App() {
         <BottomNav
           active={tab}
           onChange={setTab}
-          canOpenBoost={boostPhase !== "idle"}
+          canOpenBoost={boostPhase !== 'idle'}
         />
       </View>
     </SafeAreaView>
@@ -1220,15 +1471,15 @@ export default function App() {
 const styles = StyleSheet.create({
   safe: {
     flex: 1,
-    backgroundColor: theme.colors.bg
+    backgroundColor: theme.colors.bg,
   },
   container: {
     flex: 1,
-    backgroundColor: theme.colors.bg
+    backgroundColor: theme.colors.bg,
   },
   screen: {
     flex: 1,
     padding: theme.spacing.lg,
-    paddingBottom: 10
-  }
+    paddingBottom: 10,
+  },
 });

@@ -1,4 +1,4 @@
-import { NativeModules, Platform } from "react-native";
+import {NativeModules, Platform} from 'react-native';
 
 export type InstalledApp = {
   packageName: string;
@@ -10,19 +10,21 @@ export type InstalledApp = {
 const NativeInstalledApps = NativeModules.InstalledApps;
 
 export async function getInstalledGames(): Promise<InstalledApp[]> {
-  if (Platform.OS !== "android") return [];
+  if (Platform.OS !== 'android') return [];
   if (!NativeInstalledApps?.getInstalledGames) return [];
   try {
     const apps = await NativeInstalledApps.getInstalledGames();
     if (!Array.isArray(apps)) return [];
-    return apps.filter((app) => app?.packageName && app?.name);
+    return apps.filter(app => app?.packageName && app?.name);
   } catch {
     return [];
   }
 }
 
-export async function launchInstalledApp(packageName: string): Promise<boolean> {
-  if (Platform.OS !== "android") return false;
+export async function launchInstalledApp(
+  packageName: string,
+): Promise<boolean> {
+  if (Platform.OS !== 'android') return false;
   if (!NativeInstalledApps?.launchApp) return false;
   try {
     await NativeInstalledApps.launchApp(packageName);
@@ -36,12 +38,17 @@ export async function startBoostService(
   gameName: string,
   gamePackage: string,
   serverName: string,
-  ping: number
+  ping: number,
 ): Promise<boolean> {
-  if (Platform.OS !== "android") return false;
+  if (Platform.OS !== 'android') return false;
   if (!NativeInstalledApps?.startBoostService) return false;
   try {
-    await NativeInstalledApps.startBoostService(gameName, gamePackage, serverName, ping);
+    await NativeInstalledApps.startBoostService(
+      gameName,
+      gamePackage,
+      serverName,
+      ping,
+    );
     return true;
   } catch {
     return false;
@@ -49,7 +56,7 @@ export async function startBoostService(
 }
 
 export async function stopBoostService(): Promise<boolean> {
-  if (Platform.OS !== "android") return false;
+  if (Platform.OS !== 'android') return false;
   if (!NativeInstalledApps?.stopBoostService) return false;
   try {
     await NativeInstalledApps.stopBoostService();
@@ -66,7 +73,7 @@ export async function getBoostState(): Promise<{
   serverName: string;
   startTime: number;
 } | null> {
-  if (Platform.OS !== "android") return null;
+  if (Platform.OS !== 'android') return null;
   if (!NativeInstalledApps?.getBoostState) return null;
   try {
     return await NativeInstalledApps.getBoostState();
@@ -76,7 +83,7 @@ export async function getBoostState(): Promise<{
 }
 
 export async function clearBoostState(): Promise<boolean> {
-  if (Platform.OS !== "android") return false;
+  if (Platform.OS !== 'android') return false;
   if (!NativeInstalledApps?.clearBoostState) return false;
   try {
     await NativeInstalledApps.clearBoostState();
@@ -87,7 +94,7 @@ export async function clearBoostState(): Promise<boolean> {
 }
 
 export async function prepareVpn(): Promise<boolean> {
-  if (Platform.OS !== "android") return false;
+  if (Platform.OS !== 'android') return false;
   if (!NativeInstalledApps?.prepareVpn) return false;
   try {
     return await NativeInstalledApps.prepareVpn();
@@ -97,7 +104,7 @@ export async function prepareVpn(): Promise<boolean> {
 }
 
 export async function startVpnService(gameName: string): Promise<boolean> {
-  if (Platform.OS !== "android") return false;
+  if (Platform.OS !== 'android') return false;
   if (!NativeInstalledApps?.startVpnService) return false;
   try {
     await NativeInstalledApps.startVpnService(gameName);
@@ -112,9 +119,9 @@ export async function startVpnRelayService(
   relayHost: string,
   relayPort: number,
   relayPath: string,
-  relayToken: string
+  relayToken: string,
 ): Promise<boolean> {
-  if (Platform.OS !== "android") return false;
+  if (Platform.OS !== 'android') return false;
   if (!NativeInstalledApps?.startVpnRelayService) return false;
   try {
     await NativeInstalledApps.startVpnRelayService(
@@ -122,7 +129,7 @@ export async function startVpnRelayService(
       relayHost,
       relayPort,
       relayPath,
-      relayToken
+      relayToken,
     );
     return true;
   } catch {
@@ -131,7 +138,7 @@ export async function startVpnRelayService(
 }
 
 export async function stopVpnService(): Promise<boolean> {
-  if (Platform.OS !== "android") return false;
+  if (Platform.OS !== 'android') return false;
   if (!NativeInstalledApps?.stopVpnService) return false;
   try {
     await NativeInstalledApps.stopVpnService();
@@ -150,7 +157,7 @@ export async function getVpnState(): Promise<{
   relayPath?: string;
   relayConnected?: boolean;
 } | null> {
-  if (Platform.OS !== "android") return null;
+  if (Platform.OS !== 'android') return null;
   if (!NativeInstalledApps?.getVpnState) return null;
   try {
     return await NativeInstalledApps.getVpnState();
@@ -160,7 +167,7 @@ export async function getVpnState(): Promise<{
 }
 
 export async function openDataSettings(): Promise<boolean> {
-  if (Platform.OS !== "android") return false;
+  if (Platform.OS !== 'android') return false;
   if (!NativeInstalledApps?.openDataSettings) return false;
   try {
     await NativeInstalledApps.openDataSettings();
@@ -171,7 +178,7 @@ export async function openDataSettings(): Promise<boolean> {
 }
 
 export async function setMediaVolume(level: number): Promise<boolean> {
-  if (Platform.OS !== "android") return false;
+  if (Platform.OS !== 'android') return false;
   if (!NativeInstalledApps?.setMediaVolume) return false;
   try {
     await NativeInstalledApps.setMediaVolume(level);
@@ -181,19 +188,22 @@ export async function setMediaVolume(level: number): Promise<boolean> {
   }
 }
 
-export async function pingUrl(url: string, timeoutMs: number): Promise<number | null> {
-  if (Platform.OS !== "android") return null;
+export async function pingUrl(
+  url: string,
+  timeoutMs: number,
+): Promise<number | null> {
+  if (Platform.OS !== 'android') return null;
   if (!NativeInstalledApps?.pingUrl) return null;
   try {
     const result = await NativeInstalledApps.pingUrl(url, timeoutMs);
-    return typeof result === "number" && result > 0 ? result : null;
+    return typeof result === 'number' && result > 0 ? result : null;
   } catch {
     return null;
   }
 }
 
 export async function isIgnoringBatteryOptimizations(): Promise<boolean> {
-  if (Platform.OS !== "android") return true;
+  if (Platform.OS !== 'android') return true;
   if (!NativeInstalledApps?.isIgnoringBatteryOptimizations) return true;
   try {
     return await NativeInstalledApps.isIgnoringBatteryOptimizations();
@@ -203,7 +213,7 @@ export async function isIgnoringBatteryOptimizations(): Promise<boolean> {
 }
 
 export async function openBatteryOptimizationSettings(): Promise<boolean> {
-  if (Platform.OS !== "android") return false;
+  if (Platform.OS !== 'android') return false;
   if (!NativeInstalledApps?.openBatteryOptimizationSettings) return false;
   try {
     await NativeInstalledApps.openBatteryOptimizationSettings();
@@ -214,7 +224,7 @@ export async function openBatteryOptimizationSettings(): Promise<boolean> {
 }
 
 export async function writeErrorLog(message: string): Promise<boolean> {
-  if (Platform.OS !== "android") return false;
+  if (Platform.OS !== 'android') return false;
   if (!NativeInstalledApps?.writeErrorLog) return false;
   try {
     await NativeInstalledApps.writeErrorLog(message);
@@ -225,7 +235,7 @@ export async function writeErrorLog(message: string): Promise<boolean> {
 }
 
 export async function shareErrorLog(): Promise<boolean> {
-  if (Platform.OS !== "android") return false;
+  if (Platform.OS !== 'android') return false;
   if (!NativeInstalledApps?.shareErrorLog) return false;
   try {
     await NativeInstalledApps.shareErrorLog();
@@ -236,7 +246,7 @@ export async function shareErrorLog(): Promise<boolean> {
 }
 
 export async function playGoodSound(): Promise<boolean> {
-  if (Platform.OS !== "android") return false;
+  if (Platform.OS !== 'android') return false;
   if (!NativeInstalledApps?.playGoodSound) return false;
   try {
     await NativeInstalledApps.playGoodSound();
@@ -247,7 +257,7 @@ export async function playGoodSound(): Promise<boolean> {
 }
 
 export async function playBadSound(): Promise<boolean> {
-  if (Platform.OS !== "android") return false;
+  if (Platform.OS !== 'android') return false;
   if (!NativeInstalledApps?.playBadSound) return false;
   try {
     await NativeInstalledApps.playBadSound();

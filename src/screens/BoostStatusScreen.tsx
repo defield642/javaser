@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef } from "react";
+import React, {useEffect, useMemo, useRef} from 'react';
 import {
   View,
   Text,
@@ -7,15 +7,23 @@ import {
   ScrollView,
   Image,
   Animated,
-  Easing
-} from "react-native";
-import Svg, { Path, Defs, LinearGradient, Stop, Circle } from "react-native-svg";
-import { theme } from "../theme";
-import type { Game } from "../data/games";
-import type { Server } from "../data/servers";
-import type { PingEntry } from "../types/ping";
+  Easing,
+  Dimensions,
+} from 'react-native';
+import Svg, {
+  Path,
+  Defs,
+  LinearGradient,
+  Stop,
+  Circle,
+  Line,
+} from 'react-native-svg';
+import {theme} from '../theme';
+import type {Game} from '../data/games';
+import type {Server} from '../data/servers';
+import type {PingEntry} from '../types/ping';
 
-type BoostPhase = "idle" | "progress" | "active";
+type BoostPhase = 'idle' | 'progress' | 'active';
 
 type Props = {
   selectedGame: Game | null;
@@ -24,7 +32,8 @@ type Props = {
   boostPhase: BoostPhase;
   boostProgress: number;
   pingEntry: PingEntry | undefined;
-  pingHistory: { ms: number; t: number }[];
+  pingHistory: {ms: number; t: number}[];
+  boostStartTime?: number;
   games: Game[];
   onSelectGame: (game: Game) => void;
   isConnected: boolean;
@@ -47,6 +56,48 @@ type Props = {
     isConnected?: boolean;
     connectionSpeed?: number | null;
   } | null;
+  jitterMs?: number;
+  packetLossPct?: number;
+};
+
+const SCREEN_WIDTH = Dimensions.get('window').width;
+const CHART_H_PAD = 44;
+const CHART_WIDTH = SCREEN_WIDTH - CHART_H_PAD * 2 - 32;
+const CHART_HEIGHT = 120;
+
+function pingColor(ms: number): string {
+  if (ms < 60) return '#00D68F';
+  if (ms < 100) return '#FFAA00';
+  return '#FF4D6D';
+}
+
+function pingQualityLabel(ms: number): string {
+  if (ms < 40) return 'Excellent';
+  if (ms < 70) return 'Good';
+  if (ms < 100) return 'Fair';
+  if (ms < 150) return 'Poor';
+  return 'Bad';
+}
+
+const fmt = (n: number) => String(n.toFixed(1));
+
+const buildSpline = (pts: {x: number; y: number}[]) => {
+  if (pts.length < 2) return '';
+  let d = `M${fmt(pts[0].x)},${fmt(pts[0].y)}`;
+  for (let i = 0; i < pts.length - 1; i++) {
+    const p0 = pts[i - 1] || pts[i];
+    const p1 = pts[i];
+    const p2 = pts[i + 1];
+    const p3 = pts[i + 2] || p2;
+    const cp1x = p1.x + (p2.x - p0.x) / 6;
+    const cp1y = p1.y + (p2.y - p0.y) / 6;
+    const cp2x = p2.x - (p3.x - p1.x) / 6;
+    const cp2y = p2.y - (p3.y - p1.y) / 6;
+    d += `C${fmt(cp1x)},${fmt(cp1y)},${fmt(cp2x)},${fmt(cp2y)},${fmt(
+      p2.x,
+    )},${fmt(p2.y)}`;
+  }
+  return d;
 };
 
 export const BoostStatusScreen = ({
@@ -60,405 +111,519 @@ export const BoostStatusScreen = ({
   games,
   onSelectGame,
   isConnected,
-  lockedServerId,
   onOpenSettings,
   onOpenGame,
   onStop,
   onShareLogs,
   optimizationProfile,
-  networkInfo
+  networkInfo,
+  jitterMs,
+  packetLossPct,
 }: Props) => {
-  const hasPing = typeof pingEntry?.ms === "number";
-  const pingLabel = hasPing
-    ? `${pingEntry.ms} ms`
-    : !isConnected
-      ? "No network"
-      : pingEntry?.error
-      ? "-"
-      : "Not measured";
+  const hasPing = typeof pingEntry?.ms === 'number';
+  const currentPingMs = hasPing ? (pingEntry?.ms as number) : 0;
 
   const speedLabel = useMemo(() => {
-    if (typeof networkInfo?.connectionSpeed === "number" && networkInfo.connectionSpeed > 0) {
+    if (
+      typeof networkInfo?.connectionSpeed === 'number' &&
+      networkInfo.connectionSpeed > 0
+    ) {
       return `${Math.round(networkInfo.connectionSpeed)} Mbps`;
     }
-    if (!hasPing) return "-";
-    const speed = Math.max(20, Math.min(180, 180 - (pingEntry?.ms ?? 0)));
-    return `${Math.round(speed)} Mbps`;
-  }, [hasPing, networkInfo?.connectionSpeed, pingEntry?.ms]);
+    if (!hasPing) return '—';
+    const ms = currentPingMs;
+    if (ms < 20) return '100+ Mbps';
+    if (ms < 40) return '~50 Mbps';
+    if (ms < 70) return '~25 Mbps';
+    if (ms < 100) return '~10 Mbps';
+    return '~5 Mbps';
+  }, [hasPing, networkInfo?.connectionSpeed, currentPingMs]);
 
-  const smoothHistory = useMemo(() => {
-    if (!pingHistory.length) return [];
-    const window = 3;
-    return pingHistory.map((sample, index) => {
-      const start = Math.max(0, index - window + 1);
-      const slice = pingHistory.slice(start, index + 1);
-      const sum = slice.reduce((acc, value) => acc + value.ms, 0);
-      return { ms: sum / slice.length, t: sample.t };
-    });
-  }, [pingHistory]);
-  const chartWidth = 280;
-  const chartHeight = 110;
-  const lineColor = "#39C6F4";
-  const downsampleFactor = 5;
-  const displayHistory = useMemo(() => {
-    if (!smoothHistory.length) return [];
-    const windowMs = 3 * 60 * 1000;
-    const endTime = smoothHistory[smoothHistory.length - 1].t;
-    const startTime = endTime - windowMs;
-    const trimmed = smoothHistory.filter((s) => s.t >= startTime);
-    return trimmed.filter((_, index) => index % downsampleFactor === 0);
-  }, [smoothHistory]);
-  const axisMax = displayHistory.length
-    ? Math.max(...displayHistory.map((s) => s.ms), 1)
-    : 0;
-  const axisMin = displayHistory.length
-    ? Math.min(...displayHistory.map((s) => s.ms), axisMax)
-    : 0;
-  const axisMid = displayHistory.length ? (axisMax + axisMin) / 2 : 0;
-  const afterWindow = 6;
-  const averageWithoutOutliers = (values: number[]) => {
-    if (!values.length) return null;
-    const sorted = [...values].sort((a, b) => a - b);
-    const median = sorted[Math.floor(sorted.length / 2)];
-    const filtered = values.filter((value) => Math.abs(value - median) <= Math.max(25, median * 0.35));
-    const stable = filtered.length ? filtered : values;
-    const sum = stable.reduce((acc, value) => acc + value, 0);
-    return sum / stable.length;
-  };
-  const beforeWindow = 6;
-  const beforeAvg = useMemo(() => {
-    if (typeof optimizationProfile?.expectedBeforeMs === "number") {
-      return optimizationProfile.expectedBeforeMs;
-    }
-    if (!pingHistory.length) return typeof pingEntry?.ms === "number" ? pingEntry.ms : null;
-    const firstWindow = pingHistory.slice(0, beforeWindow).map((item) => item.ms);
-    return firstWindow.length ? Math.max(...firstWindow) : null;
-  }, [optimizationProfile?.expectedBeforeMs, pingEntry?.ms, pingHistory]);
-  const afterPing = useMemo(() => {
-    if (typeof optimizationProfile?.expectedAfterMs === "number") {
-      return optimizationProfile.expectedAfterMs;
-    }
-    if (!pingHistory.length) return typeof pingEntry?.ms === "number" ? pingEntry.ms : null;
-    const recent = pingHistory.slice(-afterWindow).map((item) => item.ms);
-    return recent.length ? Math.min(...recent) : pingHistory[pingHistory.length - 1]?.ms ?? null;
-  }, [optimizationProfile?.expectedAfterMs, pingEntry?.ms, pingHistory]);
-  const startTime = pingHistory.length ? pingHistory[0].t : 0;
-  const endTime = displayHistory.length ? displayHistory[displayHistory.length - 1].t : startTime;
-  const windowMs = 3 * 60 * 1000;
-  const windowStart = Math.max(startTime, endTime - windowMs);
-  const formatElapsed = (t: number) => {
-    const elapsedSec = Math.max(0, Math.floor((t - startTime) / 1000));
-    const hours = Math.floor(elapsedSec / 3600);
-    const mins = Math.floor((elapsedSec % 3600) / 60);
-    const secs = elapsedSec % 60;
-    return `${hours.toString().padStart(2, "0")}:${mins
-      .toString()
-      .padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
-  };
-  const points = useMemo(() => {
-    if (!displayHistory.length) return [];
-    const max = Math.max(...displayHistory.map((s) => s.ms), 1);
-    const min = Math.min(...displayHistory.map((s) => s.ms), max);
-    const range = Math.max(20, max - min);
-    return displayHistory.map((sample) => {
-      const x = Math.max(
-        0,
-        Math.min(chartWidth, ((sample.t - windowStart) / windowMs) * chartWidth)
+  const jitterLabel = useMemo(() => {
+    if (typeof jitterMs === 'number' && jitterMs >= 0)
+      return `${Math.round(jitterMs)} ms`;
+    if (pingHistory.length > 2) {
+      const recent = pingHistory.slice(-8).map(s => s.ms);
+      const avg = recent.reduce((a, b) => a + b, 0) / recent.length;
+      const jitter = Math.sqrt(
+        recent.reduce((a, v) => a + Math.pow(v - avg, 2), 0) / recent.length,
       );
-      const y = chartHeight - ((sample.ms - min) / range) * chartHeight;
-      return { x, y };
-    });
-  }, [displayHistory, chartWidth, chartHeight, windowStart, windowMs]);
-
-  const buildPath = (pts: { x: number; y: number }[]) => {
-    if (pts.length < 2) return "";
-    let d = `M ${pts[0].x} ${pts[0].y}`;
-    for (let i = 0; i < pts.length - 1; i += 1) {
-      const p0 = pts[i - 1] || pts[i];
-      const p1 = pts[i];
-      const p2 = pts[i + 1];
-      const p3 = pts[i + 2] || p2;
-      const cp1x = p1.x + (p2.x - p0.x) / 6;
-      const cp1y = p1.y + (p2.y - p0.y) / 6;
-      const cp2x = p2.x - (p3.x - p1.x) / 6;
-      const cp2y = p2.y - (p3.y - p1.y) / 6;
-      d += ` C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${p2.x} ${p2.y}`;
+      return `${Math.round(jitter)} ms`;
     }
-    return d;
-  };
+    return '—';
+  }, [jitterMs, pingHistory]);
 
-  const linePath = useMemo(() => buildPath(points), [points]);
+  const lossLabel = useMemo(() => {
+    if (typeof packetLossPct === 'number')
+      return `${Math.round(packetLossPct)}%`;
+    return '0%';
+  }, [packetLossPct]);
+
+  const emaHistory = useMemo(() => {
+    if (!pingHistory.length) return [];
+    const alpha = 0.3;
+    const result: {ms: number; t: number}[] = [];
+    let ema = pingHistory[0].ms;
+    for (const s of pingHistory) {
+      ema = alpha * s.ms + (1 - alpha) * ema;
+      result.push({ms: ema, t: s.t});
+    }
+    return result;
+  }, [pingHistory]);
+
+  const displayHistory = useMemo(() => {
+    if (!emaHistory.length) return [];
+    const windowMs = 3 * 60 * 1000;
+    const endT = emaHistory[emaHistory.length - 1].t;
+    const startT = endT - windowMs;
+    const trimmed = emaHistory.filter(s => s.t >= startT);
+    if (trimmed.length <= 40) return trimmed;
+    const step = Math.ceil(trimmed.length / 40);
+    return trimmed.filter((_, i) => i % step === 0);
+  }, [emaHistory]);
+
+  const {points, yMin, yMax} = useMemo(() => {
+    if (!displayHistory.length) {
+      return {points: [], yMin: 0, yMax: 200};
+    }
+    const vals = displayHistory.map(s => s.ms);
+    const rawMin = Math.min(...vals);
+    const rawMax = Math.max(...vals);
+    const pad = Math.max(10, (rawMax - rawMin) * 0.2);
+    const yMin = Math.max(0, rawMin - pad);
+    const yMax = rawMax + pad;
+    const range = Math.max(yMax - yMin, 10);
+
+    const endT = displayHistory[displayHistory.length - 1].t;
+    const startT = displayHistory[0].t;
+    const tRange = Math.max(endT - startT, 1);
+
+    const pts = displayHistory.map(s => ({
+      x: ((s.t - startT) / tRange) * CHART_WIDTH,
+      y:
+        CHART_HEIGHT -
+        ((s.ms - yMin) / range) * CHART_HEIGHT * 0.9 -
+        CHART_HEIGHT * 0.05,
+    }));
+
+    return {points: pts, yMin, yMax};
+  }, [displayHistory]);
+
+  const linePath = useMemo(() => buildSpline(points), [points]);
   const areaPath = useMemo(() => {
-    if (points.length < 2) return "";
-    const base = chartHeight;
-    const line = buildPath(points);
-    if (!line) return "";
+    if (points.length < 2 || !linePath) return '';
     const last = points[points.length - 1];
     const first = points[0];
-    return `${line} L ${last.x} ${base} L ${first.x} ${base} Z`;
-  }, [points, chartHeight]);
+    return `${linePath}L${fmt(last.x)},${CHART_HEIGHT}L${fmt(
+      first.x,
+    )},${CHART_HEIGHT}Z`;
+  }, [points, linePath]);
+
+  const currentColor = hasPing ? pingColor(currentPingMs) : theme.colors.accent;
+
+  const beforePing = useMemo(() => {
+    if (typeof optimizationProfile?.expectedBeforeMs === 'number') {
+      return Math.round(optimizationProfile.expectedBeforeMs);
+    }
+    const window = pingHistory.slice(0, 8).map(s => s.ms);
+    if (!window.length)
+      return typeof pingEntry?.ms === 'number' ? pingEntry.ms : null;
+    const sorted = [...window].sort((a, b) => a - b);
+    return Math.round(sorted[Math.floor(sorted.length / 2)]);
+  }, [optimizationProfile?.expectedBeforeMs, pingHistory, pingEntry?.ms]);
+
+  const afterPing = useMemo(() => {
+    if (typeof optimizationProfile?.expectedAfterMs === 'number') {
+      return Math.round(optimizationProfile.expectedAfterMs);
+    }
+    const window = emaHistory.slice(-6).map(s => s.ms);
+    if (!window.length)
+      return typeof pingEntry?.ms === 'number'
+        ? Math.round(pingEntry.ms)
+        : null;
+    const avg = window.reduce((a, b) => a + b, 0) / window.length;
+    return Math.round(avg);
+  }, [optimizationProfile?.expectedAfterMs, emaHistory, pingEntry?.ms]);
+
+  const improvePct = useMemo(() => {
+    if (beforePing === null || afterPing === null || beforePing <= 0)
+      return null;
+    const pct = Math.round(((beforePing - afterPing) / beforePing) * 100);
+    return pct;
+  }, [beforePing, afterPing]);
 
   const pulse = useRef(new Animated.Value(0.4)).current;
-
   useEffect(() => {
     const loop = Animated.loop(
       Animated.sequence([
         Animated.timing(pulse, {
-          toValue: 0.9,
-          duration: 1500,
+          toValue: 1,
+          duration: 900,
           easing: Easing.inOut(Easing.ease),
-          useNativeDriver: true
+          useNativeDriver: true,
         }),
         Animated.timing(pulse, {
           toValue: 0.4,
-          duration: 1500,
+          duration: 900,
           easing: Easing.inOut(Easing.ease),
-          useNativeDriver: true
-        })
-      ])
+          useNativeDriver: true,
+        }),
+      ]),
     );
     loop.start();
     return () => loop.stop();
   }, [pulse]);
 
-  if (boostPhase === "progress") {
-    const ringSize = 210;
-    const ringStroke = 8;
-    const r = (ringSize - ringStroke) / 2;
+  if (boostPhase === 'progress') {
+    const ringSize = 200;
+    const stroke = 10;
+    const r = (ringSize - stroke) / 2;
     const cx = ringSize / 2;
     const cy = ringSize / 2;
-    const halfCircumference = Math.PI * r;
     const ratio = Math.max(0, Math.min(1, boostProgress / 100));
-    const dashOffset = halfCircumference * (1 - ratio);
-    const arcPath = (startAngle: number, endAngle: number, sweep: 0 | 1) => {
-      const toRadians = (deg: number) => (deg * Math.PI) / 180;
-      const start = {
-        x: cx + r * Math.cos(toRadians(startAngle)),
-        y: cy + r * Math.sin(toRadians(startAngle))
-      };
-      const end = {
-        x: cx + r * Math.cos(toRadians(endAngle)),
-        y: cy + r * Math.sin(toRadians(endAngle))
-      };
-      return `M ${start.x} ${start.y} A ${r} ${r} 0 0 ${sweep} ${end.x} ${end.y}`;
-    };
     return (
       <View style={styles.progressWrap}>
         <View style={styles.progressBackdrop} />
-        <Text style={styles.progressTitle}>OPTIMIZING CONNECTION...</Text>
+        {selectedGame?.iconUri ? (
+          <View style={styles.progressGameIcon}>
+            <Image
+              source={{uri: selectedGame.iconUri}}
+              style={styles.progressGameIconImage}
+            />
+          </View>
+        ) : selectedGame ? (
+          <View style={styles.progressGameIcon}>
+            <View style={styles.progressGameIconFallback}>
+              <Text style={styles.progressGameIconText}>
+                {selectedGame.name.substring(0, 2).toUpperCase()}
+              </Text>
+            </View>
+          </View>
+        ) : null}
+        <Text style={styles.progressGameName}>
+          {selectedGame?.name ?? 'Game'}
+        </Text>
         <View style={styles.dialWrap}>
-          <Svg width={ringSize} height={ringSize} style={styles.dialSvg}>
+          <Svg
+            width={ringSize}
+            height={ringSize}
+            style={StyleSheet.absoluteFill}>
             <Defs>
-              <LinearGradient id="mythicGlow" x1="0" y1="0" x2="1" y2="1">
-                <Stop offset="0%" stopColor="#2CE7FF" stopOpacity="1" />
+              <LinearGradient id="glow" x1="0" y1="0" x2="1" y2="1">
+                <Stop offset="0%" stopColor="#00D68F" stopOpacity="1" />
+                <Stop offset="50%" stopColor="#2CE7FF" stopOpacity="1" />
                 <Stop offset="100%" stopColor="#2A4CFF" stopOpacity="1" />
+              </LinearGradient>
+              <LinearGradient id="progressGlow" x1="0" y1="0" x2="0" y2="1">
+                <Stop offset="0%" stopColor="#00D68F" stopOpacity="0.3" />
+                <Stop offset="100%" stopColor="#00D68F" stopOpacity="0" />
               </LinearGradient>
             </Defs>
             <Path
-              d={arcPath(270, 90, 0)}
-              stroke="rgba(60, 120, 200, 0.35)"
-              strokeWidth={ringStroke}
+              d={`M${cx - r},${cy - r}A${r * 2},${r * 2},0,1,1,${cx + r},${
+                cy - r
+              }`}
+              stroke="rgba(0,214,143,0.15)"
+              strokeWidth={stroke}
               fill="none"
               strokeLinecap="round"
-              strokeDasharray={`${halfCircumference} ${halfCircumference}`}
-              strokeDashoffset={0}
             />
             <Path
-              d={arcPath(270, 90, 1)}
-              stroke="rgba(60, 120, 200, 0.35)"
-              strokeWidth={ringStroke}
+              d={`M${cx - r},${cy - r}A${r * 2},${r * 2},0,1,1,${cx + r},${
+                cy - r
+              }`}
+              stroke="url(#progressGlow)"
+              strokeWidth={stroke + 20}
               fill="none"
               strokeLinecap="round"
-              strokeDasharray={`${halfCircumference} ${halfCircumference}`}
-              strokeDashoffset={0}
+              opacity={0.5}
             />
             <Path
-              d={arcPath(270, 90, 0)}
-              stroke="url(#mythicGlow)"
-              strokeWidth={ringStroke}
+              d={`M${cx - r},${cy - r}A${r * 2},${r * 2},0,1,1,${cx + r},${
+                cy - r
+              }`}
+              stroke="url(#glow)"
+              strokeWidth={stroke}
               fill="none"
               strokeLinecap="round"
-              strokeDasharray={`${halfCircumference} ${halfCircumference}`}
-              strokeDashoffset={dashOffset}
+              strokeDasharray={`${circumference * 2} ${circumference * 2}`}
+              strokeDashoffset={circumference * 2 * (1 - ratio)}
             />
-            <Path
-              d={arcPath(270, 90, 1)}
-              stroke="url(#mythicGlow)"
-              strokeWidth={ringStroke}
-              fill="none"
-              strokeLinecap="round"
-              strokeDasharray={`${halfCircumference} ${halfCircumference}`}
-              strokeDashoffset={dashOffset}
-            />
-            <Circle cx={cx} cy={cy} r={r - 18} stroke="rgba(50, 120, 200, 0.3)" strokeWidth="2" fill="none" />
           </Svg>
-          <View style={styles.dialMid}>
-            <View style={styles.dialInner}>
-              {selectedGame?.iconUri ? (
-                <Image source={{ uri: selectedGame.iconUri }} style={styles.ringIcon} />
-              ) : (
-                <Text style={styles.ringText}>{boostProgress}%</Text>
-              )}
-              {selectedGame?.iconUri ? (
-                <Text style={styles.ringTextOverlay}>{boostProgress}%</Text>
-              ) : null}
-            </View>
+          <View style={styles.dialCenter}>
+            <Text style={styles.dialPct}>{boostProgress}%</Text>
+            <Text style={styles.dialSub}>BOOSTING</Text>
           </View>
-          <Animated.View style={[styles.dialGlow, { opacity: pulse }]} />
+          <Animated.View style={[styles.dialGlow, {opacity: pulse}]} />
         </View>
-        <Text style={styles.progressPercent}>{boostProgress}%</Text>
-        <Text style={styles.progressLabel}>CALCULATING BOOST</Text>
-        <View style={styles.progressBar}>
-          <View style={[styles.progressFill, { width: `${boostProgress}%` }]} />
+        <View style={styles.progressBarContainer}>
+          <View style={styles.progressBarTrack}>
+            <Animated.View
+              style={[
+                styles.progressFill,
+                {
+                  width: `${boostProgress}%`,
+                  backgroundColor: boostProgress > 50 ? '#00D68F' : '#2CE7FF',
+                },
+              ]}
+            />
+          </View>
         </View>
-        <Text style={styles.progressHint}>Routing to the most stable node…</Text>
+        <Text style={styles.progressHint}>
+          Optimizing connection for {selectedGame?.name ?? 'your game'}…
+        </Text>
         <Pressable onPress={onStop} style={styles.progressStop}>
-          <Text style={styles.progressStopText}>Stop Boosting</Text>
+          <Text style={styles.progressStopText}>Cancel</Text>
         </Pressable>
       </View>
     );
   }
 
-  const statusLabel = !isConnected ? "Offline" : isBoosting && hasPing ? "Boosted" : "Idle";
+  const statusLabel = !isConnected
+    ? 'Offline'
+    : isBoosting && hasPing
+    ? pingQualityLabel(currentPingMs)
+    : 'Idle';
+  const statusColor = !isConnected
+    ? theme.colors.danger
+    : isBoosting && hasPing
+    ? pingColor(currentPingMs)
+    : theme.colors.textMuted;
+
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView
+      contentContainerStyle={styles.container}
+      showsVerticalScrollIndicator={false}>
       <View style={styles.headerRow}>
-        <Text style={styles.headerTitle}>Boost</Text>
+        <View>
+          <Text style={styles.headerTitle}>Boost Status</Text>
+          {selectedGame ? (
+            <Text style={styles.headerGame}>{selectedGame.name}</Text>
+          ) : null}
+        </View>
         <Pressable onPress={onOpenSettings} style={styles.settingsButton}>
           <Text style={styles.settingsText}>Settings</Text>
         </Pressable>
       </View>
-      <View style={styles.gameStrip}>
-        {games.length ? (
-          games.map((game) => {
-            const isSelected = selectedGame?.id === game.id;
-            return (
-              <Pressable
-                key={game.id}
-                onPress={() => onSelectGame(game)}
-                style={[styles.gameChip, isSelected && styles.gameChipActive]}
-              >
-                {game.iconUri ? (
-                  <Image source={{ uri: game.iconUri }} style={styles.gameChipIcon} />
-                ) : null}
-                <Text style={[styles.gameChipText, isSelected && styles.gameChipTextActive]}>
-                  {game.name}
-                </Text>
-              </Pressable>
-            );
-          })
-        ) : (
-          <Text style={styles.emptyGames}>No games detected yet</Text>
-        )}
-      </View>
-      <View style={styles.card}>
-        <View style={styles.cardHeader}>
-          <View style={styles.cardTitleRow}>
-            <View style={styles.cardTitleLeft}>
-              {selectedGame?.iconUri ? (
-                <Image source={{ uri: selectedGame.iconUri }} style={styles.cardGameIcon} />
-              ) : null}
-              <Text style={styles.cardTitle}>{selectedGame?.name ?? "Select a game"}</Text>
-            </View>
-            <View style={styles.badge}>
-              <Text style={styles.badgeText}>{statusLabel}</Text>
-            </View>
+
+      <View style={styles.pingHeroCard}>
+        <View style={styles.pingHeroLeft}>
+          <Text
+            numberOfLines={1}
+            style={[styles.pingHeroValue, {color: currentColor}]}>
+            {hasPing ? currentPingMs : '—'}
+          </Text>
+          <Text style={styles.pingHeroUnit}>ms</Text>
+        </View>
+        <View style={styles.pingHeroRight}>
+          <View style={[styles.statusChip, {borderColor: statusColor}]}>
+            <View style={[styles.statusDot, {backgroundColor: statusColor}]} />
+            <Text style={[styles.statusChipText, {color: statusColor}]}>
+              {statusLabel}
+            </Text>
           </View>
-          <Text style={styles.cardSub}>
-            Server Region - {selectedServer?.region ?? "Auto"}
+          <Text style={styles.serverName}>
+            {selectedServer?.name ?? 'Auto'}
+          </Text>
+          <Text style={styles.regionTag}>
+            {selectedServer?.region ?? '—'} · {selectedServer?.city ?? ''}
           </Text>
         </View>
+      </View>
 
-        <View style={styles.statsRow}>
-          <View style={styles.stat}>
-            <Text style={styles.statLabel}>Network Speed</Text>
-            <Text style={styles.statValue}>{speedLabel}</Text>
-          </View>
-          <View style={styles.stat}>
-            <Text style={styles.statLabel}>Ping</Text>
-            <Text style={styles.statValue}>{pingLabel}</Text>
-          </View>
-          <View style={styles.stat}>
-            <Text style={styles.statLabel}>Current Server</Text>
-            <Text style={styles.statValue}>{selectedServer?.name ?? "Auto"}</Text>
-          </View>
+      <View style={styles.statsRow}>
+        <View style={styles.statItem}>
+          <Text style={styles.statVal}>{jitterLabel}</Text>
+          <Text style={styles.statLbl}>Jitter</Text>
+        </View>
+        <View style={styles.statDivider} />
+        <View style={styles.statItem}>
+          <Text style={styles.statVal}>{speedLabel}</Text>
+          <Text style={styles.statLbl}>Speed</Text>
+        </View>
+        <View style={styles.statDivider} />
+        <View style={styles.statItem}>
+          <Text style={styles.statVal}>{lossLabel}</Text>
+          <Text style={styles.statLbl}>Loss</Text>
         </View>
       </View>
 
       <View style={styles.chartCard}>
-        <View style={styles.chartHeader}>
-          <Text style={styles.sectionTitle}>Latency Curve</Text>
-          <Text style={styles.chartTag}>
-            {optimizationProfile?.aggressiveness ?? (hasPing ? "Stable" : "Idle")}
+        <View style={styles.chartHeaderRow}>
+          <Text style={styles.chartTitle}>Latency Curve</Text>
+          <Text style={[styles.chartTag, {color: currentColor}]}>
+            {optimizationProfile?.aggressiveness ??
+              (hasPing ? pingQualityLabel(currentPingMs) : 'Idle')}
           </Text>
         </View>
-        {displayHistory.length ? (
-          <View style={[styles.chartLineWrap, { width: chartWidth, height: chartHeight }]}>
-            <View style={styles.chartYAxis}>
-              <Text style={styles.axisLabel}>{Math.round(axisMax)} ms</Text>
-              <Text style={styles.axisLabel}>{Math.round(axisMid)} ms</Text>
-              <Text style={styles.axisLabel}>{Math.round(axisMin)} ms</Text>
+
+        {displayHistory.length >= 2 ? (
+          <View style={styles.chartWrap}>
+            <View style={styles.chartYLabels}>
+              <Text style={styles.axisLabel}>{Math.round(yMax)}</Text>
+              <Text style={styles.axisLabel}>
+                {Math.round((yMax + yMin) / 2)}
+              </Text>
+              <Text style={styles.axisLabel}>{Math.round(yMin)}</Text>
             </View>
-            <Svg width={chartWidth} height={chartHeight} style={styles.chartSvg}>
+            <Svg width={CHART_WIDTH} height={CHART_HEIGHT}>
               <Defs>
                 <LinearGradient id="areaFill" x1="0" y1="0" x2="0" y2="1">
-                  <Stop offset="0%" stopColor="#39C6F4" stopOpacity="0.45" />
-                  <Stop offset="100%" stopColor="#39C6F4" stopOpacity="0.05" />
+                  <Stop
+                    offset="0%"
+                    stopColor={currentColor}
+                    stopOpacity="0.35"
+                  />
+                  <Stop
+                    offset="100%"
+                    stopColor={currentColor}
+                    stopOpacity="0"
+                  />
                 </LinearGradient>
               </Defs>
+              <Line
+                x1={0}
+                y1={CHART_HEIGHT * 0.33}
+                x2={CHART_WIDTH}
+                y2={CHART_HEIGHT * 0.33}
+                stroke="rgba(255,255,255,0.05)"
+                strokeWidth={1}
+              />
+              <Line
+                x1={0}
+                y1={CHART_HEIGHT * 0.66}
+                x2={CHART_WIDTH}
+                y2={CHART_HEIGHT * 0.66}
+                stroke="rgba(255,255,255,0.05)"
+                strokeWidth={1}
+              />
               {areaPath ? <Path d={areaPath} fill="url(#areaFill)" /> : null}
               {linePath ? (
                 <Path
                   d={linePath}
                   fill="none"
-                  stroke={lineColor}
-                  strokeWidth={4}
+                  stroke={currentColor}
+                  strokeWidth={3}
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 />
               ) : null}
+              {points.length > 0 ? (
+                <>
+                  <Circle
+                    cx={points[points.length - 1].x}
+                    cy={points[points.length - 1].y}
+                    r={6}
+                    fill={theme.colors.bg}
+                  />
+                  <Circle
+                    cx={points[points.length - 1].x}
+                    cy={points[points.length - 1].y}
+                    r={4}
+                    fill={currentColor}
+                  />
+                </>
+              ) : null}
             </Svg>
-            <View style={styles.chartXAxis}>
-              <Text style={styles.axisLabel}>
-                {formatElapsed(Math.max(windowStart, endTime - 120000))}
-              </Text>
-              <Text style={styles.axisLabel}>
-                {formatElapsed(Math.max(windowStart, endTime - 60000))}
-              </Text>
-              <Text style={styles.axisLabel}>{formatElapsed(endTime)}</Text>
-            </View>
           </View>
         ) : (
           <View style={styles.chartEmpty}>
-            <Text style={styles.chartEmptyText}>Waiting for first ping sample...</Text>
-          </View>
-        )}
-        <View style={styles.chartFooter}>
-          <View style={[styles.pingCard, styles.pingCardBefore]}>
-            <Text style={styles.pingCardLabel}>Before</Text>
-            <Text style={styles.pingCardValue}>
-              {typeof beforeAvg === "number" ? `${Math.round(beforeAvg)} ms` : "-"}
+            <Text style={styles.chartEmptyText}>
+              {isBoosting
+                ? 'Measuring latency…'
+                : 'Start boosting to see the curve'}
             </Text>
           </View>
-          <View style={[styles.pingCard, styles.pingCardAfter]}>
-            <Text style={styles.pingCardLabel}>After</Text>
-            <Text style={styles.pingCardValue}>
-              {typeof afterPing === "number" ? `${Math.round(afterPing)} ms` : "-"}
+        )}
+
+        <View style={styles.pingCompare}>
+          <View style={styles.pingCompareItem}>
+            <Text style={styles.pingCompareLabel}>Before</Text>
+            <Text style={styles.pingCompareValue}>
+              {beforePing !== null ? `${beforePing} ms` : '—'}
+            </Text>
+          </View>
+          <View style={styles.pingCompareArrow}>
+            {improvePct !== null ? (
+              <View
+                style={[
+                  styles.improvePill,
+                  {
+                    backgroundColor:
+                      improvePct > 0
+                        ? 'rgba(0,214,143,0.18)'
+                        : 'rgba(255,77,109,0.18)',
+                  },
+                ]}>
+                <Text
+                  style={[
+                    styles.improveText,
+                    {color: improvePct > 0 ? '#00D68F' : '#FF4D6D'},
+                  ]}>
+                  {improvePct > 0
+                    ? `↓ ${improvePct}%`
+                    : improvePct === 0
+                    ? '→ 0%'
+                    : `↑ ${Math.abs(improvePct)}%`}
+                </Text>
+              </View>
+            ) : (
+              <Text style={styles.arrowText}>→</Text>
+            )}
+          </View>
+          <View style={styles.pingCompareItem}>
+            <Text style={styles.pingCompareLabel}>After</Text>
+            <Text
+              style={[
+                styles.pingCompareValue,
+                afterPing !== null && afterPing < (beforePing ?? 999)
+                  ? {color: '#00D68F'}
+                  : {},
+              ]}>
+              {afterPing !== null ? `${afterPing} ms` : '—'}
             </Text>
           </View>
         </View>
       </View>
 
-      <View style={styles.footer}>
+      <View style={styles.gameStrip}>
+        {games.slice(0, 5).map(game => {
+          const isSelected = selectedGame?.id === game.id;
+          return (
+            <Pressable
+              key={game.id}
+              onPress={() => onSelectGame(game)}
+              style={[styles.gameChip, isSelected && styles.gameChipActive]}>
+              {game.iconUri ? (
+                <Image
+                  source={{uri: game.iconUri}}
+                  style={styles.gameChipIcon}
+                />
+              ) : null}
+              <Text
+                style={[
+                  styles.gameChipText,
+                  isSelected && {color: theme.colors.accent},
+                ]}
+                numberOfLines={1}>
+                {game.name}
+              </Text>
+            </Pressable>
+          );
+        })}
+      </View>
+
+      <View style={styles.actionRow}>
         <Pressable onPress={onStop} style={styles.stopButton}>
-          <Text style={styles.stopText}>Stop Boosting</Text>
+          <Text style={styles.stopText}>Stop Boost</Text>
         </Pressable>
         <Pressable onPress={onOpenGame} style={styles.openButton}>
           <Text style={styles.openText}>Open Game</Text>
         </Pressable>
       </View>
+
       <Pressable onPress={onShareLogs} style={styles.shareLogs}>
-        <Text style={styles.shareLogsText}>Share Logs</Text>
+        <Text style={styles.shareLogsText}>Share Diagnostic Logs</Text>
       </Pressable>
     </ScrollView>
   );
@@ -466,36 +631,228 @@ export const BoostStatusScreen = ({
 
 const styles = StyleSheet.create({
   container: {
-    paddingBottom: theme.spacing.lg
+    paddingBottom: 32,
   },
   headerRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: theme.spacing.sm
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    marginBottom: 16,
   },
   headerTitle: {
+    color: theme.colors.textMuted,
+    fontSize: 11,
+    fontWeight: '600',
+    letterSpacing: 1.2,
+    textTransform: 'uppercase',
+  },
+  headerGame: {
     color: theme.colors.text,
-    fontWeight: "700",
     fontSize: 16,
-    letterSpacing: 0.4
+    fontWeight: '700',
+    marginTop: 2,
   },
   settingsButton: {
     borderWidth: 1,
     borderColor: theme.colors.border,
     paddingHorizontal: 10,
     paddingVertical: 4,
-    borderRadius: 10
+    borderRadius: 10,
   },
   settingsText: {
     color: theme.colors.textMuted,
     fontSize: 11,
-    fontWeight: "700"
+    fontWeight: '700',
+  },
+  pingHeroCard: {
+    backgroundColor: theme.colors.panel,
+    borderRadius: 20,
+    padding: 20,
+    borderWidth: 1,
+    borderColor: theme.colors.border,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 12,
+  },
+  pingHeroLeft: {
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+  },
+  pingHeroValue: {
+    fontSize: 48,
+    fontWeight: '800',
+    letterSpacing: -1,
+  },
+  pingHeroUnit: {
+    color: theme.colors.textMuted,
+    fontSize: 18,
+    fontWeight: '600',
+    marginBottom: 6,
+    marginLeft: 4,
+  },
+  pingHeroRight: {
+    alignItems: 'flex-end',
+  },
+  statusChip: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderRadius: 20,
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    marginBottom: 6,
+  },
+  statusDot: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    marginRight: 5,
+  },
+  statusChipText: {
+    fontSize: 11,
+    fontWeight: '700',
+  },
+  serverName: {
+    color: theme.colors.text,
+    fontSize: 13,
+    fontWeight: '600',
+    textAlign: 'right',
+  },
+  regionTag: {
+    color: theme.colors.textMuted,
+    fontSize: 11,
+    marginTop: 2,
+    textAlign: 'right',
+  },
+  statsRow: {
+    backgroundColor: theme.colors.panel,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: theme.colors.border,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 12,
+    paddingVertical: 14,
+  },
+  statItem: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  statVal: {
+    color: theme.colors.text,
+    fontSize: 15,
+    fontWeight: '700',
+  },
+  statLbl: {
+    color: theme.colors.textMuted,
+    fontSize: 10,
+    marginTop: 3,
+    textTransform: 'uppercase',
+    letterSpacing: 0.8,
+  },
+  statDivider: {
+    width: 1,
+    height: 28,
+    backgroundColor: theme.colors.border,
+  },
+  chartCard: {
+    backgroundColor: theme.colors.panel,
+    borderRadius: 20,
+    padding: 16,
+    borderWidth: 1,
+    borderColor: theme.colors.border,
+    marginBottom: 12,
+  },
+  chartHeaderRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 14,
+  },
+  chartTitle: {
+    color: theme.colors.text,
+    fontWeight: '700',
+    fontSize: 14,
+  },
+  chartTag: {
+    fontSize: 11,
+    fontWeight: '700',
+    letterSpacing: 0.5,
+  },
+  chartWrap: {
+    flexDirection: 'row',
+    alignItems: 'stretch',
+  },
+  chartYLabels: {
+    width: 32,
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
+    paddingRight: 6,
+    paddingVertical: 4,
+    height: CHART_HEIGHT,
+  },
+  axisLabel: {
+    color: theme.colors.textMuted,
+    fontSize: 9,
+    fontVariant: ['tabular-nums'],
+  },
+  chartEmpty: {
+    height: CHART_HEIGHT,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  chartEmptyText: {
+    color: theme.colors.textMuted,
+    fontSize: 13,
+  },
+  pingCompare: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 16,
+    paddingTop: 14,
+    borderTopWidth: 1,
+    borderTopColor: theme.colors.border,
+  },
+  pingCompareItem: {
+    alignItems: 'center',
+    flex: 1,
+  },
+  pingCompareLabel: {
+    color: theme.colors.textMuted,
+    fontSize: 10,
+    textTransform: 'uppercase',
+    letterSpacing: 1,
+    marginBottom: 4,
+  },
+  pingCompareValue: {
+    color: theme.colors.text,
+    fontSize: 20,
+    fontWeight: '800',
+  },
+  pingCompareArrow: {
+    alignItems: 'center',
+    paddingHorizontal: 8,
+  },
+  arrowText: {
+    color: theme.colors.textMuted,
+    fontSize: 18,
+  },
+  improvePill: {
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 20,
+  },
+  improveText: {
+    fontSize: 13,
+    fontWeight: '800',
   },
   gameStrip: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    marginBottom: theme.spacing.md
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginBottom: 12,
+    gap: 8,
   },
   gameChip: {
     paddingHorizontal: 10,
@@ -504,356 +861,175 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: theme.colors.border,
     backgroundColor: theme.colors.panelAlt,
-    marginRight: theme.spacing.sm,
-    marginBottom: theme.spacing.sm,
-    flexDirection: "row",
-    alignItems: "center"
-  },
-  gameChipIcon: {
-    width: 18,
-    height: 18,
-    borderRadius: 4,
-    marginRight: 6
+    flexDirection: 'row',
+    alignItems: 'center',
+    maxWidth: 140,
   },
   gameChipActive: {
     borderColor: theme.colors.accent,
-    backgroundColor: theme.colors.accentSoft
+    backgroundColor: theme.colors.accentSoft,
+  },
+  gameChipIcon: {
+    width: 16,
+    height: 16,
+    borderRadius: 4,
+    marginRight: 5,
   },
   gameChipText: {
     color: theme.colors.textMuted,
-    fontSize: 11
-  },
-  gameChipTextActive: {
-    color: theme.colors.accent,
-    fontWeight: "700"
-  },
-  emptyGames: {
-    color: theme.colors.textMuted,
-    fontSize: 12
-  },
-  progressWrap: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center"
-  },
-  progressBackdrop: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: "#071326",
-    opacity: 0.85
-  },
-  progressTitle: {
-    color: "#E8F3FF",
-    fontWeight: "700",
-    letterSpacing: 1.4,
-    marginBottom: theme.spacing.lg,
-    fontSize: 14
-  },
-  dialWrap: {
-    width: 210,
-    height: 210,
-    alignItems: "center",
-    justifyContent: "center"
-  },
-  dialSvg: {
-    position: "absolute"
-  },
-  dialMid: {
-    width: 160,
-    height: 160,
-    borderRadius: 80,
-    borderWidth: 3,
-    borderColor: "#1B3E84",
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "rgba(10, 26, 58, 0.6)"
-  },
-  dialInner: {
-    width: 110,
-    height: 110,
-    borderRadius: 55,
-    backgroundColor: "rgba(6, 16, 36, 0.9)",
-    alignItems: "center",
-    justifyContent: "center"
-  },
-  dialGlow: {
-    position: "absolute",
-    width: 180,
-    height: 180,
-    borderRadius: 90,
-    backgroundColor: "rgba(60, 190, 255, 0.2)"
-  },
-  ringIcon: {
-    width: 90,
-    height: 90,
-    borderRadius: 18
-  },
-  ringText: {
-    color: "#8FE6FF",
-    fontWeight: "700",
-    fontSize: 20
-  },
-  ringTextOverlay: {
-    position: "absolute",
-    bottom: -10,
-    color: "#E9FBFF",
-    fontWeight: "800",
-    fontSize: 18,
-    textShadowColor: "rgba(41, 198, 255, 0.85)",
-    textShadowOffset: { width: 0, height: 0 },
-    textShadowRadius: 10
-  },
-  progressPercent: {
-    color: "#7EDCFF",
-    fontSize: 28,
-    fontWeight: "800",
-    marginTop: theme.spacing.lg
-  },
-  progressLabel: {
-    color: "rgba(190, 230, 255, 0.75)",
     fontSize: 11,
-    letterSpacing: 1.2,
-    marginTop: theme.spacing.xs
+    flexShrink: 1,
   },
-  progressBar: {
-    width: 220,
-    height: 8,
-    borderRadius: 8,
-    backgroundColor: "rgba(41, 96, 160, 0.5)",
-    marginTop: theme.spacing.md,
-    overflow: "hidden"
-  },
-  progressFill: {
-    height: "100%",
-    backgroundColor: "#39C6F4"
-  },
-  progressHint: {
-    color: "rgba(200, 230, 255, 0.7)",
-    marginTop: theme.spacing.sm
-  },
-  progressStop: {
-    marginTop: theme.spacing.lg,
-    borderWidth: 1,
-    borderColor: theme.colors.accentSoft,
-    paddingVertical: theme.spacing.sm,
-    paddingHorizontal: theme.spacing.lg,
-    borderRadius: theme.radius.md
-  },
-  progressStopText: {
-    color: theme.colors.accent,
-    fontWeight: "700"
-  },
-  card: {
-    backgroundColor: theme.colors.panel,
-    borderRadius: theme.radius.lg,
-    padding: theme.spacing.lg,
-    borderWidth: 1,
-    borderColor: theme.colors.border
-  },
-  cardHeader: {
-    marginBottom: theme.spacing.md
-  },
-  cardTitleRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center"
-  },
-  cardTitleLeft: {
-    flexDirection: "row",
-    alignItems: "center",
-    flex: 1,
-    marginRight: theme.spacing.sm
-  },
-  cardGameIcon: {
-    width: 28,
-    height: 28,
-    borderRadius: 6,
-    marginRight: theme.spacing.sm
-  },
-  cardTitle: {
-    color: theme.colors.text,
-    fontWeight: "700",
-    fontSize: 16
-  },
-  cardSub: {
-    color: theme.colors.textMuted,
-    fontSize: 12,
-    marginTop: 4
-  },
-  badge: {
-    backgroundColor: theme.colors.accentSoft,
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 10
-  },
-  badgeText: {
-    color: theme.colors.accent,
-    fontSize: 11,
-    fontWeight: "700"
-  },
-  statsRow: {
-    marginTop: 0
-  },
-  stat: {
-    backgroundColor: theme.colors.panelAlt,
-    padding: theme.spacing.sm,
-    borderRadius: theme.radius.md,
-    borderWidth: 1,
-    borderColor: theme.colors.border,
-    marginBottom: theme.spacing.sm
-  },
-  statLabel: {
-    color: theme.colors.textMuted,
-    fontSize: 11
-  },
-  statValue: {
-    color: theme.colors.text,
-    fontWeight: "700",
-    marginTop: 4
-  },
-  chartCard: {
-    marginTop: theme.spacing.md,
-    backgroundColor: theme.colors.panelAlt,
-    borderRadius: theme.radius.lg,
-    padding: theme.spacing.lg,
-    borderWidth: 1,
-    borderColor: theme.colors.border
-  },
-  sectionTitle: {
-    color: theme.colors.text,
-    fontWeight: "700",
-    marginBottom: theme.spacing.sm
-  },
-  chartHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center"
-  },
-  chartTag: {
-    color: theme.colors.accent,
-    fontSize: 11,
-    fontWeight: "700"
-  },
-  chartLineWrap: {
-    height: 120,
-    marginTop: theme.spacing.sm,
-    position: "relative",
-    overflow: "hidden",
-    alignSelf: "center",
-    paddingLeft: 36,
-    paddingBottom: 18
-  },
-  chartYAxis: {
-    position: "absolute",
-    left: 0,
-    top: 0,
-    bottom: 0,
-    width: 34,
-    justifyContent: "space-between"
-  },
-  chartXAxis: {
-    position: "absolute",
-    bottom: 0,
-    left: 36,
-    right: 0,
-    flexDirection: "row",
-    justifyContent: "space-between"
-  },
-  axisLabel: {
-    color: "rgba(255,255,255,0.95)",
-    fontSize: 10,
-    backgroundColor: "rgba(3, 10, 20, 0.6)",
-    paddingHorizontal: 4,
-    paddingVertical: 1,
-    borderRadius: 6,
-    overflow: "hidden"
-  },
-  chartSvg: {
-    position: "absolute",
-    left: 36,
-    top: 0
-  },
-  chartEmpty: {
-    height: 90,
-    marginTop: theme.spacing.sm,
-    borderWidth: 1,
-    borderColor: theme.colors.border,
-    borderRadius: theme.radius.md,
-    alignItems: "center",
-    justifyContent: "center"
-  },
-  chartEmptyText: {
-    color: theme.colors.textMuted,
-    fontSize: 11
-  },
-  chartFooter: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginTop: theme.spacing.md
-  },
-  pingCard: {
-    flex: 1,
-    borderRadius: theme.radius.md,
-    paddingVertical: theme.spacing.sm,
-    paddingHorizontal: theme.spacing.md,
-    borderWidth: 1,
-    borderColor: theme.colors.border
-  },
-  pingCardBefore: {
-    marginRight: theme.spacing.sm,
-    backgroundColor: "rgba(255, 122, 69, 0.12)"
-  },
-  pingCardAfter: {
-    marginLeft: theme.spacing.sm,
-    backgroundColor: "rgba(46, 212, 119, 0.12)"
-  },
-  pingCardLabel: {
-    color: theme.colors.textMuted,
-    fontSize: 11
-  },
-  pingCardValue: {
-    color: theme.colors.text,
-    fontWeight: "700",
-    fontSize: 13,
-    marginTop: 4
-  },
-  footer: {
-    marginTop: theme.spacing.lg,
-    flexDirection: "row"
+  actionRow: {
+    flexDirection: 'row',
+    gap: 10,
+    marginBottom: 10,
   },
   stopButton: {
     flex: 1,
+    backgroundColor: 'rgba(255,77,109,0.15)',
     borderWidth: 1,
-    borderColor: theme.colors.accentSoft,
-    paddingVertical: theme.spacing.sm,
-    borderRadius: theme.radius.md,
-    alignItems: "center",
-    marginRight: theme.spacing.md
+    borderColor: '#FF4D6D',
+    borderRadius: 14,
+    paddingVertical: 14,
+    alignItems: 'center',
   },
   stopText: {
-    color: theme.colors.accent,
-    fontWeight: "700"
+    color: '#FF4D6D',
+    fontWeight: '700',
+    fontSize: 14,
   },
   openButton: {
     flex: 1,
-    backgroundColor: theme.colors.accent,
-    paddingVertical: theme.spacing.sm,
-    borderRadius: theme.radius.md,
-    alignItems: "center"
+    backgroundColor: theme.colors.accentSoft,
+    borderWidth: 1,
+    borderColor: theme.colors.accent,
+    borderRadius: 14,
+    paddingVertical: 14,
+    alignItems: 'center',
   },
   openText: {
-    color: "#03142B",
-    fontWeight: "700"
+    color: theme.colors.accent,
+    fontWeight: '700',
+    fontSize: 14,
   },
   shareLogs: {
-    marginTop: theme.spacing.md,
-    borderWidth: 1,
-    borderColor: theme.colors.border,
-    paddingVertical: theme.spacing.sm,
-    borderRadius: theme.radius.md,
-    alignItems: "center"
+    alignItems: 'center',
+    paddingVertical: 10,
   },
   shareLogsText: {
     color: theme.colors.textMuted,
-    fontWeight: "700"
-  }
+    fontSize: 12,
+  },
+  progressWrap: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 20,
+  },
+  progressBackdrop: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: '#060E1E',
+  },
+  progressTitle: {
+    color: '#BCD8FF',
+    fontWeight: '700',
+    letterSpacing: 2,
+    fontSize: 13,
+  },
+  dialWrap: {
+    width: 200,
+    height: 200,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  dialCenter: {
+    alignItems: 'center',
+  },
+  dialPct: {
+    color: '#E0F4FF',
+    fontWeight: '800',
+    fontSize: 36,
+  },
+  dialSub: {
+    color: 'rgba(100,200,255,0.7)',
+    fontSize: 10,
+    letterSpacing: 2,
+    marginTop: 2,
+  },
+  dialGlow: {
+    position: 'absolute',
+    width: 160,
+    height: 160,
+    borderRadius: 80,
+    backgroundColor: 'rgba(0,214,143,0.15)',
+  },
+  progressGameIcon: {
+    marginBottom: 12,
+  },
+  progressGameIconImage: {
+    width: 80,
+    height: 80,
+    borderRadius: 20,
+    backgroundColor: theme.colors.panel,
+  },
+  progressGameIconFallback: {
+    width: 80,
+    height: 80,
+    borderRadius: 20,
+    backgroundColor: theme.colors.accentSoft,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  progressGameIconText: {
+    color: theme.colors.accent,
+    fontSize: 24,
+    fontWeight: '800',
+  },
+  progressGameName: {
+    color: '#E0F4FF',
+    fontSize: 18,
+    fontWeight: '700',
+    marginBottom: 16,
+  },
+  progressBarContainer: {
+    width: 260,
+    marginBottom: 20,
+  },
+  progressBarTrack: {
+    width: '100%',
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: 'rgba(0,214,143,0.15)',
+    overflow: 'hidden',
+  },
+  progressBar: {
+    width: 220,
+    height: 5,
+    borderRadius: 5,
+    backgroundColor: 'rgba(0,214,143,0.2)',
+    overflow: 'hidden',
+  },
+  progressFill: {
+    height: '100%',
+    borderRadius: 4,
+  },
+  progressHint: {
+    color: 'rgba(150,200,255,0.65)',
+    fontSize: 13,
+    marginBottom: 20,
+    textAlign: 'center',
+  },
+  progressStop: {
+    borderWidth: 1,
+    borderColor: 'rgba(255,77,109,0.5)',
+    paddingVertical: 10,
+    paddingHorizontal: 32,
+    borderRadius: 12,
+  },
+  progressStopText: {
+    color: '#FF4D6D',
+    fontWeight: '700',
+    fontSize: 13,
+  },
 });
