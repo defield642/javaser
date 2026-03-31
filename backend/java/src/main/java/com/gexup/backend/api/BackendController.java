@@ -235,16 +235,17 @@ public class BackendController {
     optimization.put("congestionControl", congestionControl);
     optimization.put("notes", notes);
 
-    return ResponseEntity.ok(Map.of(
-      "status", "ok",
-      "service", "gexup-java",
-      "optimization", optimization,
-      "networkHealth", networkHealth,
-      "recommendedServers", ranked,
-      "gameId", safe.gameId(),
-      "networkType", safe.networkType(),
-      "country", safe.country()
-    ));
+    Map<String, Object> response = new LinkedHashMap<>();
+    response.put("status", "ok");
+    response.put("service", "gexup-java");
+    response.put("optimization", optimization);
+    response.put("networkHealth", networkHealth);
+    response.put("recommendedServers", ranked);
+    response.put("gameId", safe.gameId());
+    response.put("networkType", safe.networkType());
+    response.put("country", safe.country());
+
+    return ResponseEntity.ok(response);
   }
 
   @PostMapping("tunnel/config")
