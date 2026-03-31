@@ -572,10 +572,15 @@ export default function App() {
   useEffect(() => {
     if (boostPhase !== 'progress') {
       if (progressAnimRef.current) {
-        cancelAnimationFrame(progressAnimRef.current);
+        clearInterval(progressAnimRef.current);
         progressAnimRef.current = null;
       }
       setBoostProgress(0);
+      return;
+    }
+
+    if (progressAnimRef.current) {
+      console.log('[BOOST] Interval already running, skipping');
       return;
     }
 
@@ -589,34 +594,27 @@ export default function App() {
       }
     }
 
-    const duration =
-      PROGRESS_MIN_MS +
-      Math.floor(Math.random() * (PROGRESS_MAX_MS - PROGRESS_MIN_MS));
+    const duration = 8000;
     const startTime = Date.now();
-    console.log('[BOOST] Duration:', duration);
+    console.log('[BOOST] Duration:', duration, 'ms');
 
-    let running = true;
-    const animate = () => {
-      if (!running) return;
+    progressAnimRef.current = setInterval(() => {
       const elapsed = Date.now() - startTime;
       const progress = Math.min(100, Math.floor((elapsed / duration) * 100));
+      console.log('[BOOST] Progress:', progress, '% elapsed:', elapsed, 'ms');
       setBoostProgress(progress);
       
       if (progress >= 100) {
         console.log('[BOOST] Progress complete');
+        clearInterval(progressAnimRef.current);
+        progressAnimRef.current = null;
         if (isBoostingRef.current) setBoostPhase('active');
-        return;
       }
-      
-      progressAnimRef.current = requestAnimationFrame(animate);
-    };
-    
-    progressAnimRef.current = requestAnimationFrame(animate);
+    }, 100);
 
     return () => {
-      running = false;
       if (progressAnimRef.current) {
-        cancelAnimationFrame(progressAnimRef.current);
+        clearInterval(progressAnimRef.current);
         progressAnimRef.current = null;
       }
     };

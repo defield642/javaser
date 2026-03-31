@@ -219,22 +219,21 @@ public class BackendController {
       "recommendation", healthRecommendation
     );
 
-    Map<String, Object> optimization = Map.of(
-      "stabilityMode", stabilityMode,
-      "aggressiveness", aggressiveness,
-      "expectedBeforeMs", Math.round(ping),
-      "expectedAfterMs", expectedAfterMs,
-      "jitterPenaltyMs", Math.round(jitterPenalty),
-      "jitterBufferSize", jitterBufferSize,
-      "fecStrength", fecStrength,
-      "retransmissionMode", retransmissionMode,
-      "multiPathEnabled", multiPathEnabled,
-      "keepAliveInterval", keepAliveInterval,
-      "dnsPreResolution", dnsPreResolution,
-      "packetPrioritization", packetPrioritization,
-      "congestionControl", congestionControl,
-      "notes", notes
-    );
+    Map<String, Object> optimization = new LinkedHashMap<>();
+    optimization.put("stabilityMode", stabilityMode);
+    optimization.put("aggressiveness", aggressiveness);
+    optimization.put("expectedBeforeMs", Math.round(ping));
+    optimization.put("expectedAfterMs", expectedAfterMs);
+    optimization.put("jitterPenaltyMs", Math.round(jitterPenalty));
+    optimization.put("jitterBufferSize", jitterBufferSize);
+    optimization.put("fecStrength", fecStrength);
+    optimization.put("retransmissionMode", retransmissionMode);
+    optimization.put("multiPathEnabled", multiPathEnabled);
+    optimization.put("keepAliveInterval", keepAliveInterval);
+    optimization.put("dnsPreResolution", dnsPreResolution);
+    optimization.put("packetPrioritization", packetPrioritization);
+    optimization.put("congestionControl", congestionControl);
+    optimization.put("notes", notes);
 
     return ResponseEntity.ok(Map.of(
       "status", "ok",
