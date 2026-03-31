@@ -33,11 +33,7 @@ type Props = {
   boostProgress: number;
   pingEntry: PingEntry | undefined;
   pingHistory: {ms: number; t: number}[];
-  boostStartTime?: number;
-  games: Game[];
-  onSelectGame: (game: Game) => void;
   isConnected: boolean;
-  lockedServerId: string | null;
   onOpenSettings: () => void;
   onOpenGame: () => void;
   onStop: () => void;
@@ -63,7 +59,7 @@ type Props = {
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const CHART_H_PAD = 44;
 const CHART_WIDTH = SCREEN_WIDTH - CHART_H_PAD * 2 - 32;
-const CHART_HEIGHT = 120;
+const CHART_HEIGHT = 160;
 
 function pingColor(ms: number): string {
   if (ms < 60) return '#00D68F';
@@ -108,28 +104,20 @@ export const BoostStatusScreen = ({
   boostProgress,
   pingEntry,
   pingHistory,
-  games,
-  onSelectGame,
   isConnected,
   onOpenSettings,
   onOpenGame,
   onStop,
   onShareLogs,
   optimizationProfile,
-  networkInfo,
   jitterMs,
   packetLossPct,
 }: Props) => {
+  console.log('[SCREEN] BoostStatusScreen render, boostPhase:', boostPhase, 'boostProgress:', boostProgress);
   const hasPing = typeof pingEntry?.ms === 'number';
   const currentPingMs = hasPing ? (pingEntry?.ms as number) : 0;
 
   const speedLabel = useMemo(() => {
-    if (
-      typeof networkInfo?.connectionSpeed === 'number' &&
-      networkInfo.connectionSpeed > 0
-    ) {
-      return `${Math.round(networkInfo.connectionSpeed)} Mbps`;
-    }
     if (!hasPing) return '—';
     const ms = currentPingMs;
     if (ms < 20) return '100+ Mbps';
@@ -137,55 +125,41 @@ export const BoostStatusScreen = ({
     if (ms < 70) return '~25 Mbps';
     if (ms < 100) return '~10 Mbps';
     return '~5 Mbps';
-  }, [hasPing, networkInfo?.connectionSpeed, currentPingMs]);
+  }, [hasPing, currentPingMs]);
 
   const jitterLabel = useMemo(() => {
-    if (typeof jitterMs === 'number' && jitterMs >= 0)
-      return `${Math.round(jitterMs)} ms`;
-    if (pingHistory.length > 2) {
-      const recent = pingHistory.slice(-8).map(s => s.ms);
-      const avg = recent.reduce((a, b) => a + b, 0) / recent.length;
-      const jitter = Math.sqrt(
-        recent.reduce((a, v) => a + Math.pow(v - avg, 2), 0) / recent.length,
-      );
-      return `${Math.round(jitter)} ms`;
-    }
+    if (typeof jitterMs === 'number') return `${jitterMs} ms`;
     return '—';
-  }, [jitterMs, pingHistory]);
+  }, [jitterMs]);
 
   const lossLabel = useMemo(() => {
-    if (typeof packetLossPct === 'number')
-      return `${Math.round(packetLossPct)}%`;
+    if (typeof packetLossPct === 'number') return `${packetLossPct}%`;
     return '0%';
   }, [packetLossPct]);
 
   const emaHistory = useMemo(() => {
     if (!pingHistory.length) return [];
     const alpha = 0.3;
-    const result: {ms: number; t: number}[] = [];
-    let ema = pingHistory[0].ms;
-    for (const s of pingHistory) {
-      ema = alpha * s.ms + (1 - alpha) * ema;
-      result.push({ms: ema, t: s.t});
-    }
-    return result;
+    return pingHistory.map((entry, i) => {
+      if (i === 0) return entry;
+      const prev = pingHistory[i - 1].ms;
+      const curr = entry.ms;
+      return {ms: prev * alpha + curr * (1 - alpha), t: entry.t};
+    });
   }, [pingHistory]);
 
   const displayHistory = useMemo(() => {
     if (!emaHistory.length) return [];
-    const windowMs = 3 * 60 * 1000;
-    const endT = emaHistory[emaHistory.length - 1].t;
-    const startT = endT - windowMs;
-    const trimmed = emaHistory.filter(s => s.t >= startT);
-    if (trimmed.length <= 40) return trimmed;
-    const step = Math.ceil(trimmed.length / 40);
-    return trimmed.filter((_, i) => i % step === 0);
+    const maxAge = 120000;
+    const startT = Date.now() - maxAge;
+    const filtered = emaHistory.filter(s => s.t >= startT);
+    if (filtered.length <= 40) return filtered;
+    const step = Math.ceil(filtered.length / 40);
+    return filtered.filter((_, i) => i % step === 0);
   }, [emaHistory]);
 
-  const {points, yMin, yMax} = useMemo(() => {
-    if (!displayHistory.length) {
-      return {points: [], yMin: 0, yMax: 200};
-    }
+  const chartData = useMemo(() => {
+    if (!displayHistory.length) return {points: [], latestTime: 0};
     const vals = displayHistory.map(s => s.ms);
     const rawMin = Math.min(...vals);
     const rawMax = Math.max(...vals);
@@ -193,21 +167,25 @@ export const BoostStatusScreen = ({
     const yMin = Math.max(0, rawMin - pad);
     const yMax = rawMax + pad;
     const range = Math.max(yMax - yMin, 10);
-
-    const endT = displayHistory[displayHistory.length - 1].t;
-    const startT = displayHistory[0].t;
-    const tRange = Math.max(endT - startT, 1);
-
+    const now = Date.now();
+    const timeRange = Math.max(
+      displayHistory[displayHistory.length - 1].t - displayHistory[0].t,
+      1000,
+    );
     const pts = displayHistory.map(s => ({
-      x: ((s.t - startT) / tRange) * CHART_WIDTH,
+      x: ((s.t - displayHistory[0].t) / timeRange) * CHART_WIDTH,
       y:
         CHART_HEIGHT -
-        ((s.ms - yMin) / range) * CHART_HEIGHT * 0.9 -
+        ((s.ms - yMin) / range) * CHART_HEIGHT * 0.85 -
         CHART_HEIGHT * 0.05,
     }));
-
-    return {points: pts, yMin, yMax};
+    return {
+      points: pts,
+      latestTime: now - displayHistory[0].t,
+    };
   }, [displayHistory]);
+
+  const {points, latestTime} = chartData;
 
   const linePath = useMemo(() => buildSpline(points), [points]);
   const areaPath = useMemo(() => {
@@ -219,52 +197,27 @@ export const BoostStatusScreen = ({
     )},${CHART_HEIGHT}Z`;
   }, [points, linePath]);
 
-  const currentColor = hasPing ? pingColor(currentPingMs) : theme.colors.accent;
+  const pulse = useRef(new Animated.Value(0.3)).current;
+  const floatAnim = useRef(new Animated.Value(0)).current;
+  const [, forceUpdate] = React.useReducer(x => x + 1, 0);
 
-  const beforePing = useMemo(() => {
-    if (typeof optimizationProfile?.expectedBeforeMs === 'number') {
-      return Math.round(optimizationProfile.expectedBeforeMs);
-    }
-    const window = pingHistory.slice(0, 8).map(s => s.ms);
-    if (!window.length)
-      return typeof pingEntry?.ms === 'number' ? pingEntry.ms : null;
-    const sorted = [...window].sort((a, b) => a - b);
-    return Math.round(sorted[Math.floor(sorted.length / 2)]);
-  }, [optimizationProfile?.expectedBeforeMs, pingHistory, pingEntry?.ms]);
+  useEffect(() => {
+    const tick = setInterval(() => forceUpdate(), 1000);
+    return () => clearInterval(tick);
+  }, []);
 
-  const afterPing = useMemo(() => {
-    if (typeof optimizationProfile?.expectedAfterMs === 'number') {
-      return Math.round(optimizationProfile.expectedAfterMs);
-    }
-    const window = emaHistory.slice(-6).map(s => s.ms);
-    if (!window.length)
-      return typeof pingEntry?.ms === 'number'
-        ? Math.round(pingEntry.ms)
-        : null;
-    const avg = window.reduce((a, b) => a + b, 0) / window.length;
-    return Math.round(avg);
-  }, [optimizationProfile?.expectedAfterMs, emaHistory, pingEntry?.ms]);
-
-  const improvePct = useMemo(() => {
-    if (beforePing === null || afterPing === null || beforePing <= 0)
-      return null;
-    const pct = Math.round(((beforePing - afterPing) / beforePing) * 100);
-    return pct;
-  }, [beforePing, afterPing]);
-
-  const pulse = useRef(new Animated.Value(0.4)).current;
   useEffect(() => {
     const loop = Animated.loop(
       Animated.sequence([
         Animated.timing(pulse, {
-          toValue: 1,
-          duration: 900,
+          toValue: 0.8,
+          duration: 1500,
           easing: Easing.inOut(Easing.ease),
           useNativeDriver: true,
         }),
         Animated.timing(pulse, {
-          toValue: 0.4,
-          duration: 900,
+          toValue: 0.3,
+          duration: 1500,
           easing: Easing.inOut(Easing.ease),
           useNativeDriver: true,
         }),
@@ -274,62 +227,199 @@ export const BoostStatusScreen = ({
     return () => loop.stop();
   }, [pulse]);
 
+  useEffect(() => {
+    const floatLoop = Animated.loop(
+      Animated.sequence([
+        Animated.timing(floatAnim, {
+          toValue: -8,
+          duration: 2000,
+          easing: Easing.inOut(Easing.ease),
+          useNativeDriver: true,
+        }),
+        Animated.timing(floatAnim, {
+          toValue: 0,
+          duration: 2000,
+          easing: Easing.inOut(Easing.ease),
+          useNativeDriver: true,
+        }),
+      ]),
+    );
+    floatLoop.start();
+    return () => floatLoop.stop();
+  }, [floatAnim]);
+
   if (boostPhase === 'progress') {
-    const ringSize = 180;
-    const stroke = 8;
-    const r = (ringSize - stroke) / 2;
-    const cx = ringSize / 2;
-    const cy = ringSize / 2;
-    const circumference = 2 * Math.PI * r;
-    const ratio = Math.max(0, Math.min(1, boostProgress / 100));
+    const reticleSize = 260;
+
     return (
-      <View style={styles.progressWrap}>
+      <View style={styles.progressContainer}>
         <View style={styles.progressBackdrop} />
-        <View style={styles.dialWrap}>
-          <Svg
-            width={ringSize}
-            height={ringSize}
-            style={StyleSheet.absoluteFill}>
-            <Defs>
-              <LinearGradient id="progressGrad" x1="0" y1="0" x2="1" y2="1">
-                <Stop offset="0%" stopColor="#00D68F" stopOpacity="1" />
-                <Stop offset="100%" stopColor="#00FFB3" stopOpacity="1" />
-              </LinearGradient>
-            </Defs>
-            <Circle
-              cx={cx}
-              cy={cy}
-              r={r}
-              stroke="rgba(255,255,255,0.1)"
-              strokeWidth={stroke}
-              fill="none"
-            />
-            <Circle
-              cx={cx}
-              cy={cy}
-              r={r}
-              stroke="url(#progressGrad)"
-              strokeWidth={stroke}
-              fill="none"
-              strokeLinecap="round"
-              strokeDasharray={`${circumference} ${circumference}`}
-              strokeDashoffset={circumference * (1 - ratio)}
-              transform={`rotate(-90 ${cx} ${cy})`}
-            />
-          </Svg>
-          <View style={styles.dialCenter}>
-            <Text style={styles.dialPct}>{boostProgress}%</Text>
-            <Text style={styles.dialSub}>BOOSTING</Text>
+
+        <Animated.View style={[styles.progressGlowBg, {opacity: pulse}]} />
+
+        <View style={styles.progressContent}>
+          <Animated.View
+            style={[
+              styles.progressReticleWrap,
+              {transform: [{translateY: floatAnim}]},
+            ]}>
+            <View style={styles.progressReticleOuter}>
+              <Svg width={reticleSize} height={reticleSize}>
+                <Defs>
+                  <LinearGradient id="progressGrad" x1="0" y1="0" x2="1" y2="1">
+                    <Stop offset="0%" stopColor="#14B8A6" stopOpacity="1" />
+                    <Stop offset="100%" stopColor="#22D3EE" stopOpacity="1" />
+                  </LinearGradient>
+                  <LinearGradient
+                    id="innerGlow"
+                    x1="0.5"
+                    y1="0"
+                    x2="0.5"
+                    y2="1">
+                    <Stop
+                      offset="0%"
+                      stopColor="rgba(20,184,166,0.5)"
+                      stopOpacity="1"
+                    />
+                    <Stop
+                      offset="100%"
+                      stopColor="rgba(20,184,166,0)"
+                      stopOpacity="1"
+                    />
+                  </LinearGradient>
+                </Defs>
+                <Circle
+                  cx={reticleSize / 2}
+                  cy={reticleSize / 2}
+                  r={reticleSize / 2 - 4}
+                  stroke="rgba(51,65,85,0.5)"
+                  strokeWidth={1}
+                  fill="none"
+                />
+                <Circle
+                  cx={reticleSize / 2}
+                  cy={reticleSize / 2}
+                  r={reticleSize / 2 - 20}
+                  stroke="rgba(20,184,166,0.2)"
+                  strokeWidth={8}
+                  fill="none"
+                />
+                <Circle
+                  cx={reticleSize / 2}
+                  cy={reticleSize / 2}
+                  r={reticleSize / 2 - 24}
+                  stroke="url(#innerGlow)"
+                  strokeWidth={6}
+                  fill="none"
+                />
+                <Circle
+                  cx={reticleSize / 2}
+                  cy={reticleSize / 2}
+                  r={reticleSize / 2 - 24}
+                  stroke="url(#progressGrad)"
+                  strokeWidth={3}
+                  fill="none"
+                  strokeDasharray={`${
+                    Math.PI * (reticleSize / 2 - 24) * 0.75
+                  } ${Math.PI * (reticleSize / 2 - 24) * 0.25}`}
+                  strokeLinecap="round"
+                  rotation={-135}
+                  origin={`${reticleSize / 2}, ${reticleSize / 2}`}
+                />
+              </Svg>
+
+              <View style={styles.progressIconContainer}>
+                <View style={styles.progressIconGlow} />
+                {selectedGame?.iconUri ? (
+                  <Image
+                    source={{uri: selectedGame.iconUri}}
+                    style={styles.progressIconImage}
+                  />
+                ) : (
+                  <View style={styles.progressIconFallback}>
+                    <Text style={styles.progressIconText}>
+                      {selectedGame?.name?.substring(0, 2).toUpperCase() ??
+                        'BX'}
+                    </Text>
+                  </View>
+                )}
+              </View>
+            </View>
+          </Animated.View>
+
+          <Text style={styles.progressTitle}>
+            {selectedGame?.name ?? 'Boosting'}
+          </Text>
+          <Text style={styles.progressSubtitle}>
+            {boostProgress < 20
+              ? 'Connecting...'
+              : boostProgress < 60
+              ? 'Optimizing route...'
+              : 'Almost ready...'}
+          </Text>
+
+          <View style={styles.progressRingContainer}>
+            <Svg width={200} height={200}>
+              <Defs>
+                <LinearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="0">
+                  <Stop offset="0%" stopColor="#14B8A6" stopOpacity="1" />
+                  <Stop offset="100%" stopColor="#22D3EE" stopOpacity="1" />
+                </LinearGradient>
+              </Defs>
+              <Circle
+                cx={100}
+                cy={100}
+                r={85}
+                stroke="rgba(51,65,85,0.3)"
+                strokeWidth={6}
+                fill="none"
+              />
+              <Circle
+                cx={100}
+                cy={100}
+                r={85}
+                stroke="url(#ringGrad)"
+                strokeWidth={6}
+                fill="none"
+                strokeLinecap="round"
+                strokeDasharray={`${2 * Math.PI * 85} ${2 * Math.PI * 85}`}
+                strokeDashoffset={2 * Math.PI * 85 * (1 - boostProgress / 100)}
+                rotation={-90}
+                origin="100, 100"
+              />
+            </Svg>
+            <View style={styles.progressRingCenter}>
+              <Text style={styles.progressPercent}>{boostProgress}</Text>
+              <Text style={styles.progressPercentLabel}>%</Text>
+            </View>
           </View>
-          <Animated.View style={[styles.dialGlow, {opacity: pulse}]} />
+
+          <View style={styles.progressIndicators}>
+            <View style={[styles.indicatorDot, styles.indicatorActive]} />
+            <View style={styles.indicatorLine} />
+            <View
+              style={[
+                styles.indicatorDot,
+                boostProgress > 33
+                  ? styles.indicatorActive
+                  : styles.indicatorInactive,
+              ]}
+            />
+            <View style={styles.indicatorLine} />
+            <View
+              style={[
+                styles.indicatorDot,
+                boostProgress > 66
+                  ? styles.indicatorActive
+                  : styles.indicatorInactive,
+              ]}
+            />
+          </View>
+
+          <Pressable onPress={onStop} style={styles.progressCancelBtn}>
+            <Text style={styles.progressCancelText}>CANCEL</Text>
+          </Pressable>
         </View>
-        <Text style={styles.progressGameName}>
-          {selectedGame?.name ?? 'Boosting'}
-        </Text>
-        <Text style={styles.progressHint}>Optimizing connection…</Text>
-        <Pressable onPress={onStop} style={styles.progressStop}>
-          <Text style={styles.progressStopText}>Cancel</Text>
-        </Pressable>
       </View>
     );
   }
@@ -344,6 +434,13 @@ export const BoostStatusScreen = ({
     : isBoosting && hasPing
     ? pingColor(currentPingMs)
     : theme.colors.textMuted;
+
+  const beforePing = optimizationProfile?.expectedBeforeMs ?? null;
+  const afterPing = optimizationProfile?.expectedAfterMs ?? null;
+  const improvePct =
+    beforePing && afterPing && beforePing > 0
+      ? Math.round(((beforePing - afterPing) / beforePing) * 100)
+      : null;
 
   return (
     <ScrollView
@@ -361,14 +458,10 @@ export const BoostStatusScreen = ({
         </Pressable>
       </View>
 
-      <View style={styles.pingHeroCard}>
-        <View style={styles.pingHeroLeft}>
-          <Text
-            numberOfLines={1}
-            style={[styles.pingHeroValue, {color: currentColor}]}>
-            {hasPing ? currentPingMs : '—'}
-          </Text>
-          <Text style={styles.pingHeroUnit}>ms</Text>
+      <View style={styles.heroCard}>
+        <View style={styles.heroLeft}>
+          <Text style={styles.pingValue}>{currentPingMs || '—'}</Text>
+          <Text style={styles.pingUnit}>ms</Text>
         </View>
         <View style={styles.pingHeroRight}>
           <View style={[styles.statusChip, {borderColor: statusColor}]}>
@@ -403,68 +496,189 @@ export const BoostStatusScreen = ({
         </View>
       </View>
 
+      {isBoosting && optimizationProfile && (
+        <View style={styles.advancedCard}>
+          <View style={styles.advancedHeader}>
+            <Text style={styles.advancedTitle}>Advanced Optimization</Text>
+            <View style={[
+              styles.modeBadge,
+              {
+                backgroundColor:
+                  optimizationProfile.aggressiveness === 'turbo'
+                    ? 'rgba(34,211,238,0.2)'
+                    : optimizationProfile.aggressiveness === 'fast'
+                    ? 'rgba(20,184,166,0.2)'
+                    : optimizationProfile.aggressiveness === 'balanced'
+                    ? 'rgba(99,102,241,0.2)'
+                    : 'rgba(255,170,0,0.2)',
+              },
+            ]}>
+              <Text style={[
+                styles.modeBadgeText,
+                {
+                  color:
+                    optimizationProfile.aggressiveness === 'turbo'
+                      ? '#22D3EE'
+                      : optimizationProfile.aggressiveness === 'fast'
+                      ? '#14B8A6'
+                      : optimizationProfile.aggressiveness === 'balanced'
+                      ? '#6366F1'
+                      : '#FFAA00',
+                },
+              ]}>
+                {optimizationProfile.aggressiveness.toUpperCase()}
+              </Text>
+            </View>
+          </View>
+
+          <View style={styles.featureGrid}>
+            {optimizationProfile.jitterBufferSize && (
+              <View style={styles.featureItem}>
+                <Text style={styles.featureValue}>{optimizationProfile.jitterBufferSize}ms</Text>
+                <Text style={styles.featureLabel}>Jitter Buffer</Text>
+              </View>
+            )}
+            {typeof optimizationProfile.fecStrength === 'number' && optimizationProfile.fecStrength > 0 && (
+              <View style={styles.featureItem}>
+                <Text style={styles.featureValue}>{(optimizationProfile.fecStrength * 100).toFixed(0)}%</Text>
+                <Text style={styles.featureLabel}>FEC Recovery</Text>
+              </View>
+            )}
+            {optimizationProfile.retransmissionMode && (
+              <View style={styles.featureItem}>
+                <Text style={[styles.featureValue, {color: '#14B8A6'}]}>ON</Text>
+                <Text style={styles.featureLabel}>Predictive Retransmit</Text>
+              </View>
+            )}
+            {optimizationProfile.multiPathEnabled && (
+              <View style={styles.featureItem}>
+                <Text style={[styles.featureValue, {color: '#22D3EE'}]}>ON</Text>
+                <Text style={styles.featureLabel}>Multi-Path Bonding</Text>
+              </View>
+            )}
+            {optimizationProfile.packetPrioritization && (
+              <View style={styles.featureItem}>
+                <Text style={[styles.featureValue, {color: '#14B8A6'}]}>ON</Text>
+                <Text style={styles.featureLabel}>Packet Priority</Text>
+              </View>
+            )}
+            {optimizationProfile.congestionControl && (
+              <View style={styles.featureItem}>
+                <Text style={styles.featureValue}>{optimizationProfile.congestionControl}</Text>
+                <Text style={styles.featureLabel}>Congestion Ctrl</Text>
+              </View>
+            )}
+          </View>
+
+          {optimizationProfile.notes.length > 0 && (
+            <View style={styles.notesContainer}>
+              {optimizationProfile.notes.map((note, i) => (
+                <Text key={i} style={styles.noteText}>• {note}</Text>
+              ))}
+            </View>
+          )}
+        </View>
+      )}
+
       <View style={styles.chartCard}>
         <View style={styles.chartHeaderRow}>
           <Text style={styles.chartTitle}>Latency Curve</Text>
-          <Text style={[styles.chartTag, {color: currentColor}]}>
-            {optimizationProfile?.aggressiveness ??
-              (hasPing ? pingQualityLabel(currentPingMs) : 'Idle')}
-          </Text>
+          <View style={styles.chartBadgeContainer}>
+            {isBoosting ? (
+              <View style={styles.boostedBadge}>
+                <Text style={styles.boostedBadgeText}>BOOSTED</Text>
+              </View>
+            ) : (
+              <Text style={styles.chartTag}>
+                {optimizationProfile?.aggressiveness ??
+                  (hasPing ? pingQualityLabel(currentPingMs) : 'Idle')}
+              </Text>
+            )}
+          </View>
         </View>
 
         {displayHistory.length >= 2 ? (
-          <View style={styles.chartWrap}>
-            <View style={styles.chartYLabels}>
-              <Text style={styles.axisLabel}>{Math.round(yMax)}</Text>
-              <Text style={styles.axisLabel}>
-                {Math.round((yMax + yMin) / 2)}
-              </Text>
-              <Text style={styles.axisLabel}>{Math.round(yMin)}</Text>
-            </View>
+          <>
             <Svg width={CHART_WIDTH} height={CHART_HEIGHT}>
               <Defs>
                 <LinearGradient id="areaFill" x1="0" y1="0" x2="0" y2="1">
                   <Stop
                     offset="0%"
-                    stopColor={currentColor}
-                    stopOpacity="0.35"
+                    stopColor={isBoosting ? '#22D3EE' : '#6366F1'}
+                    stopOpacity="0.4"
                   />
                   <Stop
                     offset="100%"
-                    stopColor={currentColor}
+                    stopColor={isBoosting ? '#22D3EE' : '#6366F1'}
                     stopOpacity="0"
+                  />
+                </LinearGradient>
+                <LinearGradient id="lineFill" x1="0" y1="0" x2="1" y2="0">
+                  <Stop
+                    offset="0%"
+                    stopColor={isBoosting ? '#14B8A6' : '#6366F1'}
+                    stopOpacity="1"
+                  />
+                  <Stop
+                    offset="100%"
+                    stopColor={isBoosting ? '#22D3EE' : '#8B5CF6'}
+                    stopOpacity="1"
                   />
                 </LinearGradient>
               </Defs>
               <Line
                 x1={0}
-                y1={CHART_HEIGHT * 0.33}
+                y1={CHART_HEIGHT * 0.25}
                 x2={CHART_WIDTH}
-                y2={CHART_HEIGHT * 0.33}
-                stroke="rgba(255,255,255,0.05)"
+                y2={CHART_HEIGHT * 0.25}
+                stroke="rgba(255,255,255,0.03)"
                 strokeWidth={1}
               />
               <Line
                 x1={0}
-                y1={CHART_HEIGHT * 0.66}
+                y1={CHART_HEIGHT * 0.5}
                 x2={CHART_WIDTH}
-                y2={CHART_HEIGHT * 0.66}
-                stroke="rgba(255,255,255,0.05)"
+                y2={CHART_HEIGHT * 0.5}
+                stroke="rgba(255,255,255,0.03)"
                 strokeWidth={1}
               />
+              <Line
+                x1={0}
+                y1={CHART_HEIGHT * 0.75}
+                x2={CHART_WIDTH}
+                y2={CHART_HEIGHT * 0.75}
+                stroke="rgba(239,68,68,0.2)"
+                strokeWidth={1}
+                strokeDasharray="4 4"
+              />
               {areaPath ? <Path d={areaPath} fill="url(#areaFill)" /> : null}
+              <Path
+                d={linePath || ''}
+                fill="none"
+                stroke="rgba(255,255,255,0.1)"
+                strokeWidth={6}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
               {linePath ? (
                 <Path
                   d={linePath}
                   fill="none"
-                  stroke={currentColor}
+                  stroke="url(#lineFill)"
                   strokeWidth={3}
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 />
               ) : null}
-              {points.length > 0 ? (
+              {points.length > 0 && (
                 <>
+                  <Circle
+                    cx={points[points.length - 1].x}
+                    cy={points[points.length - 1].y}
+                    r={10}
+                    fill={isBoosting ? '#22D3EE' : '#6366F1'}
+                    opacity={0.3}
+                  />
                   <Circle
                     cx={points[points.length - 1].x}
                     cy={points[points.length - 1].y}
@@ -475,12 +689,27 @@ export const BoostStatusScreen = ({
                     cx={points[points.length - 1].x}
                     cy={points[points.length - 1].y}
                     r={4}
-                    fill={currentColor}
+                    fill={isBoosting ? '#22D3EE' : '#6366F1'}
                   />
                 </>
-              ) : null}
+              )}
             </Svg>
-          </View>
+            <View style={styles.chartAxisRow}>
+              <Text style={styles.axisLabel}>Now</Text>
+              <Text style={styles.axisLabel}>
+                {Math.round(latestTime / 1000 / 4)}s
+              </Text>
+              <Text style={styles.axisLabel}>
+                {Math.round(latestTime / 1000 / 2)}s
+              </Text>
+              <Text style={styles.axisLabel}>
+                {Math.round((latestTime / 1000) * 0.75)}s
+              </Text>
+              <Text style={styles.axisLabel}>
+                {Math.round(latestTime / 1000)}s
+              </Text>
+            </View>
+          </>
         ) : (
           <View style={styles.chartEmpty}>
             <Text style={styles.chartEmptyText}>
@@ -499,7 +728,7 @@ export const BoostStatusScreen = ({
             </Text>
           </View>
           <View style={styles.pingCompareArrow}>
-            {improvePct !== null ? (
+            {improvePct !== null && (
               <View
                 style={[
                   styles.improvePill,
@@ -515,15 +744,9 @@ export const BoostStatusScreen = ({
                     styles.improveText,
                     {color: improvePct > 0 ? '#00D68F' : '#FF4D6D'},
                   ]}>
-                  {improvePct > 0
-                    ? `↓ ${improvePct}%`
-                    : improvePct === 0
-                    ? '→ 0%'
-                    : `↑ ${Math.abs(improvePct)}%`}
+                  {improvePct > 0 ? `↓ ${improvePct}%` : `↑ ${-improvePct}%`}
                 </Text>
               </View>
-            ) : (
-              <Text style={styles.arrowText}>→</Text>
             )}
           </View>
           <View style={styles.pingCompareItem}>
@@ -531,9 +754,12 @@ export const BoostStatusScreen = ({
             <Text
               style={[
                 styles.pingCompareValue,
-                afterPing !== null && afterPing < (beforePing ?? 999)
-                  ? {color: '#00D68F'}
-                  : {},
+                {
+                  color:
+                    improvePct !== null && improvePct > 0
+                      ? '#00D68F'
+                      : theme.colors.text,
+                },
               ]}>
               {afterPing !== null ? `${afterPing} ms` : '—'}
             </Text>
@@ -541,450 +767,323 @@ export const BoostStatusScreen = ({
         </View>
       </View>
 
-      <View style={styles.gameStrip}>
-        {games.slice(0, 5).map(game => {
-          const isSelected = selectedGame?.id === game.id;
-          return (
-            <Pressable
-              key={game.id}
-              onPress={() => onSelectGame(game)}
-              style={[styles.gameChip, isSelected && styles.gameChipActive]}>
-              {game.iconUri ? (
-                <Image
-                  source={{uri: game.iconUri}}
-                  style={styles.gameChipIcon}
-                />
-              ) : null}
-              <Text
-                style={[
-                  styles.gameChipText,
-                  isSelected && {color: theme.colors.accent},
-                ]}
-                numberOfLines={1}>
-                {game.name}
-              </Text>
-            </Pressable>
-          );
-        })}
-      </View>
-
-      <View style={styles.actionRow}>
-        <Pressable onPress={onStop} style={styles.stopButton}>
-          <Text style={styles.stopText}>Stop Boost</Text>
+      <View style={styles.actionsRow}>
+        <Pressable onPress={onOpenGame} style={styles.actionButton}>
+          <Text style={styles.actionButtonText}>Open Game</Text>
         </Pressable>
-        <Pressable onPress={onOpenGame} style={styles.openButton}>
-          <Text style={styles.openText}>Open Game</Text>
-        </Pressable>
+        {isBoosting ? (
+          <Pressable onPress={onStop} style={styles.stopButton}>
+            <Text style={styles.stopButtonText}>Stop Boost</Text>
+          </Pressable>
+        ) : (
+          <Pressable
+            onPress={onShareLogs}
+            style={[styles.actionButton, styles.actionButtonSecondary]}>
+            <Text style={styles.actionButtonTextSecondary}>Share Logs</Text>
+          </Pressable>
+        )}
       </View>
-
-      <Pressable onPress={onShareLogs} style={styles.shareLogs}>
-        <Text style={styles.shareLogsText}>Share Diagnostic Logs</Text>
-      </Pressable>
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    paddingBottom: 32,
-  },
+  container: {padding: 16, paddingBottom: 100},
   headerRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'flex-start',
+    alignItems: 'center',
     marginBottom: 16,
   },
-  headerTitle: {
-    color: theme.colors.textMuted,
-    fontSize: 11,
-    fontWeight: '600',
-    letterSpacing: 1.2,
-    textTransform: 'uppercase',
-  },
-  headerGame: {
-    color: theme.colors.text,
-    fontSize: 16,
-    fontWeight: '700',
-    marginTop: 2,
-  },
+  headerTitle: {fontSize: 24, fontWeight: '800', color: theme.colors.text},
+  headerGame: {fontSize: 13, color: theme.colors.textMuted, marginTop: 2},
   settingsButton: {
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 8,
     borderWidth: 1,
     borderColor: theme.colors.border,
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 10,
   },
-  settingsText: {
-    color: theme.colors.textMuted,
-    fontSize: 11,
-    fontWeight: '700',
-  },
-  pingHeroCard: {
-    backgroundColor: theme.colors.panel,
-    borderRadius: 20,
-    padding: 20,
-    borderWidth: 1,
-    borderColor: theme.colors.border,
+  settingsText: {fontSize: 12, color: theme.colors.textMuted},
+  heroCard: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    backgroundColor: theme.colors.card,
+    borderRadius: 16,
+    padding: 20,
     marginBottom: 12,
   },
-  pingHeroLeft: {
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-  },
-  pingHeroValue: {
-    fontSize: 48,
-    fontWeight: '800',
-    letterSpacing: -1,
-  },
-  pingHeroUnit: {
-    color: theme.colors.textMuted,
-    fontSize: 18,
-    fontWeight: '600',
-    marginBottom: 6,
-    marginLeft: 4,
-  },
-  pingHeroRight: {
-    alignItems: 'flex-end',
-  },
+  heroLeft: {flexDirection: 'row', alignItems: 'baseline'},
+  pingValue: {fontSize: 56, fontWeight: '700', color: theme.colors.text},
+  pingUnit: {fontSize: 18, color: theme.colors.textMuted, marginLeft: 4},
+  pingHeroRight: {marginLeft: 'auto', alignItems: 'flex-end'},
   statusChip: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderWidth: 1,
-    borderRadius: 20,
     paddingHorizontal: 10,
     paddingVertical: 4,
-    marginBottom: 6,
-  },
-  statusDot: {
-    width: 6,
-    height: 6,
-    borderRadius: 3,
-    marginRight: 5,
-  },
-  statusChipText: {
-    fontSize: 11,
-    fontWeight: '700',
-  },
-  serverName: {
-    color: theme.colors.text,
-    fontSize: 13,
-    fontWeight: '600',
-    textAlign: 'right',
-  },
-  regionTag: {
-    color: theme.colors.textMuted,
-    fontSize: 11,
-    marginTop: 2,
-    textAlign: 'right',
-  },
-  statsRow: {
-    backgroundColor: theme.colors.panel,
-    borderRadius: 16,
+    borderRadius: 12,
     borderWidth: 1,
-    borderColor: theme.colors.border,
+    marginBottom: 4,
+  },
+  statusDot: {width: 6, height: 6, borderRadius: 3, marginRight: 6},
+  statusChipText: {fontSize: 11, fontWeight: '700'},
+  serverName: {fontSize: 12, color: theme.colors.text, fontWeight: '600'},
+  regionTag: {fontSize: 10, color: theme.colors.textMuted, marginTop: 2},
+  statsRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 12,
-    paddingVertical: 14,
-  },
-  statItem: {
-    flex: 1,
-    alignItems: 'center',
-  },
-  statVal: {
-    color: theme.colors.text,
-    fontSize: 15,
-    fontWeight: '700',
-  },
-  statLbl: {
-    color: theme.colors.textMuted,
-    fontSize: 10,
-    marginTop: 3,
-    textTransform: 'uppercase',
-    letterSpacing: 0.8,
-  },
-  statDivider: {
-    width: 1,
-    height: 28,
-    backgroundColor: theme.colors.border,
-  },
-  chartCard: {
-    backgroundColor: theme.colors.panel,
-    borderRadius: 20,
+    backgroundColor: theme.colors.card,
+    borderRadius: 12,
     padding: 16,
-    borderWidth: 1,
-    borderColor: theme.colors.border,
+    marginBottom: 12,
+  },
+  statItem: {flex: 1, alignItems: 'center'},
+  statDivider: {width: 1, height: 30, backgroundColor: theme.colors.border},
+  statVal: {fontSize: 16, fontWeight: '700', color: theme.colors.text},
+  statLbl: {fontSize: 10, color: theme.colors.textMuted, marginTop: 2},
+  chartCard: {
+    backgroundColor: theme.colors.card,
+    borderRadius: 16,
+    padding: 16,
     marginBottom: 12,
   },
   chartHeaderRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 14,
+    marginBottom: 12,
   },
-  chartTitle: {
-    color: theme.colors.text,
-    fontWeight: '700',
-    fontSize: 14,
-  },
-  chartTag: {
-    fontSize: 11,
-    fontWeight: '700',
-    letterSpacing: 0.5,
-  },
-  chartWrap: {
-    flexDirection: 'row',
-    alignItems: 'stretch',
-  },
-  chartYLabels: {
-    width: 32,
-    justifyContent: 'space-between',
-    alignItems: 'flex-end',
-    paddingRight: 6,
+  chartTitle: {fontSize: 14, fontWeight: '700', color: theme.colors.text},
+  chartBadgeContainer: {flexDirection: 'row', alignItems: 'center'},
+  chartTag: {fontSize: 11, fontWeight: '600', color: '#6366F1'},
+  boostedBadge: {
+    backgroundColor: '#14B8A6',
+    paddingHorizontal: 10,
     paddingVertical: 4,
-    height: CHART_HEIGHT,
+    borderRadius: 8,
   },
-  axisLabel: {
-    color: theme.colors.textMuted,
-    fontSize: 9,
-    fontVariant: ['tabular-nums'],
+  boostedBadgeText: {
+    fontSize: 10,
+    fontWeight: '800',
+    color: '#FFFFFF',
+    letterSpacing: 1,
   },
   chartEmpty: {
     height: CHART_HEIGHT,
-    alignItems: 'center',
     justifyContent: 'center',
+    alignItems: 'center',
   },
-  chartEmptyText: {
-    color: theme.colors.textMuted,
-    fontSize: 13,
+  chartEmptyText: {fontSize: 12, color: theme.colors.textMuted},
+  chartAxisRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 8,
+    paddingHorizontal: 4,
   },
+  axisLabel: {fontSize: 10, color: theme.colors.textMuted},
   pingCompare: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
     marginTop: 16,
-    paddingTop: 14,
+    paddingTop: 16,
     borderTopWidth: 1,
     borderTopColor: theme.colors.border,
   },
-  pingCompareItem: {
-    alignItems: 'center',
-    flex: 1,
-  },
-  pingCompareLabel: {
-    color: theme.colors.textMuted,
-    fontSize: 10,
-    textTransform: 'uppercase',
-    letterSpacing: 1,
-    marginBottom: 4,
-  },
+  pingCompareItem: {flex: 1, alignItems: 'center'},
+  pingCompareArrow: {width: 80, alignItems: 'center'},
+  pingCompareLabel: {fontSize: 10, color: theme.colors.textMuted},
   pingCompareValue: {
-    color: theme.colors.text,
-    fontSize: 20,
-    fontWeight: '800',
-  },
-  pingCompareArrow: {
-    alignItems: 'center',
-    paddingHorizontal: 8,
-  },
-  arrowText: {
-    color: theme.colors.textMuted,
     fontSize: 18,
+    fontWeight: '700',
+    color: theme.colors.text,
+    marginTop: 2,
   },
-  improvePill: {
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderRadius: 20,
+  improvePill: {paddingHorizontal: 10, paddingVertical: 4, borderRadius: 10},
+  improveText: {fontSize: 12, fontWeight: '700'},
+  actionsRow: {flexDirection: 'row', gap: 12},
+  actionButton: {
+    flex: 1,
+    backgroundColor: theme.colors.accent,
+    paddingVertical: 14,
+    borderRadius: 12,
+    alignItems: 'center',
   },
-  improveText: {
-    fontSize: 13,
-    fontWeight: '800',
-  },
-  gameStrip: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    marginBottom: 12,
-    gap: 8,
-  },
-  gameChip: {
-    paddingHorizontal: 10,
-    paddingVertical: 6,
-    borderRadius: 14,
+  actionButtonSecondary: {
+    backgroundColor: 'transparent',
     borderWidth: 1,
     borderColor: theme.colors.border,
-    backgroundColor: theme.colors.panelAlt,
-    flexDirection: 'row',
-    alignItems: 'center',
-    maxWidth: 140,
   },
-  gameChipActive: {
-    borderColor: theme.colors.accent,
-    backgroundColor: theme.colors.accentSoft,
-  },
-  gameChipIcon: {
-    width: 16,
-    height: 16,
-    borderRadius: 4,
-    marginRight: 5,
-  },
-  gameChipText: {
-    color: theme.colors.textMuted,
-    fontSize: 11,
-    flexShrink: 1,
-  },
-  actionRow: {
-    flexDirection: 'row',
-    gap: 10,
-    marginBottom: 10,
+  actionButtonText: {fontSize: 14, fontWeight: '700', color: '#07121B'},
+  actionButtonTextSecondary: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: theme.colors.text,
   },
   stopButton: {
     flex: 1,
-    backgroundColor: 'rgba(255,77,109,0.15)',
-    borderWidth: 1,
-    borderColor: '#FF4D6D',
-    borderRadius: 14,
+    backgroundColor: '#FF4D6D',
     paddingVertical: 14,
+    borderRadius: 12,
     alignItems: 'center',
   },
-  stopText: {
-    color: '#FF4D6D',
-    fontWeight: '700',
-    fontSize: 14,
+  stopButtonText: {fontSize: 14, fontWeight: '700', color: '#FFFFFF'},
+  advancedCard: {
+    backgroundColor: theme.colors.card,
+    borderRadius: 16,
+    padding: 16,
+    marginBottom: 12,
   },
-  openButton: {
+  advancedHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  advancedTitle: {fontSize: 14, fontWeight: '700', color: theme.colors.text},
+  modeBadge: {
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 8,
+  },
+  modeBadgeText: {fontSize: 10, fontWeight: '800', letterSpacing: 1},
+  featureGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 12,
+    marginBottom: 16,
+  },
+  featureItem: {
     flex: 1,
-    backgroundColor: theme.colors.accentSoft,
-    borderWidth: 1,
-    borderColor: theme.colors.accent,
-    borderRadius: 14,
-    paddingVertical: 14,
+    minWidth: '30%',
+    backgroundColor: 'rgba(255,255,255,0.03)',
+    borderRadius: 10,
+    padding: 12,
     alignItems: 'center',
   },
-  openText: {
-    color: theme.colors.accent,
-    fontWeight: '700',
-    fontSize: 14,
+  featureValue: {fontSize: 16, fontWeight: '700', color: theme.colors.text},
+  featureLabel: {fontSize: 9, color: theme.colors.textMuted, marginTop: 4, textAlign: 'center'},
+  notesContainer: {
+    borderTopWidth: 1,
+    borderTopColor: theme.colors.border,
+    paddingTop: 12,
   },
-  shareLogs: {
-    alignItems: 'center',
-    paddingVertical: 10,
+  noteText: {fontSize: 11, color: theme.colors.textMuted, marginBottom: 6, lineHeight: 16},
+  progressContainer: {flex: 1, backgroundColor: '#030712'},
+  progressBackdrop: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: '#030712',
   },
-  shareLogsText: {
-    color: theme.colors.textMuted,
-    fontSize: 12,
+  progressGlowBg: {
+    position: 'absolute',
+    top: '20%',
+    left: '10%',
+    right: '10%',
+    bottom: '40%',
+    borderRadius: 100,
+    backgroundColor: 'rgba(20,184,166,0.08)',
   },
-  progressWrap: {
+  progressContent: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 20,
+    paddingHorizontal: 20,
   },
-  progressBackdrop: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: '#060E1E',
+  progressReticleWrap: {marginBottom: 32},
+  progressReticleOuter: {
+    width: 260,
+    height: 260,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
+  progressIconContainer: {
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  progressIconGlow: {
+    position: 'absolute',
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+    backgroundColor: 'rgba(20,184,166,0.3)',
+  },
+  progressIconImage: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    borderWidth: 3,
+    borderColor: '#22D3EE',
+  },
+  progressIconFallback: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    backgroundColor: 'rgba(20,184,166,0.2)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 3,
+    borderColor: '#22D3EE',
+  },
+  progressIconText: {fontSize: 32, fontWeight: '800', color: '#22D3EE'},
   progressTitle: {
-    color: '#BCD8FF',
-    fontWeight: '700',
-    letterSpacing: 2,
-    fontSize: 13,
+    fontSize: 28,
+    fontWeight: '800',
+    color: '#E2E8F0',
+    marginBottom: 8,
+    textAlign: 'center',
   },
-  dialWrap: {
+  progressSubtitle: {
+    fontSize: 14,
+    color: '#94A3B8',
+    marginBottom: 24,
+    textAlign: 'center',
+  },
+  progressRingContainer: {
     width: 200,
     height: 200,
     alignItems: 'center',
     justifyContent: 'center',
+    marginBottom: 24,
   },
-  dialCenter: {
-    alignItems: 'center',
-  },
-  dialPct: {
-    color: '#E0F4FF',
-    fontWeight: '800',
-    fontSize: 36,
-  },
-  dialSub: {
-    color: 'rgba(100,200,255,0.7)',
-    fontSize: 10,
-    letterSpacing: 2,
-    marginTop: 2,
-  },
-  dialGlow: {
+  progressRingCenter: {
     position: 'absolute',
-    width: 160,
-    height: 160,
-    borderRadius: 80,
-    backgroundColor: 'rgba(0,214,143,0.15)',
-  },
-  progressGameIcon: {
-    marginBottom: 12,
-  },
-  progressGameIconImage: {
-    width: 80,
-    height: 80,
-    borderRadius: 20,
-    backgroundColor: theme.colors.panel,
-  },
-  progressGameIconFallback: {
-    width: 80,
-    height: 80,
-    borderRadius: 20,
-    backgroundColor: theme.colors.accentSoft,
     alignItems: 'center',
     justifyContent: 'center',
+    flexDirection: 'row',
   },
-  progressGameIconText: {
-    color: theme.colors.accent,
+  progressPercent: {fontSize: 48, fontWeight: '800', color: '#14B8A6'},
+  progressPercentLabel: {
     fontSize: 24,
-    fontWeight: '800',
-  },
-  progressGameName: {
-    color: '#E0F4FF',
-    fontSize: 18,
     fontWeight: '700',
-    marginBottom: 16,
+    color: '#14B8A6',
+    marginTop: 8,
   },
-  progressBarContainer: {
-    width: 260,
-    marginBottom: 20,
+  progressIndicators: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 32,
   },
-  progressBarTrack: {
-    width: '100%',
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: 'rgba(0,214,143,0.15)',
-    overflow: 'hidden',
+  indicatorDot: {width: 12, height: 12, borderRadius: 6},
+  indicatorActive: {backgroundColor: '#14B8A6'},
+  indicatorInactive: {backgroundColor: '#334155'},
+  indicatorLine: {
+    width: 40,
+    height: 2,
+    backgroundColor: '#334155',
+    marginHorizontal: 4,
   },
-  progressBar: {
-    width: 220,
-    height: 5,
-    borderRadius: 5,
-    backgroundColor: 'rgba(0,214,143,0.2)',
-    overflow: 'hidden',
-  },
-  progressFill: {
-    height: '100%',
-    borderRadius: 4,
-  },
-  progressHint: {
-    color: 'rgba(150,200,255,0.65)',
-    fontSize: 13,
-    marginBottom: 20,
-    textAlign: 'center',
-  },
-  progressStop: {
+  progressCancelBtn: {
+    paddingHorizontal: 48,
+    paddingVertical: 14,
     borderWidth: 1,
-    borderColor: 'rgba(255,77,109,0.5)',
-    paddingVertical: 10,
-    paddingHorizontal: 32,
-    borderRadius: 12,
+    borderColor: 'rgba(255,255,255,0.2)',
+    borderRadius: 30,
   },
-  progressStopText: {
-    color: '#FF4D6D',
-    fontWeight: '700',
-    fontSize: 13,
+  progressCancelText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#94A3B8',
+    letterSpacing: 2,
   },
 });

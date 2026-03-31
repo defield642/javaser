@@ -9,6 +9,7 @@ import {
   PermissionsAndroid,
   Platform,
   AppState,
+  Animated,
 } from 'react-native';
 import type {AppStateStatus} from 'react-native';
 import {theme} from './src/theme';
@@ -27,6 +28,7 @@ import {
   OptimizationProfile,
   TunnelConfig,
 } from './src/api/backend';
+import networkOptimizer from './src/native/NetworkOptimizer';
 import {
   getInstalledGames,
   launchInstalledApp,
@@ -55,10 +57,8 @@ import {
 
 const PING_INTERVAL_MS = 3500;
 const LOCK_SCAN_INTERVAL_MS = 20000;
-const PROGRESS_MIN_MS = 25000;
-const PROGRESS_MAX_MS = 50000;
-const TARGET_PING_MS = 100;
-const TARGET_PING_SAMPLES = 4;
+const PROGRESS_MIN_MS = 5000;
+const PROGRESS_MAX_MS = 15000;
 const EMA_ALPHA = 0.28;
 const DEFAULT_SETTINGS: SettingsState = {
   autoOpenDelaySec: 15,
@@ -77,6 +77,8 @@ export default function App() {
     'idle',
   );
   const [boostProgress, setBoostProgress] = useState(0);
+  const boostProgressRef = useRef(0);
+  const progressAnimRef = useRef<number | null>(null);
   const [pingMap, setPingMap] = useState<Record<string, PingEntry>>({});
   const [pingHistory, setPingHistory] = useState<
     Record<
@@ -140,9 +142,16 @@ export default function App() {
     [serverCatalog],
   );
 
-  const extractHostname = (url: string): string => {
-    const match = url.match(/^https?:\/\/([^:\/]+)/);
-    return match ? match[1] : '';
+  const extractHostFromUrl = (
+    url: string,
+  ): {host: string; port: number} | null => {
+    const match = url.match(/^https?:\/\/([^:\/]+)(?::(\d+))?/);
+    if (!match) return null;
+    const host = match[1];
+    const portStr = match[2];
+    const isHttp = url.toLowerCase().startsWith('http:');
+    const port = portStr ? Number(portStr) : isHttp ? 80 : 443;
+    return {host, port};
   };
 
   const getServerTarget = (
@@ -152,32 +161,19 @@ export default function App() {
       return {host: server.host, port: server.port};
     }
     if (server.pingUrl) {
-      try {
-        const normalized = server.pingUrl.trim();
-        let urlToParse = normalized;
-        if (!/^https?:\/\//i.test(urlToParse)) {
-          urlToParse = 'https://' + urlToParse;
-        }
-        const urlObj = new URL(urlToParse);
-        const host = urlObj.hostname || extractHostname(urlToParse);
-        const port = urlObj.port
-          ? Number(urlObj.port)
-          : urlObj.protocol === 'http:'
-          ? 80
-          : 443;
-        if (!host || !port) {
-          console.warn(
-            `Invalid target: could not extract host/port from pingUrl='${server.pingUrl}' for server id='${server.id}'`,
-          );
-          return null;
-        }
-        return {host, port};
-      } catch (e) {
+      const normalized = server.pingUrl.trim();
+      let urlToParse = normalized;
+      if (!/^https?:\/\//i.test(urlToParse)) {
+        urlToParse = 'https://' + urlToParse;
+      }
+      const result = extractHostFromUrl(urlToParse);
+      if (!result) {
         console.warn(
-          `Invalid target: failed to parse pingUrl='${server.pingUrl}' for server id='${server.id}', error: ${e}`,
+          `Invalid target: could not extract host/port from pingUrl='${server.pingUrl}' for server id='${server.id}'`,
         );
         return null;
       }
+      return result;
     }
     console.warn(
       `Invalid target: no host/port or pingUrl for server id='${server.id}'`,
@@ -257,12 +253,6 @@ export default function App() {
     batteryOptimizationAskedRef.current = true;
     openBatteryOptimizationSettings().catch(() => {});
     return false;
-  };
-
-  const canFinishProgress = () => {
-    const startedAt = progressStartRef.current ?? 0;
-    if (!startedAt) return false;
-    return Date.now() - startedAt >= 15000;
   };
 
   useEffect(() => {
@@ -581,21 +571,16 @@ export default function App() {
 
   useEffect(() => {
     if (boostPhase !== 'progress') {
-      if (progressTimer.current) {
-        clearInterval(progressTimer.current);
-        progressTimer.current = null;
+      if (progressAnimRef.current) {
+        cancelAnimationFrame(progressAnimRef.current);
+        progressAnimRef.current = null;
       }
-      if (progressCompleteTimer.current) {
-        clearTimeout(progressCompleteTimer.current);
-        progressCompleteTimer.current = null;
-      }
-      Tts.stop();
+      setBoostProgress(0);
       return;
     }
 
-    if (progressStartRef.current === null) {
-      setBoostProgress(0);
-    }
+    console.log('[BOOST] Progress phase started');
+
     if (selectedGame?.name) {
       const key = `start:${selectedGame.name}`;
       if (spokenRef.current !== key) {
@@ -603,55 +588,37 @@ export default function App() {
         speak(`Boosting ${selectedGame.name} started`);
       }
     }
-    if (progressStartRef.current === null) {
-      progressStartRef.current = Date.now();
-    }
-    progressDurationRef.current =
+
+    const duration =
       PROGRESS_MIN_MS +
       Math.floor(Math.random() * (PROGRESS_MAX_MS - PROGRESS_MIN_MS));
+    const startTime = Date.now();
+    console.log('[BOOST] Duration:', duration);
 
-    progressTimer.current = setInterval(() => {
-      const start = progressStartRef.current ?? Date.now();
-      const elapsed = Date.now() - start;
-      const duration = progressDurationRef.current;
-      const ratio = Math.min(1, elapsed / duration);
-      const next = Math.min(99, Math.floor(ratio * 99));
-      setBoostProgress(prev => Math.max(prev, next));
-
-      const serverId = selectedServerRef.current?.id;
-      if (serverId && elapsed >= PROGRESS_MIN_MS) {
-        const entry = pingMapRef.current[serverId];
-        const history = pingHistoryRef.current[serverId] ?? [];
-        if (typeof entry?.ms === 'number' && entry.ms <= TARGET_PING_MS) {
-          if (history.length >= TARGET_PING_SAMPLES && canFinishProgress()) {
-            if (progressTimer.current) {
-              clearInterval(progressTimer.current);
-              progressTimer.current = null;
-            }
-            if (progressCompleteTimer.current) {
-              clearTimeout(progressCompleteTimer.current);
-              progressCompleteTimer.current = null;
-            }
-            setBoostProgress(100);
-            if (isBoostingRef.current) setBoostPhase('active');
-          }
-        }
+    let running = true;
+    const animate = () => {
+      if (!running) return;
+      const elapsed = Date.now() - startTime;
+      const progress = Math.min(100, Math.floor((elapsed / duration) * 100));
+      setBoostProgress(progress);
+      
+      if (progress >= 100) {
+        console.log('[BOOST] Progress complete');
+        if (isBoostingRef.current) setBoostPhase('active');
+        return;
       }
-    }, 1000);
-
-    progressCompleteTimer.current = setTimeout(() => {
-      if (progressTimer.current) {
-        clearInterval(progressTimer.current);
-        progressTimer.current = null;
-      }
-      setBoostProgress(100);
-      if (isBoostingRef.current) setBoostPhase('active');
-    }, progressDurationRef.current);
+      
+      progressAnimRef.current = requestAnimationFrame(animate);
+    };
+    
+    progressAnimRef.current = requestAnimationFrame(animate);
 
     return () => {
-      if (progressTimer.current) clearInterval(progressTimer.current);
-      if (progressCompleteTimer.current)
-        clearTimeout(progressCompleteTimer.current);
+      running = false;
+      if (progressAnimRef.current) {
+        cancelAnimationFrame(progressAnimRef.current);
+        progressAnimRef.current = null;
+      }
     };
   }, [boostPhase, selectedGame?.name]);
 
@@ -753,11 +720,25 @@ export default function App() {
   }, [boostPhase, tab]);
 
   const handleBoostGame = async (game: Game) => {
+    console.log('[BOOST] handleBoostGame called, game:', game.name);
     if (isBoosting && selectedGame?.id !== game.id) return;
     setSelectedGame(game);
+    console.log('[BOOST] Selected game set');
+
+    const currentServer =
+      selectedServer && selectedServer.id !== 'auto'
+        ? selectedServer
+        : availableServers[0];
+    const pingEntryForCurrent = currentServer
+      ? pingMapRef.current[currentServer.id]
+      : undefined;
     const currentPing =
-      typeof pingEntry?.ms === 'number' ? pingEntry.ms : undefined;
-    const currentHistory = pingHistoryForServer;
+      typeof pingEntryForCurrent?.ms === 'number'
+        ? pingEntryForCurrent.ms
+        : undefined;
+    const currentHistory = currentServer
+      ? pingHistoryRef.current[currentServer.id] ?? []
+      : [];
     const currentJitter =
       currentHistory.length > 1
         ? Math.round(
@@ -770,28 +751,36 @@ export default function App() {
         : availableServers[0];
     let server = initialServer;
     if (!server) return;
+    console.log('[BOOST] Setting state - isBoosting, boostPhase, boostProgress');
     setSelectedServer(server);
     setIsBoosting(true);
     setBoostPhase('progress');
     setBoostProgress(0);
     progressStartRef.current = null;
     setTab('boost');
-    const optimization = await fetchOptimizationProfile({
+    console.log('[BOOST] State set complete');
+
+    fetchOptimizationProfile({
       gameId: game.packageName ?? game.id,
       clientPingMs: currentPing,
       jitterMs: currentJitter,
       networkType: networkInfo?.type,
       country: selectedServer?.country,
-    });
-    setOptimizationProfile(optimization);
-    const fetchedTunnelConfig = await fetchTunnelConfig({
+    })
+      .then(setOptimizationProfile)
+      .catch(() => {});
+
+    fetchTunnelConfig({
       gameId: game.id,
       packageName: game.packageName ?? undefined,
       preferredRegion: server.region,
       networkType: networkInfo?.type,
-    });
-    setTunnelConfig(fetchedTunnelConfig);
+    })
+      .then(setTunnelConfig)
+      .catch(() => {});
+
     ensureBackgroundOptimization().catch(() => {});
+
     const notificationOk = await ensureNotificationPermission();
     if (!notificationOk) {
       setIsBoosting(false);
@@ -819,6 +808,18 @@ export default function App() {
         server.name,
         typeof ping === 'number' ? ping : -1,
       );
+      networkOptimizer.startOptimization().catch(() => {});
+      if (typeof ping === 'number' && ping > 0) {
+        const jitter = jitterMs || 10;
+        const loss = packetLossPct || 0;
+        networkOptimizer.updateNetworkMetrics({pingMs: ping, jitterMs: jitter, packetLossPct: loss}).catch(() => {});
+      }
+      const fetchedTunnelConfig = await fetchTunnelConfig({
+        gameId: game.id,
+        packageName: game.packageName ?? undefined,
+        preferredRegion: server.region,
+        networkType: networkInfo?.type,
+      });
       if (fetchedTunnelConfig?.supported) {
         const vpnPrepared = await prepareVpn();
         if (vpnPrepared) {
@@ -1321,26 +1322,6 @@ export default function App() {
       setLockedServerId(best.server.id);
     }
 
-    if (
-      best &&
-      boostPhase === 'progress' &&
-      best.ping > 0 &&
-      best.ping <= TARGET_PING_MS &&
-      (pingHistoryRef.current[best.server.id]?.length ?? 0) >=
-        TARGET_PING_SAMPLES &&
-      canFinishProgress()
-    ) {
-      if (progressTimer.current) {
-        clearInterval(progressTimer.current);
-        progressTimer.current = null;
-      }
-      if (progressCompleteTimer.current) {
-        clearTimeout(progressCompleteTimer.current);
-        progressCompleteTimer.current = null;
-      }
-      setBoostProgress(100);
-      if (isBoostingRef.current) setBoostPhase('active');
-    }
     lockRunningRef.current = false;
   };
 
@@ -1436,13 +1417,9 @@ export default function App() {
               boostProgress={boostProgress}
               pingEntry={pingEntry}
               pingHistory={pingHistoryForServer}
-              boostStartTime={boostStartTime}
               jitterMs={jitterMs}
               packetLossPct={packetLossPct}
-              games={games}
-              onSelectGame={handleBoostGame}
               isConnected={isConnected}
-              lockedServerId={lockedServerId}
               onOpenSettings={() => setSettingsOpen(true)}
               onOpenGame={handleOpenGame}
               onStop={handleStop}

@@ -14,6 +14,14 @@ export type OptimizationProfile = {
   aggressiveness: string;
   notes: string[];
   source: string;
+  jitterBufferSize?: number;
+  fecStrength?: number;
+  retransmissionMode?: boolean;
+  multiPathEnabled?: boolean;
+  keepAliveInterval?: number;
+  dnsPreResolution?: boolean;
+  packetPrioritization?: boolean;
+  congestionControl?: string;
 };
 
 export type TunnelConfig = {

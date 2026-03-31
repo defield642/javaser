@@ -6,5 +6,8 @@ public record OptimizeRequest(
   Double jitterMs,
   Double packetLossPct,
   String networkType,
-  String country
+  String country,
+  Double connectionSpeed,
+  Double signalStrength,
+  Boolean batteryOptimization
 ) {}
