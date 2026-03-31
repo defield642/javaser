@@ -275,79 +275,46 @@ export const BoostStatusScreen = ({
   }, [pulse]);
 
   if (boostPhase === 'progress') {
-    const ringSize = 200;
-    const stroke = 10;
+    const ringSize = 180;
+    const stroke = 8;
     const r = (ringSize - stroke) / 2;
     const cx = ringSize / 2;
     const cy = ringSize / 2;
+    const circumference = 2 * Math.PI * r;
     const ratio = Math.max(0, Math.min(1, boostProgress / 100));
     return (
       <View style={styles.progressWrap}>
         <View style={styles.progressBackdrop} />
-        {selectedGame?.iconUri ? (
-          <View style={styles.progressGameIcon}>
-            <Image
-              source={{uri: selectedGame.iconUri}}
-              style={styles.progressGameIconImage}
-            />
-          </View>
-        ) : selectedGame ? (
-          <View style={styles.progressGameIcon}>
-            <View style={styles.progressGameIconFallback}>
-              <Text style={styles.progressGameIconText}>
-                {selectedGame.name.substring(0, 2).toUpperCase()}
-              </Text>
-            </View>
-          </View>
-        ) : null}
-        <Text style={styles.progressGameName}>
-          {selectedGame?.name ?? 'Game'}
-        </Text>
         <View style={styles.dialWrap}>
           <Svg
             width={ringSize}
             height={ringSize}
             style={StyleSheet.absoluteFill}>
             <Defs>
-              <LinearGradient id="glow" x1="0" y1="0" x2="1" y2="1">
+              <LinearGradient id="progressGrad" x1="0" y1="0" x2="1" y2="1">
                 <Stop offset="0%" stopColor="#00D68F" stopOpacity="1" />
-                <Stop offset="50%" stopColor="#2CE7FF" stopOpacity="1" />
-                <Stop offset="100%" stopColor="#2A4CFF" stopOpacity="1" />
-              </LinearGradient>
-              <LinearGradient id="progressGlow" x1="0" y1="0" x2="0" y2="1">
-                <Stop offset="0%" stopColor="#00D68F" stopOpacity="0.3" />
-                <Stop offset="100%" stopColor="#00D68F" stopOpacity="0" />
+                <Stop offset="100%" stopColor="#00FFB3" stopOpacity="1" />
               </LinearGradient>
             </Defs>
-            <Path
-              d={`M${cx - r},${cy - r}A${r * 2},${r * 2},0,1,1,${cx + r},${
-                cy - r
-              }`}
-              stroke="rgba(0,214,143,0.15)"
+            <Circle
+              cx={cx}
+              cy={cy}
+              r={r}
+              stroke="rgba(255,255,255,0.1)"
+              strokeWidth={stroke}
+              fill="none"
+            />
+            <Circle
+              cx={cx}
+              cy={cy}
+              r={r}
+              stroke="url(#progressGrad)"
               strokeWidth={stroke}
               fill="none"
               strokeLinecap="round"
-            />
-            <Path
-              d={`M${cx - r},${cy - r}A${r * 2},${r * 2},0,1,1,${cx + r},${
-                cy - r
-              }`}
-              stroke="url(#progressGlow)"
-              strokeWidth={stroke + 20}
-              fill="none"
-              strokeLinecap="round"
-              opacity={0.5}
-            />
-            <Path
-              d={`M${cx - r},${cy - r}A${r * 2},${r * 2},0,1,1,${cx + r},${
-                cy - r
-              }`}
-              stroke="url(#glow)"
-              strokeWidth={stroke}
-              fill="none"
-              strokeLinecap="round"
-              strokeDasharray={`${circumference * 2} ${circumference * 2}`}
-              strokeDashoffset={circumference * 2 * (1 - ratio)}
+              strokeDasharray={`${circumference} ${circumference}`}
+              strokeDashoffset={circumference * (1 - ratio)}
+              transform={`rotate(-90 ${cx} ${cy})`}
             />
           </Svg>
           <View style={styles.dialCenter}>
@@ -356,22 +323,10 @@ export const BoostStatusScreen = ({
           </View>
           <Animated.View style={[styles.dialGlow, {opacity: pulse}]} />
         </View>
-        <View style={styles.progressBarContainer}>
-          <View style={styles.progressBarTrack}>
-            <Animated.View
-              style={[
-                styles.progressFill,
-                {
-                  width: `${boostProgress}%`,
-                  backgroundColor: boostProgress > 50 ? '#00D68F' : '#2CE7FF',
-                },
-              ]}
-            />
-          </View>
-        </View>
-        <Text style={styles.progressHint}>
-          Optimizing connection for {selectedGame?.name ?? 'your game'}…
+        <Text style={styles.progressGameName}>
+          {selectedGame?.name ?? 'Boosting'}
         </Text>
+        <Text style={styles.progressHint}>Optimizing connection…</Text>
         <Pressable onPress={onStop} style={styles.progressStop}>
           <Text style={styles.progressStopText}>Cancel</Text>
         </Pressable>

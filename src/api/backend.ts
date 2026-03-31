@@ -81,11 +81,13 @@ export const backendConfigs: BackendConfig[] = [
   },
 ];
 
-const normalizeBaseUrl = (value: string) => value.replace(/\/+$/, '');
+const normalizeBaseUrl = (value: string) =>
+  value.replace(/\/+$/, '').replace(/\/+$/, '');
 
 const getJson = async <T>(url: string): Promise<T | null> => {
   try {
-    const response = await fetch(url, {
+    const cleanUrl = url.replace(/\/+$/, '');
+    const response = await fetch(cleanUrl, {
       method: 'GET',
       cache: 'no-store',
     });
@@ -98,7 +100,8 @@ const getJson = async <T>(url: string): Promise<T | null> => {
 
 const postJson = async <T>(url: string, body: unknown): Promise<T | null> => {
   try {
-    const response = await fetch(url, {
+    const cleanUrl = url.replace(/\/+$/, '');
+    const response = await fetch(cleanUrl, {
       method: 'POST',
       headers: {
         'content-type': 'application/json',

@@ -140,6 +140,11 @@ export default function App() {
     [serverCatalog],
   );
 
+  const extractHostname = (url: string): string => {
+    const match = url.match(/^https?:\/\/([^:\/]+)/);
+    return match ? match[1] : '';
+  };
+
   const getServerTarget = (
     server: Server,
   ): {host: string; port: number} | null => {
@@ -149,13 +154,12 @@ export default function App() {
     if (server.pingUrl) {
       try {
         const normalized = server.pingUrl.trim();
-        // Accept URLs with or without protocol, fallback to https if missing
         let urlToParse = normalized;
         if (!/^https?:\/\//i.test(urlToParse)) {
           urlToParse = 'https://' + urlToParse;
         }
         const urlObj = new URL(urlToParse);
-        const host = urlObj.hostname;
+        const host = urlObj.hostname || extractHostname(urlToParse);
         const port = urlObj.port
           ? Number(urlObj.port)
           : urlObj.protocol === 'http:'
